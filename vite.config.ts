@@ -32,7 +32,7 @@ export default defineConfig(({ mode }) => ({
         display: "standalone",
         orientation: "portrait",
         scope: "/",
-        start_url: "/dashboard",
+        start_url: "/app/dashboard",
         categories: ["government", "utilities"],
         icons: [
           {

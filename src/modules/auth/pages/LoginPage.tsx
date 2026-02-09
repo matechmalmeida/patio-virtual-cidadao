@@ -58,7 +58,7 @@ export default function LoginPage() {
 
       if (result.session) {
         dispatch({ type: 'LOGIN_SUCCESS', payload: result.session });
-        navigate('/dashboard', { replace: true });
+        navigate('/app/dashboard', { replace: true });
       }
     } catch (err) {
       setError(getApiErrorMessage(err, t('auth.login.errors.generic')));

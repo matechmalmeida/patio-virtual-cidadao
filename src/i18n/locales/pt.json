@@ -523,6 +523,7 @@
     "pendingCount_one": "Voce tem {{count}} documento pendente de assinatura.",
     "pendingCount_other": "Voce tem {{count}} documentos pendentes de assinatura.",
     "sign": "Assinar",
+    "view": "Visualizar",
     "signed": "Assinado",
     "signedAt": "Assinado em",
     "statusLabels": {

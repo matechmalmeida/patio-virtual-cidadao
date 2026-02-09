@@ -192,9 +192,9 @@ export default function DashboardPage() {
 
         {/* Pending terms alerts — full width if present */}
         {hasPendingTerms && (
-          <div className="lg:col-span-2 space-y-2">
+          <div className="lg:col-span-2 space-y-3">
             {pendingTerms.map((term) => (
-              <Link key={term.id} to={`/app/documentos/${term.id}`}>
+              <Link key={term.id} to={`/app/documentos/${term.id}`} className="block">
                 <AlertBanner variant="warning" className="cursor-pointer hover:opacity-90 transition-opacity">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">

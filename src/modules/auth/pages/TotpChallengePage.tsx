@@ -33,7 +33,7 @@ export default function TotpChallengePage() {
     try {
       const session = await verifyTotp(tempToken, code);
       dispatch({ type: 'LOGIN_SUCCESS', payload: session });
-      navigate('/dashboard', { replace: true });
+      navigate('/app/dashboard', { replace: true });
     } catch (err) {
       setError(getApiErrorMessage(err, t('auth.totp.errors.generic')));
       setCode('');

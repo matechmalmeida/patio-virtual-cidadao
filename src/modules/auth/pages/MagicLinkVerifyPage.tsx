@@ -30,7 +30,7 @@ export default function MagicLinkVerifyPage() {
       .then((session) => {
         if (cancelled) return;
         dispatch({ type: 'LOGIN_SUCCESS', payload: session });
-        navigate('/dashboard', { replace: true });
+        navigate('/app/dashboard', { replace: true });
       })
       .catch((err) => {
         if (cancelled) return;

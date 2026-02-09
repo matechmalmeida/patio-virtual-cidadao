@@ -111,7 +111,7 @@ export default function SchedulingConfirmationPage() {
         </Button>
 
         <Button
-          onClick={() => navigate('/dashboard')}
+          onClick={() => navigate('/app/dashboard')}
           className="w-full h-11 font-semibold"
         >
           <Home className="h-4 w-4" />

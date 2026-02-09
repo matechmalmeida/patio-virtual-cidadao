@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 import type { Term } from '@/types/case';
 import { Button } from '@/components/ui/button';
-import { CheckCircle2, ScrollText } from 'lucide-react';
+import { CheckCircle2, FileText, ScrollText } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
@@ -58,16 +58,24 @@ export function DocumentCard({ term, className }: DocumentCardProps) {
         </p>
       )}
 
-      {!isSigned && (
-        <Button
-          size="sm"
-          className="w-full text-xs"
-          onClick={() => navigate(`/app/documentos/${term.id}`)}
-        >
-          <CheckCircle2 className="h-3.5 w-3.5" />
-          {t('document.sign')}
-        </Button>
-      )}
+      <Button
+        size="sm"
+        variant={isSigned ? 'outline' : 'default'}
+        className="w-full text-xs"
+        onClick={() => navigate(`/app/documentos/${term.id}`)}
+      >
+        {isSigned ? (
+          <>
+            <FileText className="h-3.5 w-3.5" />
+            {t('document.view')}
+          </>
+        ) : (
+          <>
+            <CheckCircle2 className="h-3.5 w-3.5" />
+            {t('document.sign')}
+          </>
+        )}
+      </Button>
     </div>
   );
 }

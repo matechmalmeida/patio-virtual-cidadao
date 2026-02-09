@@ -523,6 +523,7 @@
     "pendingCount_one": "Tienes {{count}} documento pendiente de firma.",
     "pendingCount_other": "Tienes {{count}} documentos pendientes de firma.",
     "sign": "Firmar",
+    "view": "Visualizar",
     "signed": "Firmado",
     "signedAt": "Firmado el",
     "statusLabels": {

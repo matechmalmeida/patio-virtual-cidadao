@@ -523,6 +523,7 @@
     "pendingCount_one": "You have {{count}} document pending signature.",
     "pendingCount_other": "You have {{count}} documents pending signature.",
     "sign": "Sign",
+    "view": "View",
     "signed": "Signed",
     "signedAt": "Signed on",
     "statusLabels": {

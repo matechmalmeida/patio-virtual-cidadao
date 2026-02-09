@@ -14,7 +14,7 @@ export function RouteErrorFallback() {
         <Button variant="outline" className="flex-1" onClick={() => window.location.reload()}>
           Recarregar
         </Button>
-        <Button className="flex-1" onClick={() => navigate('/dashboard')}>
+        <Button className="flex-1" onClick={() => navigate('/app/dashboard')}>
           Ir para início
         </Button>
       </div>
