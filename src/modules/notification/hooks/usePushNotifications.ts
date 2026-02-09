@@ -52,7 +52,6 @@ export function usePushNotifications() {
           ...options,
         });
       } catch {
-        // Fallback for mobile — use service worker
         navigator.serviceWorker?.ready.then((reg) => {
           reg.showNotification(title, {
             icon: '/pwa-192x192.png',

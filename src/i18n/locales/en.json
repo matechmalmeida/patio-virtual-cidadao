@@ -7,7 +7,7 @@
   "nav": {
     "process": "Process",
     "pendencies": "Pendencies",
-    "timeline": "Timeline",
+    "processes": "Processes",
     "alerts": "Alerts",
     "profile": "Profile"
   },
@@ -389,6 +389,26 @@
     "addToCalendar": "Add to calendar",
     "backToHome": "Back to home",
     "notFound": "No appointment found."
+  },
+  "process": {
+    "title": "Processes",
+    "subtitle": "Track your active removals and process history.",
+    "active": "Active removals ({{count}})",
+    "noActive": "No active processes at the moment.",
+    "history": "Previous processes",
+    "notFound": "Process not found.",
+    "detail": {
+      "title": "Process details",
+      "vehicleLocation": "Vehicle location",
+      "sections": "Tracking",
+      "timeline": "Process timeline",
+      "timelineProgress": "{{completed}} of {{total}} steps completed",
+      "pendencies": "Pending issues",
+      "pendingCount_one": "{{count}} issue to resolve",
+      "pendingCount_other": "{{count}} issues to resolve",
+      "gpsStatus": "GPS device status",
+      "scheduling": "Scheduling"
+    }
   },
   "timeline": {
     "title": "Process timeline",

@@ -1,3 +1,5 @@
+import type { Notification } from '@/modules/notification';
+
 export type CaseStatus =
   | 'em_deslocamento'
   | 'custodia_domiciliar'
@@ -8,8 +10,6 @@ export type CaseStatus =
   | 'finalizado';
 
 export type PendencyStatus = 'pendente' | 'enviado' | 'em_analise' | 'aprovado' | 'reprovado';
-
-export type NotificationType = 'info' | 'alert' | 'critical';
 
 export type TimelineEventType = 'info' | 'success' | 'warning' | 'error';
 
@@ -62,16 +62,7 @@ export interface TimelineEvent {
   linkLabel?: string;
 }
 
-export interface Notification {
-  id: string;
-  title: string;
-  message: string;
-  type: NotificationType;
-  read: boolean;
-  timestamp: string;
-  actionLink?: string;
-  actionLabel?: string;
-}
+export type { Notification } from '@/modules/notification';
 
 export interface ScheduleSlot {
   id: string;

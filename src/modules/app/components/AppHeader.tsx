@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/modules/auth';
 import { useBrand } from '@/contexts/BrandContext';
+import { NotificationBadge } from '@/modules/notification';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
@@ -33,7 +34,7 @@ interface AppHeaderProps {
 
 export function AppHeader({ onToggleSidebar }: AppHeaderProps) {
   const { t } = useTranslation();
-  const { user, currentCase, logout } = useAuth();
+  const { user, logout } = useAuth();
   const { brand } = useBrand();
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
@@ -49,8 +50,6 @@ export function AppHeader({ onToggleSidebar }: AppHeaderProps) {
     window.addEventListener('storage', onStorage);
     return () => window.removeEventListener('storage', onStorage);
   }, []);
-
-  const unreadCount = currentCase?.notifications.filter((n) => !n.read).length ?? 0;
 
   const handleLogout = () => {
     logout();
@@ -89,14 +88,10 @@ export function AppHeader({ onToggleSidebar }: AppHeaderProps) {
             variant="ghost"
             size="icon"
             className="relative h-9 w-9"
-            onClick={() => navigate('/notificacoes')}
+            onClick={() => navigate('/app/notifications')}
           >
             <Bell className="h-4 w-4" />
-            {unreadCount > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 h-4 min-w-[1rem] flex items-center justify-center rounded-full bg-destructive text-destructive-foreground text-[10px] font-bold px-1">
-                {unreadCount}
-              </span>
-            )}
+            <NotificationBadge className="absolute -top-0.5 -right-0.5" />
           </Button>
 
           <LanguageSwitcher />

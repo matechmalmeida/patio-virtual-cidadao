@@ -1,6 +1,6 @@
 import { ApiError } from './http/api-error';
 import { executeMockRequest } from './http/mock-adapter';
-import type { Appointment, CaseData, Notification, Pendency, ScheduleLocation, ScheduleSlot, Term } from '@/types/case';
+import type { Appointment, CaseData, Pendency, ScheduleLocation, ScheduleSlot, Term } from '@/types/case';
 
 function ensureCase(caseData: CaseData | null): asserts caseData is CaseData {
   if (!caseData) {
@@ -11,18 +11,6 @@ function ensureCase(caseData: CaseData | null): asserts caseData is CaseData {
       userMessage: 'Caso não encontrado.',
     });
   }
-}
-
-export async function markNotificationAsRead(
-  caseData: CaseData | null,
-  notificationId: string
-): Promise<Notification[]> {
-  return executeMockRequest(() => {
-    ensureCase(caseData);
-    return caseData.notifications.map((item) =>
-      item.id === notificationId ? { ...item, read: true } : item
-    );
-  }, { delayMs: 180 });
 }
 
 export async function submitPendencyFile(

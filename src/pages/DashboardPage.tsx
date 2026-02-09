@@ -1,4 +1,5 @@
 import { useAuth } from '@/modules/auth';
+import { useNotifications } from '@/modules/notification';
 import { VehicleCard } from '@/components/VehicleCard';
 import { SeizureInfo } from '@/components/SeizureInfo';
 import { LocationMap } from '@/components/LocationMap';
@@ -27,6 +28,7 @@ import {
 
 export default function DashboardPage() {
   const { currentCase, activeCases, selectCase } = useAuth();
+  const { unreadCount } = useNotifications();
   const { t } = useTranslation();
   const { isOpen: showOnboarding, complete: completeOnboarding } = useOnboarding();
   const { brand } = useBrand();
@@ -36,8 +38,6 @@ export default function DashboardPage() {
   const pendingCount = currentCase.pendencies.filter(
     (p) => p.status === 'pendente' || p.status === 'reprovado'
   ).length;
-
-  const unreadNotifications = currentCase.notifications.filter((n) => !n.read).length;
 
   const pendingTerms = currentCase.terms?.filter((t) => t.status === 'pendente') ?? [];
   const hasPendingTerms = pendingTerms.length > 0;
@@ -114,14 +114,14 @@ export default function DashboardPage() {
       />
 
       {/* Notifications banner */}
-      {unreadNotifications > 0 && (
-        <Link to="/notificacoes">
+      {unreadCount > 0 && (
+        <Link to="/app/notifications">
           <AlertBanner variant="warning" className="cursor-pointer hover:opacity-90 transition-opacity">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Bell className="h-4 w-4" />
                 <span className="font-medium">
-                  {t('dashboard.newAlert', { count: unreadNotifications })}
+                  {t('dashboard.newAlert', { count: unreadCount })}
                 </span>
               </div>
               <ChevronRight className="h-4 w-4" />
@@ -211,7 +211,7 @@ export default function DashboardPage() {
           <ChevronRight className="h-4 w-4 text-muted-foreground" />
         </Link>
 
-        <Link to="/timeline" className="flex items-center justify-between p-4 rounded-xl bg-card border hover:bg-muted/50 transition-colors">
+        <Link to={`/app/process/${currentCase.id}/timeline`} className="flex items-center justify-between p-4 rounded-xl bg-card border hover:bg-muted/50 transition-colors">
           <div className="flex items-center gap-3">
             <Clock className="h-5 w-5 text-muted-foreground" />
             <span className="text-sm font-medium">{t('dashboard.processTimeline')}</span>
@@ -227,7 +227,7 @@ export default function DashboardPage() {
           <ChevronRight className="h-4 w-4 text-muted-foreground" />
         </Link>
 
-        <Link to="/notificacoes/configurar" className="flex items-center justify-between p-4 rounded-xl bg-card border hover:bg-muted/50 transition-colors">
+        <Link to="/app/notifications/settings" className="flex items-center justify-between p-4 rounded-xl bg-card border hover:bg-muted/50 transition-colors">
           <div className="flex items-center gap-3">
             <Settings className="h-5 w-5 text-muted-foreground" />
             <span className="text-sm font-medium">{t('dashboard.pushSettings')}</span>

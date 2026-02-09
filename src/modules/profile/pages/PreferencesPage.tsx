@@ -89,7 +89,7 @@ export default function PreferencesPage() {
         </div>
 
         <Link
-          to="/notificacoes/configurar"
+          to="/app/notifications/settings"
           className="flex items-center justify-between p-3 rounded-lg border hover:bg-muted/50 transition-colors"
         >
           <div className="flex items-center gap-3">

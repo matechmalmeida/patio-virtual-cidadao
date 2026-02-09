@@ -1,5 +1,5 @@
 import { NavLink } from '@/components/NavLink';
-import { useAuth } from '@/modules/auth';
+import { NotificationBadge } from '@/modules/notification';
 import { useBrand } from '@/contexts/BrandContext';
 import { useTranslation } from 'react-i18next';
 import { Car } from 'lucide-react';
@@ -12,10 +12,7 @@ interface AppSidebarProps {
 
 export function AppSidebar({ collapsed }: AppSidebarProps) {
   const { t } = useTranslation();
-  const { currentCase } = useAuth();
   const { brand } = useBrand();
-
-  const unreadCount = currentCase?.notifications.filter((n) => !n.read).length ?? 0;
 
   return (
     <aside
@@ -47,10 +44,8 @@ export function AppSidebar({ collapsed }: AppSidebarProps) {
                   activeClassName="bg-sidebar-accent text-sidebar-primary"
                 >
                   <item.icon className="h-5 w-5" />
-                  {item.to === '/notificacoes' && unreadCount > 0 && (
-                    <span className="absolute -top-0.5 -right-0.5 h-4 min-w-[1rem] flex items-center justify-center rounded-full bg-destructive text-destructive-foreground text-[10px] font-bold px-1">
-                      {unreadCount}
-                    </span>
+                  {item.to === '/app/notifications' && (
+                    <NotificationBadge className="absolute -top-0.5 -right-0.5" />
                   )}
                 </NavLink>
               </TooltipTrigger>
@@ -67,10 +62,8 @@ export function AppSidebar({ collapsed }: AppSidebarProps) {
             >
               <item.icon className="h-5 w-5 shrink-0" />
               <span className="text-sm truncate">{t(item.labelKey)}</span>
-              {item.to === '/notificacoes' && unreadCount > 0 && (
-                <span className="ml-auto h-5 min-w-[1.25rem] flex items-center justify-center rounded-full bg-destructive text-destructive-foreground text-[11px] font-bold px-1.5">
-                  {unreadCount}
-                </span>
+              {item.to === '/app/notifications' && (
+                <NotificationBadge className="ml-auto h-5 min-w-[1.25rem] text-[11px] px-1.5" />
               )}
             </NavLink>
           )

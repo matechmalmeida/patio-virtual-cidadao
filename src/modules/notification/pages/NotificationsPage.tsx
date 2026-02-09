@@ -1,11 +1,10 @@
 import { useState } from 'react';
-import { useAuth } from '@/modules/auth';
-import { NotificationItem } from '@/components/NotificationItem';
+import { useNotifications } from '../hooks/useNotifications';
+import { NotificationItem } from '../components/NotificationItem';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
-import { markNotificationAsRead } from '@/services/case.service';
 import { getApiErrorMessage } from '@/services/http/api-error';
 import { AlertBanner } from '@/components/AlertBanner';
 import { useTranslation } from 'react-i18next';
@@ -13,31 +12,22 @@ import { useTranslation } from 'react-i18next';
 type Filter = 'todos' | 'importantes' | 'pendentes';
 
 export default function NotificationsPage() {
-  const { currentCase, updateCase } = useAuth();
+  const { markAsRead, getFiltered } = useNotifications();
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [filter, setFilter] = useState<Filter>('todos');
   const [error, setError] = useState('');
 
-  if (!currentCase) return null;
-
   const handleMarkRead = async (id: string) => {
-    if (!currentCase) return;
     setError('');
-
     try {
-      const updated = await markNotificationAsRead(currentCase, id);
-      updateCase(currentCase.id, { notifications: updated });
+      await markAsRead(id);
     } catch (err) {
       setError(getApiErrorMessage(err, t('notificationsPage.updateError')));
     }
   };
 
-  const filtered = currentCase.notifications.filter((n) => {
-    if (filter === 'importantes') return n.type === 'critical' || n.type === 'alert';
-    if (filter === 'pendentes') return !n.read;
-    return true;
-  });
+  const filtered = getFiltered(filter);
 
   const filters: { key: Filter; label: string }[] = [
     { key: 'todos', label: t('notificationsPage.filterAll') },
@@ -61,7 +51,6 @@ export default function NotificationsPage() {
 
       {error && <AlertBanner variant="error">{error}</AlertBanner>}
 
-      {/* Filters */}
       <div className="flex gap-2">
         {filters.map(({ key, label }) => (
           <button
@@ -79,7 +68,6 @@ export default function NotificationsPage() {
         ))}
       </div>
 
-      {/* Notifications */}
       <div className="space-y-3">
         {filtered.length === 0 ? (
           <div className="text-center py-8 text-sm text-muted-foreground">

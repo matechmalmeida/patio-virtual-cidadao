@@ -7,7 +7,7 @@
   "nav": {
     "process": "Processo",
     "pendencies": "Pendências",
-    "timeline": "Timeline",
+    "processes": "Processos",
     "alerts": "Avisos",
     "profile": "Perfil"
   },
@@ -389,6 +389,26 @@
     "addToCalendar": "Adicionar ao calendario",
     "backToHome": "Voltar ao inicio",
     "notFound": "Nenhum agendamento encontrado."
+  },
+  "process": {
+    "title": "Processos",
+    "subtitle": "Acompanhe suas remoções ativas e o histórico de processos.",
+    "active": "Remoções ativas ({{count}})",
+    "noActive": "Nenhum processo ativo no momento.",
+    "history": "Processos anteriores",
+    "notFound": "Processo não encontrado.",
+    "detail": {
+      "title": "Detalhes do processo",
+      "vehicleLocation": "Localização do veículo",
+      "sections": "Acompanhamento",
+      "timeline": "Timeline do processo",
+      "timelineProgress": "{{completed}} de {{total}} etapas concluídas",
+      "pendencies": "Pendências",
+      "pendingCount_one": "{{count}} pendência a resolver",
+      "pendingCount_other": "{{count}} pendências a resolver",
+      "gpsStatus": "Status do dispositivo GPS",
+      "scheduling": "Agendamento"
+    }
   },
   "timeline": {
     "title": "Timeline do processo",

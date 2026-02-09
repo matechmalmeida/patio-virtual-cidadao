@@ -21,9 +21,12 @@ const MagicLinkVerifyPage = lazy(() => import('./modules/auth/pages/MagicLinkVer
 const TotpChallengePage = lazy(() => import('./modules/auth/pages/TotpChallengePage'));
 const DashboardPage = lazy(() => import('./pages/DashboardPage'));
 const TimelinePage = lazy(() => import('./pages/TimelinePage'));
+const ProcessListPage = lazy(() => import('./modules/process/pages/ProcessListPage'));
+const ProcessDetailPage = lazy(() => import('./modules/process/pages/ProcessDetailPage'));
+const ProcessTimelinePage = lazy(() => import('./modules/process/pages/ProcessTimelinePage'));
 const PendenciesPage = lazy(() => import('./pages/PendenciesPage'));
 const UploadPage = lazy(() => import('./pages/UploadPage'));
-const NotificationsPage = lazy(() => import('./pages/NotificationsPage'));
+const NotificationsPage = lazy(() => import('./modules/notification/pages/NotificationsPage'));
 const SchedulingPage = lazy(() => import('./pages/SchedulingPage'));
 const SchedulingConfirmationPage = lazy(() => import('./pages/SchedulingConfirmationPage'));
 const HistoryPage = lazy(() => import('./pages/HistoryPage'));
@@ -33,7 +36,7 @@ const TermSigningPage = lazy(() => import('./pages/TermSigningPage'));
 const InstallPage = lazy(() => import('./pages/InstallPage'));
 const GPSStatusPage = lazy(() => import('./pages/GPSStatusPage'));
 const PaymentPage = lazy(() => import('./pages/PaymentPage'));
-const NotificationSettingsPage = lazy(() => import('./pages/NotificationSettingsPage'));
+const NotificationSettingsPage = lazy(() => import('./modules/notification/pages/NotificationSettingsPage'));
 const ProfilePage = lazy(() => import('./modules/profile/pages/ProfilePage'));
 const PersonalDataPage = lazy(() => import('./modules/profile/pages/PersonalDataPage'));
 const AddressPage = lazy(() => import('./modules/profile/pages/AddressPage'));
@@ -106,9 +109,15 @@ const App = () => (
                   <Route element={routeElement(<AppLayout />)}>
                     <Route path="/dashboard" element={routeElement(<DashboardPage />)} />
                     <Route path="/timeline" element={routeElement(<TimelinePage />)} />
+                    <Route path="/app/process" element={routeElement(<ProcessListPage />)} />
+                    <Route path="/app/process/:id" element={routeElement(<ProcessDetailPage />)} />
+                    <Route
+                      path="/app/process/:id/timeline"
+                      element={routeElement(<ProcessTimelinePage />)}
+                    />
                     <Route path="/pendencias" element={routeElement(<PendenciesPage />)} />
                     <Route path="/pendencias/:id/upload" element={routeElement(<UploadPage />)} />
-                    <Route path="/notificacoes" element={routeElement(<NotificationsPage />)} />
+                    <Route path="/app/notifications" element={routeElement(<NotificationsPage />)} />
                     <Route path="/agendamento" element={routeElement(<SchedulingPage />)} />
                     <Route
                       path="/agendamento/confirmacao"
@@ -131,7 +140,7 @@ const App = () => (
                       element={routeElement(<PaymentPage />)}
                     />
                     <Route
-                      path="/notificacoes/configurar"
+                      path="/app/notifications/settings"
                       element={routeElement(<NotificationSettingsPage />)}
                     />
                   </Route>

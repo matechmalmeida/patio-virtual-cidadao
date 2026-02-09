@@ -1,5 +1,5 @@
 import { useAuth } from '@/modules/auth';
-import { usePushNotifications } from '@/hooks/usePushNotifications';
+import { usePushNotifications } from '../hooks/usePushNotifications';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { AlertBanner } from '@/components/AlertBanner';
@@ -98,7 +98,6 @@ export default function NotificationSettingsPage() {
         </p>
       </div>
 
-      {/* Permission status */}
       {!isSupported ? (
         <AlertBanner variant="warning" title={t('notifications.unsupported')}>
           {t('notifications.unsupportedDesc')}
@@ -148,7 +147,6 @@ export default function NotificationSettingsPage() {
         </Card>
       )}
 
-      {/* Notification types */}
       {isGranted && (
         <Card className="border-0 shadow-md">
           <CardContent className="pt-5 space-y-1">
@@ -166,7 +164,6 @@ export default function NotificationSettingsPage() {
         </Card>
       )}
 
-      {/* Test notification */}
       {isGranted && (
         <Button variant="outline" className="w-full" onClick={handleTest}>
           <BellRing className="h-4 w-4" />
@@ -174,7 +171,6 @@ export default function NotificationSettingsPage() {
         </Button>
       )}
 
-      {/* Info */}
       <div className="flex items-start gap-2 text-xs text-muted-foreground">
         <Info className="h-3.5 w-3.5 mt-0.5 shrink-0" />
         <p>
