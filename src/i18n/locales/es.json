@@ -9,7 +9,7 @@
     "pendencies": "Pendientes",
     "timeline": "Timeline",
     "alerts": "Avisos",
-    "more": "Más"
+    "profile": "Perfil"
   },
   "landing": {
     "badge": "Programa oficial de la autoridad de tránsito",
@@ -635,6 +635,70 @@
           "content": "En caso de un incidente de seguridad que pueda acarrear riesgo o dano relevante a los titulares, comunicaremos la ocurrencia a la Autoridad Nacional de Proteccion de Datos y a los titulares afectados, conforme lo previsto en la LGPD.\n\nAdoptamos medidas tecnicas y administrativas para prevenir y mitigar incidentes de seguridad."
         }
       }
+    }
+  },
+  "profile": {
+    "title": "Mi Perfil",
+    "personalData": "Datos personales",
+    "personalDataDesc": "Nombre, telefono y documento",
+    "addressMenu": "Direccion",
+    "addressMenuDesc": "Direccion de residencia",
+    "preferencesMenu": "Preferencias",
+    "preferencesMenuDesc": "Idioma, tema y notificaciones",
+    "support": "Ayuda y Soporte",
+    "supportDesc": "FAQ y tickets",
+    "logout": "Cerrar sesion",
+    "logoutDesc": "Finalizar sesion",
+    "editAvatar": "Cambiar foto",
+    "removeAvatar": "Quitar foto",
+    "avatarUpdated": "Foto actualizada con exito.",
+    "avatarRemoved": "Foto eliminada.",
+    "avatarError": "No fue posible actualizar la foto.",
+    "avatarTooLarge": "La imagen debe tener como maximo 5 MB.",
+    "personal": {
+      "title": "Datos personales",
+      "name": "Nombre completo",
+      "phone": "Telefono",
+      "cpf": "Documento (CPF)",
+      "saveSuccess": "Datos actualizados con exito.",
+      "saveError": "No fue posible guardar los datos.",
+      "errors": {
+        "nameRequired": "Ingresa tu nombre.",
+        "phoneInvalid": "Telefono invalido.",
+        "cpfInvalid": "Documento invalido."
+      }
+    },
+    "address": {
+      "title": "Direccion",
+      "cep": "Codigo postal",
+      "street": "Calle",
+      "number": "Numero",
+      "complement": "Complemento",
+      "neighborhood": "Barrio",
+      "city": "Ciudad",
+      "state": "Estado",
+      "saveSuccess": "Direccion actualizada con exito.",
+      "saveError": "No fue posible guardar la direccion.",
+      "errors": {
+        "cepInvalid": "Codigo postal invalido.",
+        "streetRequired": "Ingresa la calle.",
+        "numberRequired": "Ingresa el numero.",
+        "neighborhoodRequired": "Ingresa el barrio.",
+        "cityRequired": "Ingresa la ciudad.",
+        "stateRequired": "Selecciona el estado."
+      }
+    },
+    "preferences": {
+      "title": "Preferencias",
+      "language": "Idioma",
+      "theme": "Tema",
+      "themeLight": "Tema claro activado",
+      "themeDark": "Tema oscuro activado",
+      "pushNotifications": "Notificaciones push",
+      "configurePush": "Configurar alertas en el dispositivo",
+      "security": "Seguridad",
+      "twoFactor": "Autenticacion de dos factores",
+      "manageTwoFactor": "Gestionar 2FA"
     }
   },
   "language": {

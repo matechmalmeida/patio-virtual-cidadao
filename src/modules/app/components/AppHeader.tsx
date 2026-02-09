@@ -1,8 +1,9 @@
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/modules/auth';
 import { useBrand } from '@/contexts/BrandContext';
 import { Button } from '@/components/ui/button';
-import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -36,6 +37,18 @@ export function AppHeader({ onToggleSidebar }: AppHeaderProps) {
   const { brand } = useBrand();
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
+
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    setAvatarUrl(localStorage.getItem('pv-avatar'));
+
+    const onStorage = (e: StorageEvent) => {
+      if (e.key === 'pv-avatar') setAvatarUrl(e.newValue);
+    };
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
+  }, []);
 
   const unreadCount = currentCase?.notifications.filter((n) => !n.read).length ?? 0;
 
@@ -92,6 +105,7 @@ export function AppHeader({ onToggleSidebar }: AppHeaderProps) {
             <DropdownMenuTrigger asChild>
               <button className="flex items-center gap-2 rounded-full p-1 hover:bg-accent transition-colors max-w-[200px]">
                 <Avatar className="h-8 w-8 shrink-0">
+                  {avatarUrl && <AvatarImage src={avatarUrl} alt={user?.name ?? ''} />}
                   <AvatarFallback className="text-xs">{initials}</AvatarFallback>
                 </Avatar>
                 {user?.name && (

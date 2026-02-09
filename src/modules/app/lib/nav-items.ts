@@ -1,4 +1,4 @@
-import { Home, FileText, MapPin, Bell, MoreHorizontal, type LucideIcon } from 'lucide-react';
+import { Home, FileText, MapPin, Bell, User, type LucideIcon } from 'lucide-react';
 
 export interface NavItem {
   to: string;
@@ -11,5 +11,5 @@ export const navItems: NavItem[] = [
   { to: '/pendencias', labelKey: 'nav.pendencies', icon: FileText },
   { to: '/timeline', labelKey: 'nav.timeline', icon: MapPin },
   { to: '/notificacoes', labelKey: 'nav.alerts', icon: Bell },
-  { to: '/suporte', labelKey: 'nav.more', icon: MoreHorizontal },
+  { to: '/app/profile', labelKey: 'nav.profile', icon: User },
 ];

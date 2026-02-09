@@ -9,7 +9,7 @@
     "pendencies": "Pendências",
     "timeline": "Timeline",
     "alerts": "Avisos",
-    "more": "Mais"
+    "profile": "Perfil"
   },
   "landing": {
     "badge": "Programa oficial da autarquia de trânsito",
@@ -635,6 +635,70 @@
           "content": "Em caso de incidente de seguranca que possa acarretar risco ou dano relevante aos titulares, comunicaremos a ocorrencia a Autoridade Nacional de Protecao de Dados e aos titulares afetados, conforme previsto na LGPD.\n\nAdotamos medidas tecnicas e administrativas para prevenir e mitigar incidentes de seguranca."
         }
       }
+    }
+  },
+  "profile": {
+    "title": "Meu Perfil",
+    "personalData": "Dados pessoais",
+    "personalDataDesc": "Nome, telefone e CPF",
+    "addressMenu": "Endereco",
+    "addressMenuDesc": "Endereco de residencia",
+    "preferencesMenu": "Preferencias",
+    "preferencesMenuDesc": "Idioma, tema e notificacoes",
+    "support": "Ajuda e Suporte",
+    "supportDesc": "FAQ e chamados",
+    "logout": "Sair da conta",
+    "logoutDesc": "Encerrar sessao",
+    "editAvatar": "Alterar foto",
+    "removeAvatar": "Remover foto",
+    "avatarUpdated": "Foto atualizada com sucesso.",
+    "avatarRemoved": "Foto removida.",
+    "avatarError": "Nao foi possivel atualizar a foto.",
+    "avatarTooLarge": "A imagem deve ter no maximo 5 MB.",
+    "personal": {
+      "title": "Dados pessoais",
+      "name": "Nome completo",
+      "phone": "Telefone",
+      "cpf": "CPF",
+      "saveSuccess": "Dados atualizados com sucesso.",
+      "saveError": "Nao foi possivel salvar os dados.",
+      "errors": {
+        "nameRequired": "Informe seu nome.",
+        "phoneInvalid": "Telefone invalido.",
+        "cpfInvalid": "CPF invalido."
+      }
+    },
+    "address": {
+      "title": "Endereco",
+      "cep": "CEP",
+      "street": "Rua",
+      "number": "Numero",
+      "complement": "Complemento",
+      "neighborhood": "Bairro",
+      "city": "Cidade",
+      "state": "Estado",
+      "saveSuccess": "Endereco atualizado com sucesso.",
+      "saveError": "Nao foi possivel salvar o endereco.",
+      "errors": {
+        "cepInvalid": "CEP invalido.",
+        "streetRequired": "Informe a rua.",
+        "numberRequired": "Informe o numero.",
+        "neighborhoodRequired": "Informe o bairro.",
+        "cityRequired": "Informe a cidade.",
+        "stateRequired": "Selecione o estado."
+      }
+    },
+    "preferences": {
+      "title": "Preferencias",
+      "language": "Idioma",
+      "theme": "Tema",
+      "themeLight": "Tema claro ativado",
+      "themeDark": "Tema escuro ativado",
+      "pushNotifications": "Notificacoes push",
+      "configurePush": "Configurar alertas no dispositivo",
+      "security": "Seguranca",
+      "twoFactor": "Autenticacao de dois fatores",
+      "manageTwoFactor": "Gerenciar 2FA"
     }
   },
   "language": {

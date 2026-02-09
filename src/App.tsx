@@ -34,6 +34,10 @@ const InstallPage = lazy(() => import('./pages/InstallPage'));
 const GPSStatusPage = lazy(() => import('./pages/GPSStatusPage'));
 const PaymentPage = lazy(() => import('./pages/PaymentPage'));
 const NotificationSettingsPage = lazy(() => import('./pages/NotificationSettingsPage'));
+const ProfilePage = lazy(() => import('./modules/profile/pages/ProfilePage'));
+const PersonalDataPage = lazy(() => import('./modules/profile/pages/PersonalDataPage'));
+const AddressPage = lazy(() => import('./modules/profile/pages/AddressPage'));
+const PreferencesPage = lazy(() => import('./modules/profile/pages/PreferencesPage'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 const queryClient = new QueryClient({
@@ -111,6 +115,13 @@ const App = () => (
                       element={routeElement(<SchedulingConfirmationPage />)}
                     />
                     <Route path="/historico" element={routeElement(<HistoryPage />)} />
+                    <Route path="/app/profile" element={routeElement(<ProfilePage />)} />
+                    <Route path="/app/profile/dados" element={routeElement(<PersonalDataPage />)} />
+                    <Route path="/app/profile/endereco" element={routeElement(<AddressPage />)} />
+                    <Route
+                      path="/app/profile/preferencias"
+                      element={routeElement(<PreferencesPage />)}
+                    />
                     <Route path="/suporte" element={routeElement(<SupportPage />)} />
                     <Route path="/suporte/chamado" element={routeElement(<TicketPage />)} />
                     <Route path="/termo/:termId" element={routeElement(<TermSigningPage />)} />

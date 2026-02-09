@@ -10,7 +10,6 @@ import {
   MessageSquare,
   ChevronRight,
   History,
-  LogOut,
 } from 'lucide-react';
 import {
   Accordion,
@@ -18,7 +17,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { useAuth } from '@/modules/auth';
 import type { FAQItem } from '@/types/case';
 import { getFaqItems } from '@/services/support.service';
 import { AlertBanner } from '@/components/AlertBanner';
@@ -30,7 +28,6 @@ export default function SupportPage() {
   const [faqItems, setFaqItems] = useState<FAQItem[]>([]);
   const [error, setError] = useState('');
   const navigate = useNavigate();
-  const { logout } = useAuth();
 
   useEffect(() => {
     let isMounted = true;
@@ -58,11 +55,6 @@ export default function SupportPage() {
           f.answer.toLowerCase().includes(search.toLowerCase())
       )
     : faqItems;
-
-  const handleLogout = () => {
-    logout();
-    navigate('/acesso');
-  };
 
   return (
     <div className="px-4 py-5 space-y-5">
@@ -109,18 +101,6 @@ export default function SupportPage() {
           <ChevronRight className="h-4 w-4 text-muted-foreground" />
         </Link>
 
-        <button
-          onClick={handleLogout}
-          className="flex items-center justify-between p-4 rounded-xl bg-card border hover:bg-muted/50 transition-colors w-full text-left"
-        >
-          <div className="flex items-center gap-3">
-            <LogOut className="h-5 w-5 text-destructive" />
-            <div>
-              <p className="text-sm font-semibold text-destructive">{t('support.logout')}</p>
-              <p className="text-xs text-muted-foreground">{t('support.logoutDesc')}</p>
-            </div>
-          </div>
-        </button>
       </div>
 
       {/* FAQ section */}

@@ -9,7 +9,7 @@
     "pendencies": "Pendencies",
     "timeline": "Timeline",
     "alerts": "Alerts",
-    "more": "More"
+    "profile": "Profile"
   },
   "landing": {
     "badge": "Official traffic authority program",
@@ -635,6 +635,70 @@
           "content": "In case of a security incident that may pose a risk or relevant damage to data subjects, we will notify the National Data Protection Authority and affected data subjects, as required by the LGPD.\n\nWe adopt technical and administrative measures to prevent and mitigate security incidents."
         }
       }
+    }
+  },
+  "profile": {
+    "title": "My Profile",
+    "personalData": "Personal data",
+    "personalDataDesc": "Name, phone and tax ID",
+    "addressMenu": "Address",
+    "addressMenuDesc": "Residential address",
+    "preferencesMenu": "Preferences",
+    "preferencesMenuDesc": "Language, theme and notifications",
+    "support": "Help & Support",
+    "supportDesc": "FAQ and tickets",
+    "logout": "Log out",
+    "logoutDesc": "End session",
+    "editAvatar": "Change photo",
+    "removeAvatar": "Remove photo",
+    "avatarUpdated": "Photo updated successfully.",
+    "avatarRemoved": "Photo removed.",
+    "avatarError": "Could not update photo.",
+    "avatarTooLarge": "Image must be at most 5 MB.",
+    "personal": {
+      "title": "Personal data",
+      "name": "Full name",
+      "phone": "Phone",
+      "cpf": "Tax ID (CPF)",
+      "saveSuccess": "Data updated successfully.",
+      "saveError": "Could not save data.",
+      "errors": {
+        "nameRequired": "Enter your name.",
+        "phoneInvalid": "Invalid phone number.",
+        "cpfInvalid": "Invalid tax ID."
+      }
+    },
+    "address": {
+      "title": "Address",
+      "cep": "Zip code",
+      "street": "Street",
+      "number": "Number",
+      "complement": "Complement",
+      "neighborhood": "Neighborhood",
+      "city": "City",
+      "state": "State",
+      "saveSuccess": "Address updated successfully.",
+      "saveError": "Could not save address.",
+      "errors": {
+        "cepInvalid": "Invalid zip code.",
+        "streetRequired": "Enter the street.",
+        "numberRequired": "Enter the number.",
+        "neighborhoodRequired": "Enter the neighborhood.",
+        "cityRequired": "Enter the city.",
+        "stateRequired": "Select the state."
+      }
+    },
+    "preferences": {
+      "title": "Preferences",
+      "language": "Language",
+      "theme": "Theme",
+      "themeLight": "Light theme enabled",
+      "themeDark": "Dark theme enabled",
+      "pushNotifications": "Push notifications",
+      "configurePush": "Configure device alerts",
+      "security": "Security",
+      "twoFactor": "Two-factor authentication",
+      "manageTwoFactor": "Manage 2FA"
     }
   },
   "language": {
