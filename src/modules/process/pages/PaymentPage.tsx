@@ -16,15 +16,15 @@ import {
   FileText,
   ExternalLink,
 } from 'lucide-react';
-import { confirmPendencyPayment } from '@/services/case.service';
+import { confirmPendencyPayment } from '../services/pendency.service';
 import { getApiErrorMessage } from '@/services/http/api-error';
 
 type PaymentMethod = 'pix' | 'boleto' | null;
 
 export default function PaymentPage() {
-  const { pendencyId } = useParams<{ pendencyId: string }>();
+  const { id, pendencyId } = useParams<{ id: string; pendencyId: string }>();
   const navigate = useNavigate();
-  const { currentCase, updateCase } = useAuth();
+  const { activeCases, updateCase } = useAuth();
   const { toast } = useToast();
   const { t } = useTranslation();
 
@@ -33,9 +33,9 @@ export default function PaymentPage() {
   const [paymentConfirmed, setPaymentConfirmed] = useState(false);
   const [pixCopied, setPixCopied] = useState(false);
 
-  const pendency = currentCase?.pendencies.find((p) => p.id === pendencyId);
+  const caseData = activeCases.find((c) => c.id === id) ?? null;
+  const pendency = caseData?.pendencies.find((p) => p.id === pendencyId);
 
-  // Mock PIX code
   const pixCode =
     '00020126580014br.gov.bcb.pix0136a1b2c3d4-e5f6-7890-abcd-ef1234567890520400005303986540' +
     (pendency?.value?.toFixed(2) ?? '0.00') +
@@ -50,13 +50,13 @@ export default function PaymentPage() {
   }, [pixCode, toast, t]);
 
   const handleConfirmPayment = useCallback(() => {
-    if (!currentCase || !pendency) return;
+    if (!caseData || !pendency) return;
 
     setIsProcessing(true);
 
-    confirmPendencyPayment(currentCase, pendency.id)
+    confirmPendencyPayment(caseData, pendency.id)
       .then((updatedPendencies) => {
-        updateCase(currentCase.id, { pendencies: updatedPendencies });
+        updateCase(caseData.id, { pendencies: updatedPendencies });
 
         setIsProcessing(false);
         setPaymentConfirmed(true);
@@ -74,13 +74,13 @@ export default function PaymentPage() {
           variant: 'destructive',
         });
       });
-  }, [currentCase, pendency, updateCase, toast, t]);
+  }, [caseData, pendency, updateCase, toast, t]);
 
-  if (!currentCase || !pendency) {
+  if (!caseData || !pendency) {
     return (
       <div className="px-4 py-8 text-center">
         <p className="text-muted-foreground">{t('upload.notFound')}</p>
-        <Button variant="outline" className="mt-4" onClick={() => navigate('/pendencias')}>
+        <Button variant="outline" className="mt-4" onClick={() => navigate(`/app/process/${id}/pendencias`)}>
           {t('payment.backToPendencies')}
         </Button>
       </div>
@@ -104,7 +104,7 @@ export default function PaymentPage() {
           <AlertBanner variant="info">
             {t('payment.proofNote')}
           </AlertBanner>
-          <Button className="w-full" onClick={() => navigate('/pendencias')}>
+          <Button className="w-full" onClick={() => navigate(`/app/process/${id}/pendencias`)}>
             {t('payment.backToPendencies')}
           </Button>
         </div>
@@ -127,7 +127,6 @@ export default function PaymentPage() {
         <p className="text-sm text-muted-foreground mt-1">{pendency.name}</p>
       </div>
 
-      {/* Amount */}
       <Card className="border-0 shadow-md">
         <CardContent className="pt-5 text-center space-y-1">
           <p className="text-xs text-muted-foreground">{t('payment.amountToPay')}</p>
@@ -135,12 +134,11 @@ export default function PaymentPage() {
             R$ {pendency.value?.toFixed(2).replace('.', ',')}
           </p>
           <p className="text-xs text-muted-foreground">
-            {currentCase.plate} — {currentCase.vehicle}
+            {caseData.plate} — {caseData.vehicle}
           </p>
         </CardContent>
       </Card>
 
-      {/* Payment methods */}
       <div className="space-y-3">
         <p className="text-sm font-semibold">{t('payment.paymentMethod')}</p>
 
@@ -197,7 +195,6 @@ export default function PaymentPage() {
         </button>
       </div>
 
-      {/* PIX details */}
       {selectedMethod === 'pix' && (
         <Card className="border-0 shadow-md animate-slide-up">
           <CardContent className="pt-5 space-y-4">
@@ -254,7 +251,6 @@ export default function PaymentPage() {
         </Card>
       )}
 
-      {/* Boleto details */}
       {selectedMethod === 'boleto' && (
         <Card className="border-0 shadow-md animate-slide-up">
           <CardContent className="pt-5 space-y-4">

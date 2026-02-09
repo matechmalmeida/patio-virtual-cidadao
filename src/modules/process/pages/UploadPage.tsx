@@ -6,13 +6,13 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { AlertBanner } from '@/components/AlertBanner';
 import { ArrowLeft, Upload, FileScan, CheckCircle2, X } from 'lucide-react';
-import { submitPendencyFile } from '@/services/case.service';
+import { submitPendencyFile } from '../services/pendency.service';
 import { getApiErrorMessage } from '@/services/http/api-error';
 
 export default function UploadPage() {
   const { t } = useTranslation();
-  const { id } = useParams<{ id: string }>();
-  const { currentCase, updateCase } = useAuth();
+  const { id, pendencyId } = useParams<{ id: string; pendencyId: string }>();
+  const { activeCases, updateCase } = useAuth();
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -22,9 +22,11 @@ export default function UploadPage() {
   const [uploaded, setUploaded] = useState(false);
   const [error, setError] = useState('');
 
-  if (!currentCase) return null;
+  const caseData = activeCases.find((c) => c.id === id) ?? null;
 
-  const pendency = currentCase.pendencies.find((p) => p.id === id);
+  if (!caseData) return null;
+
+  const pendency = caseData.pendencies.find((p) => p.id === pendencyId);
 
   if (!pendency) {
     return (
@@ -61,8 +63,8 @@ export default function UploadPage() {
     setError('');
 
     try {
-      const updatedPendencies = await submitPendencyFile(currentCase, id ?? '', file.name);
-      updateCase(currentCase.id, { pendencies: updatedPendencies });
+      const updatedPendencies = await submitPendencyFile(caseData, pendencyId ?? '', file.name);
+      updateCase(caseData.id, { pendencies: updatedPendencies });
       setIsUploading(false);
       setUploaded(true);
     } catch (err) {
@@ -81,7 +83,7 @@ export default function UploadPage() {
           <h2 className="text-xl font-bold">{t('upload.success')}</h2>
           <p className="text-sm text-muted-foreground mt-2 max-w-xs mx-auto" dangerouslySetInnerHTML={{ __html: t('upload.successDesc', { name: pendency.name }) }} />
           <Button
-            onClick={() => navigate('/pendencias')}
+            onClick={() => navigate(`/app/process/${id}/pendencias`)}
             className="mt-6 h-11 font-semibold"
           >
             {t('upload.backToPendencies')}

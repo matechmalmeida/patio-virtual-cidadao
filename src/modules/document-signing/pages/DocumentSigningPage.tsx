@@ -14,10 +14,10 @@ import {
   ChevronDown,
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { signTerm } from '@/services/case.service';
+import { signTerm } from '../services/document.service';
 import { getApiErrorMessage } from '@/services/http/api-error';
 
-export default function TermSigningPage() {
+export default function DocumentSigningPage() {
   const { t } = useTranslation();
   const { termId } = useParams<{ termId: string }>();
   const navigate = useNavigate();
@@ -47,7 +47,6 @@ export default function TermSigningPage() {
     const el = scrollRef.current;
     if (!el) return;
 
-    // Check if content doesn't need scrolling (shorter than container)
     if (el.scrollHeight <= el.clientHeight + 20) {
       setHasScrolledToEnd(true);
     }
@@ -67,7 +66,7 @@ export default function TermSigningPage() {
         });
 
         setIsSigning(false);
-        navigate('/dashboard');
+        navigate('/documentos');
       })
       .catch((err) => {
         toast({
@@ -77,25 +76,24 @@ export default function TermSigningPage() {
         });
         setIsSigning(false);
       });
-  }, [currentCase, term, updateCase, toast, navigate]);
+  }, [currentCase, term, updateCase, toast, navigate, t]);
 
   if (!currentCase || !term) {
     return (
       <div className="px-4 py-8 text-center">
         <p className="text-muted-foreground">{t('term.notFound')}</p>
-        <Button variant="outline" className="mt-4" onClick={() => navigate('/dashboard')}>
+        <Button variant="outline" className="mt-4" onClick={() => navigate('/documentos')}>
           {t('term.backToProcess')}
         </Button>
       </div>
     );
   }
 
-  // Already signed
   if (term.status === 'assinado') {
     return (
       <div className="px-4 py-5 space-y-5">
         <button
-          onClick={() => navigate('/dashboard')}
+          onClick={() => navigate('/documentos')}
           className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
         >
           <ArrowLeft className="h-4 w-4" />
@@ -131,10 +129,9 @@ export default function TermSigningPage() {
 
   return (
     <div className="px-4 py-5 space-y-5">
-      {/* Header */}
       <div className="space-y-1">
         <button
-          onClick={() => navigate('/dashboard')}
+          onClick={() => navigate('/documentos')}
           className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
         >
           <ArrowLeft className="h-4 w-4" />
@@ -147,14 +144,12 @@ export default function TermSigningPage() {
         <p className="text-sm text-muted-foreground">{term.description}</p>
       </div>
 
-      {/* Vehicle reference */}
       <div className="flex items-center gap-2 text-xs bg-muted/50 rounded-lg px-3 py-2">
         <span className="font-semibold">{currentCase.plate}</span>
         <span className="text-muted-foreground">•</span>
         <span className="text-muted-foreground">{currentCase.vehicle}</span>
       </div>
 
-      {/* Document content with scroll detection */}
       <Card className="border-0 shadow-md relative">
         <CardContent className="pt-5 pb-3">
           <div
@@ -167,7 +162,6 @@ export default function TermSigningPage() {
             </div>
           </div>
 
-          {/* Scroll indicator */}
           {!hasScrolledToEnd && (
             <div className="absolute bottom-12 left-0 right-0 flex flex-col items-center pointer-events-none">
               <div className="h-16 w-full bg-gradient-to-t from-card to-transparent" />
@@ -180,7 +174,6 @@ export default function TermSigningPage() {
         </CardContent>
       </Card>
 
-      {/* Agreement section */}
       <div className="space-y-4">
         <label
           className={`flex items-start gap-3 p-4 rounded-xl border transition-all ${

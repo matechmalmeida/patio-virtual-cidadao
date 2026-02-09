@@ -7,6 +7,7 @@
   "nav": {
     "process": "Proceso",
     "pendencies": "Pendientes",
+    "documents": "Documentos",
     "processes": "Procesos",
     "alerts": "Avisos",
     "profile": "Perfil"
@@ -181,6 +182,9 @@
     "pendenciesCount_other": "{{count}} pendientes",
     "pendenciesToResolve": "Tienes <strong>{{count}} {{label}}</strong> para regularizar. Resuélvelas para liberar el vehículo.",
     "viewPendencies": "Ver pendientes",
+    "viewDocuments": "Firmar documentos pendientes",
+    "documentsToSign_one": "Tienes {{count}} documento pendiente de firma.",
+    "documentsToSign_other": "Tienes {{count}} documentos pendientes de firma.",
     "allClear": "¡Todo regularizado! Agenda la remoción del dispositivo GPS para liberar tu vehículo.",
     "scheduleRemoval": "Agendar remoción del dispositivo",
     "waitingValidation": "Tus documentos están siendo analizados. No es necesario hacer nada por ahora. Serás notificado cuando haya una actualización.",
@@ -404,8 +408,11 @@
       "timeline": "Timeline del proceso",
       "timelineProgress": "{{completed}} de {{total}} etapas concluidas",
       "pendencies": "Pendientes",
+      "documents": "Documentos",
       "pendingCount_one": "{{count}} pendiente a resolver",
       "pendingCount_other": "{{count}} pendientes a resolver",
+      "pendingDocCount_one": "{{count}} documento pendiente",
+      "pendingDocCount_other": "{{count}} documentos pendientes",
       "gpsStatus": "Estado del dispositivo GPS",
       "scheduling": "Agendamiento"
     }
@@ -495,6 +502,19 @@
     "readFirst": "Lee el documento hasta el final para poder aceptar los terminos.",
     "signing": "Firmando...",
     "sign": "Firmar termino"
+  },
+  "document": {
+    "title": "Documentos",
+    "allSigned": "Todos los documentos han sido firmados!",
+    "pendingCount_one": "Tienes {{count}} documento pendiente de firma.",
+    "pendingCount_other": "Tienes {{count}} documentos pendientes de firma.",
+    "sign": "Firmar",
+    "signed": "Firmado",
+    "signedAt": "Firmado el",
+    "statusLabels": {
+      "pendente": "Pendiente",
+      "assinado": "Firmado"
+    }
   },
   "install": {
     "title": "Instalar aplicacion",

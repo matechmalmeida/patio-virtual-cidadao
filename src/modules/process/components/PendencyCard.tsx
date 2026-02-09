@@ -1,9 +1,9 @@
 import { cn } from '@/lib/utils';
 import type { Pendency } from '@/types/case';
-import { StatusBadge } from './StatusBadge';
+import { StatusBadge } from '@/components/StatusBadge';
 import { Button } from '@/components/ui/button';
 import { Upload, CreditCard, AlertCircle } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 interface PendencyCardProps {
@@ -12,6 +12,7 @@ interface PendencyCardProps {
 }
 
 export function PendencyCard({ pendency, className }: PendencyCardProps) {
+  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -59,7 +60,7 @@ export function PendencyCard({ pendency, className }: PendencyCardProps) {
               variant="outline"
               size="sm"
               className="flex-1 text-xs"
-              onClick={() => navigate(`/pendencias/${pendency.id}/pagamento`)}
+              onClick={() => navigate(`/app/process/${id}/pendencias/${pendency.id}/pagamento`)}
             >
               <CreditCard className="h-3.5 w-3.5" />
               {t('pendency.pay')}
@@ -68,7 +69,7 @@ export function PendencyCard({ pendency, className }: PendencyCardProps) {
           <Button
             size="sm"
             className="flex-1 text-xs"
-            onClick={() => navigate(`/pendencias/${pendency.id}/upload`)}
+            onClick={() => navigate(`/app/process/${id}/pendencias/${pendency.id}/upload`)}
           >
             <Upload className="h-3.5 w-3.5" />
             {t('pendency.sendProof')}

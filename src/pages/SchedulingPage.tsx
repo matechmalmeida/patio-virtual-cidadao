@@ -113,7 +113,7 @@ export default function SchedulingPage() {
               </div>
             ))}
             <Button
-              onClick={() => navigate('/pendencias')}
+              onClick={() => navigate(`/app/process/${currentCase?.id}/pendencias`)}
               className="w-full mt-2"
             >
               {t('scheduling.goToPendencies')}

@@ -1,4 +1,4 @@
-import { Home, FileText, ClipboardList, Bell, User, type LucideIcon } from 'lucide-react';
+import { Home, ScrollText, ClipboardList, Bell, User, type LucideIcon } from 'lucide-react';
 
 export interface NavItem {
   to: string;
@@ -8,7 +8,7 @@ export interface NavItem {
 
 export const navItems: NavItem[] = [
   { to: '/dashboard', labelKey: 'nav.process', icon: Home },
-  { to: '/pendencias', labelKey: 'nav.pendencies', icon: FileText },
+  { to: '/documentos', labelKey: 'nav.documents', icon: ScrollText },
   { to: '/app/process', labelKey: 'nav.processes', icon: ClipboardList },
   { to: '/app/notifications', labelKey: 'nav.alerts', icon: Bell },
   { to: '/app/profile', labelKey: 'nav.profile', icon: User },

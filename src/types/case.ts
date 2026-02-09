@@ -13,7 +13,7 @@ export type PendencyStatus = 'pendente' | 'enviado' | 'em_analise' | 'aprovado' 
 
 export type TimelineEventType = 'info' | 'success' | 'warning' | 'error';
 
-export type TermType = 'custodia_domiciliar' | 'retirada_dispositivo';
+export type TermType = 'custodia_domiciliar' | 'retirada_dispositivo' | 'regularizacao';
 
 export type TermStatus = 'pendente' | 'assinado';
 

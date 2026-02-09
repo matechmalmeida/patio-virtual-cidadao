@@ -127,6 +127,54 @@ A assinatura digital deste documento tem valor legal equivalente à assinatura m
 Este Termo produz efeitos imediatos a partir da confirmação da assinatura digital.
 `.trim();
 
+const REGULARIZACAO_CONTENT = `
+TERMO DE COMPROMISSO DE REGULARIZAÇÃO VEICULAR
+
+CLÁUSULA 1 — DO OBJETO
+
+O presente Termo tem como objeto o compromisso de regularização integral das pendências administrativas, tributárias e documentais do veículo apreendido, como condição para a liberação definitiva e encerramento do processo de custódia domiciliar.
+
+CLÁUSULA 2 — DAS PENDÊNCIAS A REGULARIZAR
+
+O signatário declara estar ciente das seguintes pendências vinculadas ao veículo:
+
+a) Multas de trânsito vencidas e não pagas;
+b) Licenciamento anual do veículo (CRLV);
+c) IPVA (Imposto sobre a Propriedade de Veículos Automotores) em atraso;
+d) Seguro obrigatório (DPVAT/SPVAT);
+e) Eventuais taxas administrativas decorrentes do processo de apreensão.
+
+CLÁUSULA 3 — DO PRAZO PARA REGULARIZAÇÃO
+
+O signatário compromete-se a regularizar todas as pendências no prazo máximo de 30 (trinta) dias corridos a contar da data de assinatura deste Termo.
+
+O não cumprimento do prazo poderá acarretar:
+I. Aplicação de multas adicionais;
+II. Remoção do veículo ao pátio de apreensão;
+III. Cobrança retroativa de diárias de pátio.
+
+CLÁUSULA 4 — DA COMPROVAÇÃO
+
+A regularização deverá ser comprovada por meio do envio dos comprovantes de pagamento e documentos atualizados através do portal digital Pátio Virtual.
+
+Os comprovantes serão analisados pela autoridade competente no prazo de até 48 horas úteis após o envio.
+
+CLÁUSULA 5 — DAS CONSEQUÊNCIAS DA NÃO REGULARIZAÇÃO
+
+Caso as pendências não sejam regularizadas no prazo estabelecido:
+
+a) O veículo será removido ao pátio de apreensão;
+b) Serão cobradas diárias de pátio retroativas;
+c) O processo administrativo será encaminhado para leilão, conforme previsto no Código de Trânsito Brasileiro;
+d) O proprietário será responsável por todas as custas decorrentes.
+
+CLÁUSULA 6 — DAS DISPOSIÇÕES FINAIS
+
+O signatário declara ter ciência de todas as condições e consequências estabelecidas neste Termo, comprometendo-se a cumpri-las integralmente.
+
+Este Termo é firmado em caráter irrevogável, produzindo efeitos a partir da confirmação da assinatura digital.
+`.trim();
+
 export function getMockTermsForCase(caseId: string): Term[] {
   if (caseId === '1') {
     return [
@@ -136,6 +184,14 @@ export function getMockTermsForCase(caseId: string): Term[] {
         title: 'Termo de Custódia Domiciliar',
         description: 'Leia e aceite os termos para manter o veículo em custódia domiciliar.',
         content: CUSTODIA_CONTENT,
+        status: 'pendente',
+      },
+      {
+        id: 'term-regularizacao-1',
+        type: 'regularizacao',
+        title: 'Termo de Compromisso de Regularização',
+        description: 'Comprometa-se a regularizar todas as pendências do veículo no prazo.',
+        content: REGULARIZACAO_CONTENT,
         status: 'pendente',
       },
     ];
@@ -150,6 +206,14 @@ export function getMockTermsForCase(caseId: string): Term[] {
         content: CUSTODIA_CONTENT,
         status: 'assinado',
         signedAt: '2026-02-06T15:12:00',
+      },
+      {
+        id: 'term-retirada-2',
+        type: 'retirada_dispositivo',
+        title: 'Termo de Retirada do Dispositivo',
+        description: 'Autorize a retirada do dispositivo GPS após regularização.',
+        content: RETIRADA_CONTENT,
+        status: 'pendente',
       },
     ];
   }

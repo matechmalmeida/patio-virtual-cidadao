@@ -1,23 +1,21 @@
 import { useAuth } from '@/modules/auth';
-import { PendencyCard } from '@/components/PendencyCard';
+import { DocumentCard } from '../components/DocumentCard';
 import { AlertBanner } from '@/components/AlertBanner';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
-export default function PendenciesPage() {
+export default function DocumentListPage() {
   const { currentCase } = useAuth();
   const navigate = useNavigate();
   const { t } = useTranslation();
 
   if (!currentCase) return null;
 
-  const { pendencies } = currentCase;
-  const pendingCount = pendencies.filter(
-    (p) => p.status === 'pendente' || p.status === 'reprovado'
-  ).length;
-  const allResolved = pendingCount === 0;
+  const { terms } = currentCase;
+  const pendingCount = terms.filter((term) => term.status === 'pendente').length;
+  const allSigned = pendingCount === 0;
 
   return (
     <div className="px-4 py-5 space-y-5">
@@ -32,23 +30,23 @@ export default function PendenciesPage() {
       </Button>
 
       <div>
-        <h1 className="text-xl font-bold">{t('pendency.title')}</h1>
+        <h1 className="text-xl font-bold">{t('document.title')}</h1>
         <p className="text-sm text-muted-foreground mt-1">
-          {allResolved
-            ? t('pendency.allResolved')
-            : t('pendency.pendingCount', { count: pendingCount })}
+          {allSigned
+            ? t('document.allSigned')
+            : t('document.pendingCount', { count: pendingCount })}
         </p>
       </div>
 
-      {allResolved && (
-        <AlertBanner variant="success" title={t('pendency.congrats')}>
-          {t('pendency.allResolvedBanner')}
+      {allSigned && (
+        <AlertBanner variant="success">
+          {t('document.allSigned')}
         </AlertBanner>
       )}
 
       <div className="space-y-3">
-        {pendencies.map((pendency) => (
-          <PendencyCard key={pendency.id} pendency={pendency} />
+        {terms.map((term) => (
+          <DocumentCard key={term.id} term={term} />
         ))}
       </div>
     </div>

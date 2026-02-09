@@ -24,18 +24,19 @@ const TimelinePage = lazy(() => import('./pages/TimelinePage'));
 const ProcessListPage = lazy(() => import('./modules/process/pages/ProcessListPage'));
 const ProcessDetailPage = lazy(() => import('./modules/process/pages/ProcessDetailPage'));
 const ProcessTimelinePage = lazy(() => import('./modules/process/pages/ProcessTimelinePage'));
-const PendenciesPage = lazy(() => import('./pages/PendenciesPage'));
-const UploadPage = lazy(() => import('./pages/UploadPage'));
+const PendenciesPage = lazy(() => import('./modules/process/pages/PendenciesPage'));
+const UploadPage = lazy(() => import('./modules/process/pages/UploadPage'));
+const PaymentPage = lazy(() => import('./modules/process/pages/PaymentPage'));
+const DocumentListPage = lazy(() => import('./modules/document-signing/pages/DocumentListPage'));
+const DocumentSigningPage = lazy(() => import('./modules/document-signing/pages/DocumentSigningPage'));
 const NotificationsPage = lazy(() => import('./modules/notification/pages/NotificationsPage'));
 const SchedulingPage = lazy(() => import('./pages/SchedulingPage'));
 const SchedulingConfirmationPage = lazy(() => import('./pages/SchedulingConfirmationPage'));
 const HistoryPage = lazy(() => import('./pages/HistoryPage'));
 const SupportPage = lazy(() => import('./pages/SupportPage'));
 const TicketPage = lazy(() => import('./pages/TicketPage'));
-const TermSigningPage = lazy(() => import('./pages/TermSigningPage'));
 const InstallPage = lazy(() => import('./pages/InstallPage'));
 const GPSStatusPage = lazy(() => import('./pages/GPSStatusPage'));
-const PaymentPage = lazy(() => import('./pages/PaymentPage'));
 const NotificationSettingsPage = lazy(() => import('./modules/notification/pages/NotificationSettingsPage'));
 const ProfilePage = lazy(() => import('./modules/profile/pages/ProfilePage'));
 const PersonalDataPage = lazy(() => import('./modules/profile/pages/PersonalDataPage'));
@@ -115,8 +116,20 @@ const App = () => (
                       path="/app/process/:id/timeline"
                       element={routeElement(<ProcessTimelinePage />)}
                     />
-                    <Route path="/pendencias" element={routeElement(<PendenciesPage />)} />
-                    <Route path="/pendencias/:id/upload" element={routeElement(<UploadPage />)} />
+                    <Route
+                      path="/app/process/:id/pendencias"
+                      element={routeElement(<PendenciesPage />)}
+                    />
+                    <Route
+                      path="/app/process/:id/pendencias/:pendencyId/upload"
+                      element={routeElement(<UploadPage />)}
+                    />
+                    <Route
+                      path="/app/process/:id/pendencias/:pendencyId/pagamento"
+                      element={routeElement(<PaymentPage />)}
+                    />
+                    <Route path="/documentos" element={routeElement(<DocumentListPage />)} />
+                    <Route path="/documentos/:termId" element={routeElement(<DocumentSigningPage />)} />
                     <Route path="/app/notifications" element={routeElement(<NotificationsPage />)} />
                     <Route path="/agendamento" element={routeElement(<SchedulingPage />)} />
                     <Route
@@ -133,12 +146,7 @@ const App = () => (
                     />
                     <Route path="/suporte" element={routeElement(<SupportPage />)} />
                     <Route path="/suporte/chamado" element={routeElement(<TicketPage />)} />
-                    <Route path="/termo/:termId" element={routeElement(<TermSigningPage />)} />
                     <Route path="/gps" element={routeElement(<GPSStatusPage />)} />
-                    <Route
-                      path="/pendencias/:pendencyId/pagamento"
-                      element={routeElement(<PaymentPage />)}
-                    />
                     <Route
                       path="/app/notifications/settings"
                       element={routeElement(<NotificationSettingsPage />)}

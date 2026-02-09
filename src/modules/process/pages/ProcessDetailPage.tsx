@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 import {
   ArrowLeft,
   Clock,
+  ScrollText,
   FileText,
   Satellite,
   CalendarDays,
@@ -43,6 +44,10 @@ export default function ProcessDetailPage() {
 
   const pendingCount = caseData.pendencies.filter(
     (p) => p.status === 'pendente' || p.status === 'reprovado'
+  ).length;
+
+  const pendingTermCount = caseData.terms.filter(
+    (t) => t.status === 'pendente'
   ).length;
 
   const completedSteps = caseData.timeline.filter((e) => e.completed).length;
@@ -111,7 +116,7 @@ export default function ProcessDetailPage() {
         </button>
 
         <button
-          onClick={() => navigate('/pendencias')}
+          onClick={() => navigate(`/app/process/${id}/pendencias`)}
           className="flex items-center justify-between w-full p-4 rounded-xl bg-card border hover:bg-muted/50 transition-colors text-left"
         >
           <div className="flex items-center gap-3">
@@ -121,6 +126,24 @@ export default function ProcessDetailPage() {
               {pendingCount > 0 && (
                 <span className="text-xs text-warning">
                   {t('process.detail.pendingCount', { count: pendingCount })}
+                </span>
+              )}
+            </div>
+          </div>
+          <ChevronRight className="h-4 w-4 text-muted-foreground" />
+        </button>
+
+        <button
+          onClick={() => navigate('/documentos')}
+          className="flex items-center justify-between w-full p-4 rounded-xl bg-card border hover:bg-muted/50 transition-colors text-left"
+        >
+          <div className="flex items-center gap-3">
+            <ScrollText className="h-5 w-5 text-muted-foreground" />
+            <div>
+              <span className="text-sm font-medium block">{t('process.detail.documents')}</span>
+              {pendingTermCount > 0 && (
+                <span className="text-xs text-warning">
+                  {t('process.detail.pendingDocCount', { count: pendingTermCount })}
                 </span>
               )}
             </div>

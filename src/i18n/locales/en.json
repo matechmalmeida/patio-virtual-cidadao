@@ -7,6 +7,7 @@
   "nav": {
     "process": "Process",
     "pendencies": "Pendencies",
+    "documents": "Documents",
     "processes": "Processes",
     "alerts": "Alerts",
     "profile": "Profile"
@@ -181,6 +182,9 @@
     "pendenciesCount_other": "{{count}} issues",
     "pendenciesToResolve": "You have <strong>{{count}} {{label}}</strong> to resolve. Fix them to release your vehicle.",
     "viewPendencies": "View issues",
+    "viewDocuments": "Sign pending documents",
+    "documentsToSign_one": "You have {{count}} document pending signature.",
+    "documentsToSign_other": "You have {{count}} documents pending signature.",
     "allClear": "All set! Schedule the GPS device removal to release your vehicle.",
     "scheduleRemoval": "Schedule device removal",
     "waitingValidation": "Your documents are being reviewed. No action needed for now. You'll be notified when there's an update.",
@@ -404,8 +408,11 @@
       "timeline": "Process timeline",
       "timelineProgress": "{{completed}} of {{total}} steps completed",
       "pendencies": "Pending issues",
+      "documents": "Documents",
       "pendingCount_one": "{{count}} issue to resolve",
       "pendingCount_other": "{{count}} issues to resolve",
+      "pendingDocCount_one": "{{count}} document pending",
+      "pendingDocCount_other": "{{count}} documents pending",
       "gpsStatus": "GPS device status",
       "scheduling": "Scheduling"
     }
@@ -495,6 +502,19 @@
     "readFirst": "Read the document to the end to accept the terms.",
     "signing": "Signing...",
     "sign": "Sign term"
+  },
+  "document": {
+    "title": "Documents",
+    "allSigned": "All documents have been signed!",
+    "pendingCount_one": "You have {{count}} document pending signature.",
+    "pendingCount_other": "You have {{count}} documents pending signature.",
+    "sign": "Sign",
+    "signed": "Signed",
+    "signedAt": "Signed on",
+    "statusLabels": {
+      "pendente": "Pending",
+      "assinado": "Signed"
+    }
   },
   "install": {
     "title": "Install app",

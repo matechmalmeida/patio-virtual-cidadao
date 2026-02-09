@@ -41,6 +41,7 @@ export default function DashboardPage() {
 
   const pendingTerms = currentCase.terms?.filter((t) => t.status === 'pendente') ?? [];
   const hasPendingTerms = pendingTerms.length > 0;
+  const pendingTermCount = pendingTerms.length;
 
   const showPendenciesAction = ['pendencias_regularizar', 'custodia_domiciliar'].includes(
     currentCase.status
@@ -89,7 +90,7 @@ export default function DashboardPage() {
       {hasPendingTerms && (
         <div className="space-y-2">
           {pendingTerms.map((term) => (
-            <Link key={term.id} to={`/termo/${term.id}`}>
+            <Link key={term.id} to={`/documentos/${term.id}`}>
               <AlertBanner variant="warning" className="cursor-pointer hover:opacity-90 transition-opacity">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
@@ -147,11 +148,19 @@ export default function DashboardPage() {
                 }).replace(/<\/?strong>/g, '')}
               </p>
               <Button asChild className="w-full h-11 font-semibold">
-                <Link to="/pendencias">
+                <Link to={`/app/process/${currentCase.id}/pendencias`}>
                   <FileText className="h-4 w-4" />
                   {t('dashboard.viewPendencies')}
                 </Link>
               </Button>
+              {pendingTermCount > 0 && (
+                <Button asChild variant="outline" className="w-full h-11 font-semibold">
+                  <Link to="/documentos">
+                    <ScrollText className="h-4 w-4" />
+                    {t('dashboard.viewDocuments')}
+                  </Link>
+                </Button>
+              )}
             </div>
           )}
 

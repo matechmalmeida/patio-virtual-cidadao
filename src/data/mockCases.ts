@@ -103,7 +103,7 @@ export const mockActiveCases: CaseData[] = [
         timestamp: '2026-02-06T09:15:00',
         type: 'info',
         completed: true,
-        link: '/pendencias',
+        link: '/app/process/1/pendencias',
         linkLabel: 'Ver pendências',
       },
       {
@@ -155,7 +155,7 @@ export const mockActiveCases: CaseData[] = [
         type: 'alert',
         read: false,
         timestamp: '2026-02-06T14:00:00',
-        actionLink: '/pendencias',
+        actionLink: '/app/process/1/pendencias',
         actionLabel: 'Resolver agora',
       },
       {
