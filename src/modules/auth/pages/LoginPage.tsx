@@ -7,7 +7,7 @@ import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { ArrowRight } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { getApiErrorMessage } from '@/services/http/api-error';
 import { login } from '../services/auth.service';
 import { useAuthDispatch } from '../contexts/AuthContext';
@@ -23,6 +23,7 @@ type LoginForm = z.infer<typeof loginSchema>;
 export default function LoginPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const dispatch = useAuthDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -72,13 +73,16 @@ export default function LoginPage() {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div className="space-y-2">
           <Label htmlFor="email">{t('auth.login.email')}</Label>
-          <Input
-            id="email"
-            type="email"
-            placeholder={t('auth.login.emailPlaceholder')}
-            className="h-12 text-base"
-            {...register('email')}
-          />
+          <div className="relative">
+            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              id="email"
+              type="email"
+              placeholder={t('auth.login.emailPlaceholder')}
+              className="h-12 text-base pl-10"
+              {...register('email')}
+            />
+          </div>
           {fieldErrors.email && (
             <p className="text-xs text-destructive">{t('auth.login.errors.invalidCredentials')}</p>
           )}
@@ -86,31 +90,55 @@ export default function LoginPage() {
 
         <div className="space-y-2">
           <Label htmlFor="password">{t('auth.login.password')}</Label>
-          <Input
-            id="password"
-            type="password"
-            placeholder={t('auth.login.passwordPlaceholder')}
-            className="h-12 text-base"
-            {...register('password')}
-          />
+          <div className="relative">
+            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              id="password"
+              type={showPassword ? 'text' : 'password'}
+              placeholder={t('auth.login.passwordPlaceholder')}
+              className="h-12 text-base pl-10 pr-10"
+              {...register('password')}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword((v) => !v)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              tabIndex={-1}
+            >
+              {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </button>
+          </div>
+        </div>
+
+        <div className="text-right">
+          <Link to="/acesso/esqueci-senha" className="text-sm text-primary hover:underline">
+            {t('auth.login.forgotPassword')}
+          </Link>
         </div>
 
         {error && <p className="text-sm text-destructive font-medium">{error}</p>}
 
         <Button type="submit" className="w-full h-12 text-base font-semibold" disabled={loading}>
           {t('auth.login.submit')}
-          <ArrowRight className="h-4 w-4 ml-1" />
         </Button>
       </form>
 
-      <div className="flex flex-col items-center gap-2 text-sm">
-        <Link to="/acesso/esqueci-senha" className="text-primary hover:underline">
-          {t('auth.login.forgotPassword')}
-        </Link>
-        <Link to="/acesso/link-magico" className="text-primary hover:underline">
-          {t('auth.login.magicLink')}
-        </Link>
+      <div className="flex items-center gap-3">
+        <hr className="flex-1 border-border" />
+        <span className="text-xs text-muted-foreground">{t('auth.login.or')}</span>
+        <hr className="flex-1 border-border" />
       </div>
+
+      <Button
+        variant="outline"
+        className="w-full h-12 text-base font-semibold bg-[hsl(220,30%,12%)] text-white border-transparent hover:bg-[hsl(220,30%,18%)] hover:text-white"
+        asChild
+      >
+        <Link to="/acesso/link-magico">
+          <Mail className="h-4 w-4 mr-2" />
+          {t('auth.login.magicLinkButton')}
+        </Link>
+      </Button>
     </AuthLayout>
   );
 }

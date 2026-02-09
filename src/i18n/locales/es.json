@@ -77,6 +77,16 @@
     }
   },
   "auth": {
+    "layout": {
+      "backToSite": "Volver al sitio",
+      "headline": "Acompana tu proceso con",
+      "headlineHighlight": "seguridad y practicidad",
+      "headlineDesc": "Accede al portal del ciudadano para resolver pendientes, acompanar plazos y regularizar tu vehiculo de forma 100% digital.",
+      "badgeEncrypted": "Datos encriptados",
+      "badgeLgpd": "Conforme a la LGPD",
+      "secureConnection": "Conexion segura",
+      "dataProtected": "Datos protegidos"
+    },
     "login": {
       "title": "Iniciar sesion",
       "subtitle": "Accede a tu cuenta para seguir el proceso.",
@@ -87,6 +97,8 @@
       "submit": "Iniciar sesion",
       "forgotPassword": "Olvidaste tu contrasena?",
       "magicLink": "Iniciar con link magico",
+      "or": "O",
+      "magicLinkButton": "Recibir link por email",
       "errors": {
         "invalidCredentials": "Email o contrasena incorrectos.",
         "generic": "No fue posible iniciar sesion."

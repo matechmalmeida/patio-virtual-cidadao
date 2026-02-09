@@ -7,7 +7,7 @@ import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { CheckCircle } from 'lucide-react';
+import { Lock, Eye, EyeOff, CheckCircle } from 'lucide-react';
 import { getApiErrorMessage } from '@/services/http/api-error';
 import { resetPassword } from '../services/auth.service';
 import { AuthLayout } from '../components/AuthLayout';
@@ -33,6 +33,8 @@ export default function ResetPasswordPage() {
   const [done, setDone] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   const { t } = useTranslation();
 
   const {
@@ -85,12 +87,23 @@ export default function ResetPasswordPage() {
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div className="space-y-2">
           <Label htmlFor="password">{t('auth.resetPassword.password')}</Label>
-          <Input
-            id="password"
-            type="password"
-            className="h-12 text-base"
-            {...register('password')}
-          />
+          <div className="relative">
+            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              id="password"
+              type={showPassword ? 'text' : 'password'}
+              className="h-12 text-base pl-10 pr-10"
+              {...register('password')}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword((v) => !v)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              tabIndex={-1}
+            >
+              {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </button>
+          </div>
           {fieldErrors.password && (
             <p className="text-xs text-destructive">{t('auth.resetPassword.errors.weak')}</p>
           )}
@@ -98,12 +111,23 @@ export default function ResetPasswordPage() {
 
         <div className="space-y-2">
           <Label htmlFor="confirmPassword">{t('auth.resetPassword.confirmPassword')}</Label>
-          <Input
-            id="confirmPassword"
-            type="password"
-            className="h-12 text-base"
-            {...register('confirmPassword')}
-          />
+          <div className="relative">
+            <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              id="confirmPassword"
+              type={showConfirm ? 'text' : 'password'}
+              className="h-12 text-base pl-10 pr-10"
+              {...register('confirmPassword')}
+            />
+            <button
+              type="button"
+              onClick={() => setShowConfirm((v) => !v)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              tabIndex={-1}
+            >
+              {showConfirm ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </button>
+          </div>
           {fieldErrors.confirmPassword && (
             <p className="text-xs text-destructive">{t('auth.resetPassword.errors.mismatch')}</p>
           )}

@@ -1,9 +1,11 @@
 import type { ReactNode } from 'react';
+import { Link } from 'react-router-dom';
 import { useBrand } from '@/contexts/BrandContext';
-import { Card, CardContent } from '@/components/ui/card';
-import { Car } from 'lucide-react';
+import { Car, ArrowLeft, ShieldCheck, Lock, Sun, Moon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { Button } from '@/components/ui/button';
+import { useTheme } from '@/hooks/useTheme';
 
 interface AuthLayoutProps {
   children: ReactNode;
@@ -12,35 +14,107 @@ interface AuthLayoutProps {
 export function AuthLayout({ children }: AuthLayoutProps) {
   const { brand } = useBrand();
   const { t } = useTranslation();
+  const { theme, toggleTheme } = useTheme();
+
+  const appName = brand?.appName ?? t('app.name');
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <div className="pt-12 pb-8 px-6 text-center relative">
-        <div className="absolute top-4 right-4">
-          <LanguageSwitcher />
+    <div className="min-h-screen flex flex-col lg:flex-row">
+      <aside className="hidden lg:flex lg:w-[45%] xl:w-[42%] bg-[hsl(220,30%,12%)] text-white flex-col justify-between p-10">
+        <div>
+          <Link
+            to="/"
+            className="inline-flex items-center gap-2 text-sm text-white/70 hover:text-white transition-colors"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            {t('auth.layout.backToSite')}
+          </Link>
         </div>
-        <div className="h-16 w-16 rounded-2xl bg-primary mx-auto flex items-center justify-center mb-4 overflow-hidden">
-          {brand?.logoUrl ? (
-            <img src={brand.logoUrl} alt={brand.appName} className="h-16 w-16 object-contain" />
-          ) : (
-            <Car className="h-8 w-8 text-primary-foreground" />
-          )}
-        </div>
-        <h1 className="text-2xl font-bold tracking-tight">{brand?.appName ?? t('app.name')}</h1>
-        <p className="text-sm text-muted-foreground mt-1">{t('app.subtitle')}</p>
-      </div>
 
-      <div className="flex-1 px-4 pb-8">
-        <Card className="max-w-sm mx-auto border-0 shadow-lg">
-          <CardContent className="pt-6 space-y-6">
+        <div className="space-y-6">
+          <div className="flex items-center gap-3">
+            <div className="h-12 w-12 rounded-xl bg-primary flex items-center justify-center overflow-hidden">
+              {brand?.logoUrl ? (
+                <img src={brand.logoUrl} alt={appName} className="h-12 w-12 object-contain" />
+              ) : (
+                <Car className="h-6 w-6 text-primary-foreground" />
+              )}
+            </div>
+            <span className="text-xl font-bold">{appName}</span>
+          </div>
+
+          <div>
+            <h1 className="text-3xl xl:text-4xl font-bold leading-tight">
+              {t('auth.layout.headline')}{' '}
+              <span className="text-primary">{t('auth.layout.headlineHighlight')}</span>
+            </h1>
+            <p className="mt-4 text-white/60 text-base leading-relaxed">
+              {t('auth.layout.headlineDesc')}
+            </p>
+          </div>
+
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-2 text-sm text-white/70">
+              <ShieldCheck className="h-4 w-4 text-primary" />
+              {t('auth.layout.badgeEncrypted')}
+            </div>
+            <div className="flex items-center gap-2 text-sm text-white/70">
+              <Lock className="h-4 w-4 text-primary" />
+              {t('auth.layout.badgeLgpd')}
+            </div>
+          </div>
+        </div>
+
+        <p className="text-xs text-white/30">
+          {brand?.copyright ?? t('app.copyright')}
+        </p>
+      </aside>
+
+      <main className="flex-1 flex flex-col bg-background">
+        <div className="flex items-center justify-between p-4 lg:justify-end">
+          <div className="flex items-center gap-3 lg:hidden">
+            <div className="h-10 w-10 rounded-xl bg-primary flex items-center justify-center overflow-hidden">
+              {brand?.logoUrl ? (
+                <img src={brand.logoUrl} alt={appName} className="h-10 w-10 object-contain" />
+              ) : (
+                <Car className="h-5 w-5 text-primary-foreground" />
+              )}
+            </div>
+            <div>
+              <p className="text-sm font-bold leading-tight">{appName}</p>
+              <p className="text-xs text-muted-foreground">{t('app.subtitle')}</p>
+            </div>
+          </div>
+          <div className="flex items-center gap-1">
+            <Button variant="ghost" size="icon" onClick={toggleTheme} className="h-9 w-9">
+              {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            </Button>
+            <LanguageSwitcher />
+          </div>
+        </div>
+
+        <div className="flex-1 flex items-center justify-center px-4 py-8">
+          <div className="w-full max-w-md space-y-6">
             {children}
-          </CardContent>
-        </Card>
-      </div>
+          </div>
+        </div>
 
-      <footer className="py-4 text-center text-[11px] text-muted-foreground/60">
-        {brand?.copyright ?? t('app.copyright')}
-      </footer>
+        <footer className="px-4 pb-4">
+          <div className="flex items-center justify-center gap-6 text-xs text-muted-foreground">
+            <span className="flex items-center gap-1.5">
+              <ShieldCheck className="h-3.5 w-3.5" />
+              {t('auth.layout.secureConnection')}
+            </span>
+            <span className="flex items-center gap-1.5">
+              <Lock className="h-3.5 w-3.5" />
+              {t('auth.layout.dataProtected')}
+            </span>
+          </div>
+          <p className="mt-2 text-center text-[11px] text-muted-foreground/60 lg:hidden">
+            {brand?.copyright ?? t('app.copyright')}
+          </p>
+        </footer>
+      </main>
     </div>
   );
 }

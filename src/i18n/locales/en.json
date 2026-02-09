@@ -77,6 +77,16 @@
     }
   },
   "auth": {
+    "layout": {
+      "backToSite": "Back to site",
+      "headline": "Track your process with",
+      "headlineHighlight": "security and convenience",
+      "headlineDesc": "Access the citizen portal to resolve issues, track deadlines and regularize your vehicle 100% digitally.",
+      "badgeEncrypted": "Encrypted data",
+      "badgeLgpd": "LGPD compliant",
+      "secureConnection": "Secure connection",
+      "dataProtected": "Protected data"
+    },
     "login": {
       "title": "Sign in",
       "subtitle": "Access your account to track your process.",
@@ -87,6 +97,8 @@
       "submit": "Sign in",
       "forgotPassword": "Forgot your password?",
       "magicLink": "Sign in with magic link",
+      "or": "OR",
+      "magicLinkButton": "Receive link by email",
       "errors": {
         "invalidCredentials": "Incorrect email or password.",
         "generic": "Could not sign in."

@@ -77,6 +77,16 @@
     }
   },
   "auth": {
+    "layout": {
+      "backToSite": "Voltar ao site",
+      "headline": "Acompanhe seu processo com",
+      "headlineHighlight": "seguranca e praticidade",
+      "headlineDesc": "Acesse o portal do cidadao para resolver pendencias, acompanhar prazos e regularizar seu veiculo de forma 100% digital.",
+      "badgeEncrypted": "Dados criptografados",
+      "badgeLgpd": "Conforme a LGPD",
+      "secureConnection": "Conexao segura",
+      "dataProtected": "Dados protegidos"
+    },
     "login": {
       "title": "Entrar",
       "subtitle": "Acesse sua conta para acompanhar o processo.",
@@ -87,6 +97,8 @@
       "submit": "Entrar",
       "forgotPassword": "Esqueceu a senha?",
       "magicLink": "Entrar com link magico",
+      "or": "OU",
+      "magicLinkButton": "Receber link por email",
       "errors": {
         "invalidCredentials": "Email ou senha incorretos.",
         "generic": "Nao foi possivel realizar o login."
