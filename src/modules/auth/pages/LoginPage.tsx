@@ -7,10 +7,12 @@ import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { getApiErrorMessage } from '@/services/http/api-error';
 import { login } from '../services/auth.service';
 import { useAuthDispatch } from '../contexts/AuthContext';
+import { setRememberMe, getRememberMe } from '../store/session-store';
 import { AuthLayout } from '../components/AuthLayout';
 
 const loginSchema = z.object({
@@ -24,6 +26,7 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [remember, setRemember] = useState(getRememberMe);
   const dispatch = useAuthDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -39,6 +42,7 @@ export default function LoginPage() {
   const onSubmit = async (data: LoginForm) => {
     setError('');
     setLoading(true);
+    setRememberMe(remember);
 
     try {
       const result = await login(data.email, data.password);
@@ -78,13 +82,14 @@ export default function LoginPage() {
             <Input
               id="email"
               type="email"
+              autoComplete="email"
               placeholder={t('auth.login.emailPlaceholder')}
               className="h-12 text-base pl-10"
               {...register('email')}
             />
           </div>
           {fieldErrors.email && (
-            <p className="text-xs text-destructive">{t('auth.login.errors.invalidCredentials')}</p>
+            <p role="alert" className="text-xs text-destructive">{t('auth.login.errors.invalidCredentials')}</p>
           )}
         </div>
 
@@ -95,6 +100,7 @@ export default function LoginPage() {
             <Input
               id="password"
               type={showPassword ? 'text' : 'password'}
+              autoComplete="current-password"
               placeholder={t('auth.login.passwordPlaceholder')}
               className="h-12 text-base pl-10 pr-10"
               {...register('password')}
@@ -110,15 +116,25 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <div className="text-right">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Checkbox
+              id="remember"
+              checked={remember}
+              onCheckedChange={(checked) => setRemember(checked === true)}
+            />
+            <Label htmlFor="remember" className="text-sm font-normal cursor-pointer">
+              {t('auth.login.rememberMe')}
+            </Label>
+          </div>
           <Link to="/acesso/esqueci-senha" className="text-sm text-primary hover:underline">
             {t('auth.login.forgotPassword')}
           </Link>
         </div>
 
-        {error && <p className="text-sm text-destructive font-medium">{error}</p>}
+        {error && <p role="alert" className="text-sm text-destructive font-medium">{error}</p>}
 
-        <Button type="submit" className="w-full h-12 text-base font-semibold" disabled={loading}>
+        <Button type="submit" className="w-full h-12 text-base font-semibold" disabled={loading} aria-busy={loading}>
           {t('auth.login.submit')}
         </Button>
       </form>

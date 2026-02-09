@@ -99,6 +99,7 @@
       "magicLink": "Iniciar con link magico",
       "or": "O",
       "magicLinkButton": "Recibir link por email",
+      "rememberMe": "Recordarme",
       "errors": {
         "invalidCredentials": "Email o contrasena incorrectos.",
         "generic": "No fue posible iniciar sesion."
@@ -122,6 +123,13 @@
       "successTitle": "Contrasena cambiada!",
       "successDesc": "Tu contrasena fue redefinida con exito. Ahora puedes iniciar sesion.",
       "goToLogin": "Ir al login",
+      "strength": {
+        "veryWeak": "Muy debil",
+        "weak": "Debil",
+        "fair": "Regular",
+        "strong": "Fuerte",
+        "veryStrong": "Muy fuerte"
+      },
       "errors": {
         "mismatch": "Las contrasenas no coinciden.",
         "weak": "La contrasena debe tener al menos 8 caracteres, 1 letra mayuscula y 1 numero.",

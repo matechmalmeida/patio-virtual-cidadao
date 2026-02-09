@@ -99,6 +99,7 @@
       "magicLink": "Entrar com link magico",
       "or": "OU",
       "magicLinkButton": "Receber link por email",
+      "rememberMe": "Lembrar-me",
       "errors": {
         "invalidCredentials": "Email ou senha incorretos.",
         "generic": "Nao foi possivel realizar o login."
@@ -122,6 +123,13 @@
       "successTitle": "Senha alterada!",
       "successDesc": "Sua senha foi redefinida com sucesso. Agora voce pode fazer login.",
       "goToLogin": "Ir para login",
+      "strength": {
+        "veryWeak": "Muito fraca",
+        "weak": "Fraca",
+        "fair": "Razoavel",
+        "strong": "Forte",
+        "veryStrong": "Muito forte"
+      },
       "errors": {
         "mismatch": "As senhas nao coincidem.",
         "weak": "A senha deve ter no minimo 8 caracteres, 1 letra maiuscula e 1 numero.",

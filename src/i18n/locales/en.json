@@ -99,6 +99,7 @@
       "magicLink": "Sign in with magic link",
       "or": "OR",
       "magicLinkButton": "Receive link by email",
+      "rememberMe": "Remember me",
       "errors": {
         "invalidCredentials": "Incorrect email or password.",
         "generic": "Could not sign in."
@@ -122,6 +123,13 @@
       "successTitle": "Password changed!",
       "successDesc": "Your password has been reset. You can now sign in.",
       "goToLogin": "Go to login",
+      "strength": {
+        "veryWeak": "Very weak",
+        "weak": "Weak",
+        "fair": "Fair",
+        "strong": "Strong",
+        "veryStrong": "Very strong"
+      },
       "errors": {
         "mismatch": "Passwords do not match.",
         "weak": "Password must have at least 8 characters, 1 uppercase letter and 1 number.",

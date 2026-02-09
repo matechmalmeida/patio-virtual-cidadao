@@ -1,6 +1,7 @@
 import type { SessionState, SessionAction } from '../types/auth';
 
 const SESSION_KEY = 'pv-session-v2';
+const REMEMBER_KEY = 'pv-remember';
 const SESSION_DURATION_MS = 1000 * 60 * 60 * 8;
 
 export const initialSessionState: SessionState = {
@@ -77,13 +78,36 @@ function isValidSessionShape(value: unknown): value is SessionState {
   );
 }
 
+function getStorage(): Storage {
+  if (typeof window === 'undefined') {
+    return window.sessionStorage;
+  }
+  const remember = window.localStorage.getItem(REMEMBER_KEY);
+  return remember === 'true' ? window.localStorage : window.sessionStorage;
+}
+
+export function setRememberMe(value: boolean): void {
+  if (typeof window === 'undefined') return;
+  if (value) {
+    window.localStorage.setItem(REMEMBER_KEY, 'true');
+  } else {
+    window.localStorage.removeItem(REMEMBER_KEY);
+  }
+}
+
+export function getRememberMe(): boolean {
+  if (typeof window === 'undefined') return false;
+  return window.localStorage.getItem(REMEMBER_KEY) === 'true';
+}
+
 export function loadPersistedSession(): SessionState {
   if (typeof window === 'undefined') {
     return initialSessionState;
   }
 
   try {
-    const raw = window.sessionStorage.getItem(SESSION_KEY);
+    const storage = getStorage();
+    const raw = storage.getItem(SESSION_KEY);
     if (!raw) {
       return initialSessionState;
     }
@@ -95,7 +119,7 @@ export function loadPersistedSession(): SessionState {
 
     const now = Date.now();
     if (!parsed.expiresAt || parsed.expiresAt < now) {
-      window.sessionStorage.removeItem(SESSION_KEY);
+      storage.removeItem(SESSION_KEY);
       return initialSessionState;
     }
 
@@ -110,10 +134,13 @@ export function persistSession(state: SessionState): void {
     return;
   }
 
+  const storage = getStorage();
+
   if (!state.isAuthenticated || !state.sessionToken) {
     window.sessionStorage.removeItem(SESSION_KEY);
+    window.localStorage.removeItem(SESSION_KEY);
     return;
   }
 
-  window.sessionStorage.setItem(SESSION_KEY, JSON.stringify(state));
+  storage.setItem(SESSION_KEY, JSON.stringify(state));
 }

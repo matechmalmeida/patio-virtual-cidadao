@@ -50,7 +50,7 @@ export default function TotpChallengePage() {
       </div>
 
       <div className="flex justify-center">
-        <InputOTP maxLength={6} value={code} onChange={setCode}>
+        <InputOTP maxLength={6} value={code} onChange={setCode} inputMode="numeric">
           <InputOTPGroup>
             <InputOTPSlot index={0} />
             <InputOTPSlot index={1} />
@@ -62,12 +62,13 @@ export default function TotpChallengePage() {
         </InputOTP>
       </div>
 
-      {error && <p className="text-sm text-destructive font-medium text-center">{error}</p>}
+      {error && <p role="alert" className="text-sm text-destructive font-medium text-center">{error}</p>}
 
       <Button
         onClick={handleVerify}
         className="w-full h-12 text-base font-semibold"
         disabled={code.length !== 6 || loading}
+        aria-busy={loading}
       >
         {t('auth.totp.submit')}
       </Button>

@@ -11,6 +11,7 @@ import { Lock, Eye, EyeOff, CheckCircle } from 'lucide-react';
 import { getApiErrorMessage } from '@/services/http/api-error';
 import { resetPassword } from '../services/auth.service';
 import { AuthLayout } from '../components/AuthLayout';
+import { PasswordStrengthBar } from '../components/PasswordStrengthBar';
 
 const schema = z
   .object({
@@ -40,10 +41,13 @@ export default function ResetPasswordPage() {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors: fieldErrors },
   } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
+
+  const passwordValue = watch('password', '');
 
   if (!token) {
     return <Navigate to="/acesso" replace />;
@@ -92,6 +96,7 @@ export default function ResetPasswordPage() {
             <Input
               id="password"
               type={showPassword ? 'text' : 'password'}
+              autoComplete="new-password"
               className="h-12 text-base pl-10 pr-10"
               {...register('password')}
             />
@@ -104,8 +109,9 @@ export default function ResetPasswordPage() {
               {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             </button>
           </div>
+          <PasswordStrengthBar password={passwordValue} />
           {fieldErrors.password && (
-            <p className="text-xs text-destructive">{t('auth.resetPassword.errors.weak')}</p>
+            <p role="alert" className="text-xs text-destructive">{t('auth.resetPassword.errors.weak')}</p>
           )}
         </div>
 
@@ -116,6 +122,7 @@ export default function ResetPasswordPage() {
             <Input
               id="confirmPassword"
               type={showConfirm ? 'text' : 'password'}
+              autoComplete="new-password"
               className="h-12 text-base pl-10 pr-10"
               {...register('confirmPassword')}
             />
@@ -129,13 +136,13 @@ export default function ResetPasswordPage() {
             </button>
           </div>
           {fieldErrors.confirmPassword && (
-            <p className="text-xs text-destructive">{t('auth.resetPassword.errors.mismatch')}</p>
+            <p role="alert" className="text-xs text-destructive">{t('auth.resetPassword.errors.mismatch')}</p>
           )}
         </div>
 
-        {error && <p className="text-sm text-destructive font-medium">{error}</p>}
+        {error && <p role="alert" className="text-sm text-destructive font-medium">{error}</p>}
 
-        <Button type="submit" className="w-full h-12 text-base font-semibold" disabled={loading}>
+        <Button type="submit" className="w-full h-12 text-base font-semibold" disabled={loading} aria-busy={loading}>
           {t('auth.resetPassword.submit')}
         </Button>
       </form>

@@ -9,6 +9,7 @@ import {
   type Dispatch,
 } from 'react';
 import type { CaseData } from '@/types/case';
+import { configureHttpClient } from '@/services/http/http-client';
 import type { AuthUser, SessionAction } from '../types/auth';
 import {
   initialSessionState,
@@ -41,6 +42,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     persistSession(state);
   }, [state]);
+
+  useEffect(() => {
+    configureHttpClient({
+      baseUrl: import.meta.env.VITE_API_BASE_URL ?? '',
+      getToken: () => state.sessionToken,
+      onUnauthorized: () => dispatch({ type: 'LOGOUT' }),
+    });
+  }, [state.sessionToken]);
 
   const currentCase = useMemo(
     () => state.activeCases.find((item) => item.id === state.selectedCaseId) ?? null,

@@ -75,19 +75,20 @@ export default function MagicLinkRequestPage() {
             <Input
               id="email"
               type="email"
+              autoComplete="email"
               placeholder={t('auth.login.emailPlaceholder')}
               className="h-12 text-base pl-10"
               {...register('email')}
             />
           </div>
           {fieldErrors.email && (
-            <p className="text-xs text-destructive">{t('auth.login.errors.invalidCredentials')}</p>
+            <p role="alert" className="text-xs text-destructive">{t('auth.login.errors.invalidCredentials')}</p>
           )}
         </div>
 
-        {error && <p className="text-sm text-destructive font-medium">{error}</p>}
+        {error && <p role="alert" className="text-sm text-destructive font-medium">{error}</p>}
 
-        <Button type="submit" className="w-full h-12 text-base font-semibold" disabled={loading}>
+        <Button type="submit" className="w-full h-12 text-base font-semibold" disabled={loading} aria-busy={loading}>
           {t('auth.magicLink.submit')}
         </Button>
       </form>
