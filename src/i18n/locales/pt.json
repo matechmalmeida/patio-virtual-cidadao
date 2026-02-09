@@ -529,7 +529,11 @@
     "statusLabels": {
       "pendente": "Pendente",
       "assinado": "Assinado"
-    }
+    },
+    "tabPending": "Pendentes",
+    "tabHistory": "Historico",
+    "emptyPending": "Nenhum documento pendente de assinatura.",
+    "emptyHistory": "Nenhum documento assinado ainda."
   },
   "install": {
     "title": "Instalar aplicativo",

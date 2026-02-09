@@ -194,6 +194,15 @@ export function getMockTermsForCase(caseId: string): Term[] {
         content: REGULARIZACAO_CONTENT,
         status: 'pendente',
       },
+      {
+        id: 'term-aceite-1',
+        type: 'aceite',
+        title: 'Termo de Aceite do Pátio Virtual',
+        description: 'Aceite as condições do programa Pátio Virtual.',
+        content: CUSTODIA_CONTENT,
+        status: 'assinado',
+        signedAt: '2026-02-05T10:33:00',
+      },
     ];
   }
   if (caseId === '2') {

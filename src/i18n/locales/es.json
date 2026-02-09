@@ -529,7 +529,11 @@
     "statusLabels": {
       "pendente": "Pendiente",
       "assinado": "Firmado"
-    }
+    },
+    "tabPending": "Pendientes",
+    "tabHistory": "Historial",
+    "emptyPending": "Ningun documento pendiente de firma.",
+    "emptyHistory": "Ningun documento firmado todavia."
   },
   "install": {
     "title": "Instalar aplicacion",

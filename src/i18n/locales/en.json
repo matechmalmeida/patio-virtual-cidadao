@@ -529,7 +529,11 @@
     "statusLabels": {
       "pendente": "Pending",
       "assinado": "Signed"
-    }
+    },
+    "tabPending": "Pending",
+    "tabHistory": "History",
+    "emptyPending": "No documents pending signature.",
+    "emptyHistory": "No signed documents yet."
   },
   "install": {
     "title": "Install app",
