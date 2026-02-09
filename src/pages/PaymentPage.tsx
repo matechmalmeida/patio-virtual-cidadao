@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { AlertBanner } from '@/components/AlertBanner';
 import { useToast } from '@/hooks/use-toast';
+import { useTranslation } from 'react-i18next';
 import {
   ArrowLeft,
   CreditCard,
@@ -25,6 +26,7 @@ export default function PaymentPage() {
   const navigate = useNavigate();
   const { currentCase, updateCase } = useAuth();
   const { toast } = useToast();
+  const { t } = useTranslation();
 
   const [selectedMethod, setSelectedMethod] = useState<PaymentMethod>(null);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -42,10 +44,10 @@ export default function PaymentPage() {
   const handleCopyPix = useCallback(() => {
     navigator.clipboard.writeText(pixCode).then(() => {
       setPixCopied(true);
-      toast({ title: 'Código PIX copiado!' });
+      toast({ title: t('payment.pixCopied') });
       setTimeout(() => setPixCopied(false), 3000);
     });
-  }, [pixCode, toast]);
+  }, [pixCode, toast, t]);
 
   const handleConfirmPayment = useCallback(() => {
     if (!currentCase || !pendency) return;
@@ -60,26 +62,26 @@ export default function PaymentPage() {
         setPaymentConfirmed(true);
 
         toast({
-          title: 'Pagamento registrado!',
-          description: 'O comprovante será validado em até 24h.',
+          title: t('payment.registered'),
+          description: t('payment.validationNote'),
         });
       })
       .catch((err) => {
         setIsProcessing(false);
         toast({
-          title: 'Erro ao registrar pagamento',
-          description: getApiErrorMessage(err, 'Tente novamente em alguns instantes.'),
+          title: t('payment.paymentError'),
+          description: getApiErrorMessage(err, t('payment.tryAgainLater')),
           variant: 'destructive',
         });
       });
-  }, [currentCase, pendency, updateCase, toast]);
+  }, [currentCase, pendency, updateCase, toast, t]);
 
   if (!currentCase || !pendency) {
     return (
       <div className="px-4 py-8 text-center">
-        <p className="text-muted-foreground">Pendência não encontrada.</p>
+        <p className="text-muted-foreground">{t('upload.notFound')}</p>
         <Button variant="outline" className="mt-4" onClick={() => navigate('/pendencias')}>
-          Voltar às pendências
+          {t('payment.backToPendencies')}
         </Button>
       </div>
     );
@@ -93,19 +95,17 @@ export default function PaymentPage() {
             <CheckCircle2 className="h-8 w-8 text-success" />
           </div>
           <div>
-            <h1 className="text-xl font-bold">Pagamento registrado!</h1>
-            <p className="text-sm text-muted-foreground mt-2">
-              Seu pagamento de{' '}
-              <strong>R$ {pendency.value?.toFixed(2).replace('.', ',')}</strong> para{' '}
-              <strong>{pendency.name}</strong> foi registrado com sucesso.
-            </p>
+            <h1 className="text-xl font-bold">{t('payment.registered')}</h1>
+            <p
+              className="text-sm text-muted-foreground mt-2"
+              dangerouslySetInnerHTML={{ __html: t('payment.registeredText', { value: pendency.value?.toFixed(2).replace('.', ','), name: pendency.name }) }}
+            />
           </div>
           <AlertBanner variant="info">
-            O comprovante será analisado automaticamente. Você receberá uma notificação quando for
-            aprovado.
+            {t('payment.proofNote')}
           </AlertBanner>
           <Button className="w-full" onClick={() => navigate('/pendencias')}>
-            Voltar às pendências
+            {t('payment.backToPendencies')}
           </Button>
         </div>
       </div>
@@ -116,13 +116,13 @@ export default function PaymentPage() {
     <div className="px-4 py-5 space-y-5">
       <Button variant="ghost" size="sm" onClick={() => navigate(-1)} className="-ml-2">
         <ArrowLeft className="h-4 w-4 mr-1" />
-        Voltar
+        {t('common.back')}
       </Button>
 
       <div>
         <h1 className="text-xl font-bold flex items-center gap-2">
           <CreditCard className="h-5 w-5 text-primary" />
-          Pagamento
+          {t('payment.title')}
         </h1>
         <p className="text-sm text-muted-foreground mt-1">{pendency.name}</p>
       </div>
@@ -130,7 +130,7 @@ export default function PaymentPage() {
       {/* Amount */}
       <Card className="border-0 shadow-md">
         <CardContent className="pt-5 text-center space-y-1">
-          <p className="text-xs text-muted-foreground">Valor a pagar</p>
+          <p className="text-xs text-muted-foreground">{t('payment.amountToPay')}</p>
           <p className="text-3xl font-bold">
             R$ {pendency.value?.toFixed(2).replace('.', ',')}
           </p>
@@ -142,7 +142,7 @@ export default function PaymentPage() {
 
       {/* Payment methods */}
       <div className="space-y-3">
-        <p className="text-sm font-semibold">Forma de pagamento</p>
+        <p className="text-sm font-semibold">{t('payment.paymentMethod')}</p>
 
         <button
           onClick={() => setSelectedMethod('pix')}
@@ -156,8 +156,8 @@ export default function PaymentPage() {
             <QrCode className="h-5 w-5 text-success" />
           </div>
           <div className="text-left flex-1">
-            <p className="text-sm font-semibold">PIX</p>
-            <p className="text-xs text-muted-foreground">Pagamento instantâneo, 24h</p>
+            <p className="text-sm font-semibold">{t('payment.pix')}</p>
+            <p className="text-xs text-muted-foreground">{t('payment.pixDesc')}</p>
           </div>
           <div
             className={`h-5 w-5 rounded-full border-2 flex items-center justify-center ${
@@ -180,8 +180,8 @@ export default function PaymentPage() {
             <FileText className="h-5 w-5 text-primary" />
           </div>
           <div className="text-left flex-1">
-            <p className="text-sm font-semibold">Boleto Bancário</p>
-            <p className="text-xs text-muted-foreground">Compensação em até 3 dias úteis</p>
+            <p className="text-sm font-semibold">{t('payment.boleto')}</p>
+            <p className="text-xs text-muted-foreground">{t('payment.boletoDesc')}</p>
           </div>
           <div
             className={`h-5 w-5 rounded-full border-2 flex items-center justify-center ${
@@ -206,7 +206,7 @@ export default function PaymentPage() {
                 <QrCode className="h-24 w-24 text-foreground/20" />
               </div>
               <p className="text-xs text-muted-foreground">
-                Escaneie o QR Code ou copie o código abaixo
+                {t('payment.scanQR')}
               </p>
             </div>
 
@@ -230,7 +230,7 @@ export default function PaymentPage() {
 
             <div className="flex items-start gap-2 text-xs text-muted-foreground">
               <Clock className="h-3.5 w-3.5 mt-0.5 shrink-0" />
-              <p>Este código PIX é válido por 24 horas. Após o pagamento, clique em confirmar abaixo.</p>
+              <p>{t('payment.pixValid')}</p>
             </div>
 
             <Button
@@ -241,12 +241,12 @@ export default function PaymentPage() {
               {isProcessing ? (
                 <>
                   <div className="h-4 w-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
-                  Processando...
+                  {t('payment.processing')}
                 </>
               ) : (
                 <>
                   <CheckCircle2 className="h-4 w-4" />
-                  Já paguei — confirmar
+                  {t('payment.alreadyPaid')}
                 </>
               )}
             </Button>
@@ -259,20 +259,18 @@ export default function PaymentPage() {
         <Card className="border-0 shadow-md animate-slide-up">
           <CardContent className="pt-5 space-y-4">
             <AlertBanner variant="info">
-              O boleto será gerado e ficará disponível para download. A compensação pode levar até 3
-              dias úteis.
+              {t('payment.boletoNote')}
             </AlertBanner>
 
             <Button className="w-full h-11 font-semibold">
               <ExternalLink className="h-4 w-4" />
-              Gerar boleto
+              {t('payment.generateBoleto')}
             </Button>
 
             <div className="flex items-start gap-2 text-xs text-muted-foreground">
               <Clock className="h-3.5 w-3.5 mt-0.5 shrink-0" />
               <p>
-                Após o pagamento do boleto, envie o comprovante na tela de pendências para agilizar
-                a aprovação.
+                {t('payment.boletoNote')}
               </p>
             </div>
           </CardContent>

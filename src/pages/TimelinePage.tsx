@@ -3,10 +3,12 @@ import { TimelineItem } from '@/components/TimelineItem';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export default function TimelinePage() {
   const { currentCase } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   if (!currentCase) return null;
 
@@ -22,12 +24,12 @@ export default function TimelinePage() {
         className="mb-4 -ml-2"
       >
         <ArrowLeft className="h-4 w-4 mr-1" />
-        Voltar
+        {t('common.back')}
       </Button>
 
-      <h1 className="text-xl font-bold mb-1">Timeline do processo</h1>
+      <h1 className="text-xl font-bold mb-1">{t('timeline.title')}</h1>
       <p className="text-sm text-muted-foreground mb-6">
-        {completedCount} de {totalCount} etapas concluídas
+        {t('timeline.progress', { completed: completedCount, total: totalCount })}
       </p>
 
       {/* Progress bar */}

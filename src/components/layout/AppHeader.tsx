@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/contexts/AuthContext';
 import { useBrand } from '@/contexts/BrandContext';
 import { Button } from '@/components/ui/button';
@@ -7,6 +8,7 @@ import { useTheme } from '@/hooks/useTheme';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 
 export function AppHeader() {
+  const { t } = useTranslation();
   const { currentCase, activeCases, logout } = useAuth();
   const { brand } = useBrand();
   const navigate = useNavigate();
@@ -29,7 +31,7 @@ export function AppHeader() {
             )}
           </div>
           <div className="min-w-0">
-            <p className="text-xs font-semibold truncate">{brand?.appName ?? 'Pátio Virtual'}</p>
+            <p className="text-xs font-semibold truncate">{brand?.appName ?? t('app.name')}</p>
             {currentCase && (
               <p className="text-[11px] text-muted-foreground truncate">
                 {currentCase.plate} — {currentCase.vehicle}

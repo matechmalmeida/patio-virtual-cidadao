@@ -17,6 +17,7 @@
     "heroHighlight": "não no pátio.",
     "heroSubtitle": "O Pátio Virtual substitui a remoção do veículo. Resolva suas pendências pelo celular e evite guincho, diárias e burocracia.",
     "accessCase": "Acessar meu caso",
+    "login": "Entrar",
     "howItWorks": "Como funciona",
     "advantages": "Vantagens",
     "faq": "Dúvidas",
@@ -170,7 +171,11 @@
     "registered": "Pagamento registrado!",
     "registeredText": "Seu pagamento de <strong>R$ {{value}}</strong> para <strong>{{name}}</strong> foi registrado com sucesso.",
     "proofNote": "O comprovante será analisado automaticamente. Você receberá uma notificação quando for aprovado.",
-    "backToPendencies": "Voltar às pendências"
+    "backToPendencies": "Voltar às pendências",
+    "pixCopied": "Código PIX copiado!",
+    "validationNote": "O comprovante será validado em até 24h.",
+    "paymentError": "Erro ao registrar pagamento",
+    "tryAgainLater": "Tente novamente em alguns instantes."
   },
   "gps": {
     "title": "Status do Dispositivo GPS",
@@ -224,6 +229,11 @@
     "types": "Tipos de notificação",
     "testButton": "Enviar notificação de teste",
     "info": "As notificações push funcionam mesmo com o navegador fechado. Você pode desativá-las a qualquer momento nas configurações do dispositivo.",
+    "enabled": "Notificações ativadas!",
+    "enabledDesc": "Você receberá alertas sobre o andamento do seu processo.",
+    "testSent": "Notificação de teste enviada",
+    "testSentDesc": "Verifique a barra de notificações do seu dispositivo.",
+    "testBody": "Atualização no processo {{code}}: seu documento foi aprovado!",
     "typeLabels": {
       "statusChange": "Mudança de status",
       "statusChangeDesc": "Quando o status do processo mudar",
@@ -267,7 +277,182 @@
     "cancel": "Cancelar",
     "save": "Salvar",
     "copied": "Copiado!",
-    "openInMaps": "Abrir no Google Maps"
+    "openInMaps": "Abrir no Google Maps",
+    "loadError": "Erro ao carregar conteudo."
+  },
+  "otp": {
+    "title": "Verificacao",
+    "subtitle": "Enviamos um codigo de 6 digitos para",
+    "verify": "Verificar codigo",
+    "resendIn": "Reenviar codigo em",
+    "resending": "Reenviando...",
+    "resend": "Reenviar codigo",
+    "errors": {
+      "incomplete": "Digite o codigo completo de 6 digitos.",
+      "invalid": "Codigo incorreto. Verifique e tente novamente.",
+      "generic": "Nao foi possivel validar o codigo."
+    }
+  },
+  "scheduling": {
+    "title": "Agendamento",
+    "scheduleRemoval": "Agendar retirada",
+    "loading": "Carregando opcoes de agendamento...",
+    "cannotSchedule": "Voce ainda nao pode agendar",
+    "cannotScheduleDesc": "Resolva todas as pendencias antes de agendar a retirada do dispositivo.",
+    "whatToResolve": "O que falta resolver:",
+    "goToPendencies": "Ir para pendencias",
+    "chooseLocation": "Escolha o local onde voce vai retirar o dispositivo:",
+    "chooseDate": "Escolha a data:",
+    "availableSlots": "Horarios disponiveis:",
+    "noSlots": "Nenhum horario disponivel nesta data.",
+    "confirm": "Confirmar agendamento",
+    "confirmError": "Nao foi possivel confirmar o agendamento."
+  },
+  "schedulingConfirmation": {
+    "title": "Agendamento confirmado!",
+    "subtitle": "Compareca no dia e horario marcados.",
+    "appointmentCode": "Codigo do agendamento",
+    "location": "Local",
+    "date": "Data",
+    "time": "Horario",
+    "bringOnDay": "Leve no dia:",
+    "bringId": "Documento de identidade (RG ou CNH)",
+    "bringProof": "Comprovante do agendamento (esta tela ou o codigo)",
+    "viewRoute": "Ver rota no Google Maps",
+    "addToCalendar": "Adicionar ao calendario",
+    "backToHome": "Voltar ao inicio",
+    "notFound": "Nenhum agendamento encontrado."
+  },
+  "timeline": {
+    "title": "Timeline do processo",
+    "progress": "{{completed}} de {{total}} etapas concluidas"
+  },
+  "history": {
+    "title": "Historico de remocoes",
+    "subtitle": "Remocoes ativas e anteriores vinculadas ao seu cadastro.",
+    "activeRemovals": "Remocoes ativas ({{count}})",
+    "code": "Codigo:",
+    "reason": "Motivo:",
+    "since": "Desde",
+    "previousRemovals": "Remocoes anteriores",
+    "noPrevious": "Nenhuma remocao anterior.",
+    "finished": "Finalizado",
+    "loadError": "Nao foi possivel carregar o historico de casos."
+  },
+  "support": {
+    "title": "Ajuda e Suporte",
+    "openTicket": "Abrir chamado",
+    "openTicketDesc": "Fale com nossa equipe",
+    "caseHistory": "Historico de casos",
+    "caseHistoryDesc": "Ver casos anteriores",
+    "logout": "Sair da conta",
+    "logoutDesc": "Encerrar sessao",
+    "faq": "Perguntas frequentes",
+    "searchPlaceholder": "Buscar pergunta...",
+    "results": "Resultados",
+    "noResults": "Nenhuma pergunta encontrada.",
+    "loadError": "Nao foi possivel carregar as perguntas frequentes."
+  },
+  "ticket": {
+    "title": "Abrir chamado",
+    "subtitle": "Descreva o que esta acontecendo. Vamos ajudar o mais rapido possivel.",
+    "category": "Categoria",
+    "categoryPlaceholder": "Selecione a categoria",
+    "categories": {
+      "process": "Duvidas sobre o processo",
+      "pendencies": "Problema com pendencias",
+      "device": "Problema com o dispositivo",
+      "scheduling": "Agendamento",
+      "payment": "Pagamento",
+      "other": "Outro"
+    },
+    "description": "Descreva o problema",
+    "descriptionPlaceholder": "Conte com detalhes o que esta acontecendo...",
+    "attachment": "Anexo (opcional)",
+    "attachFile": "Anexar arquivo",
+    "submitting": "Enviando...",
+    "submit": "Enviar chamado",
+    "success": "Chamado aberto!",
+    "successDesc": "Recebemos sua solicitacao. Nossa equipe vai responder em ate 48 horas uteis.",
+    "protocol": "Protocolo:",
+    "backToSupport": "Voltar ao suporte"
+  },
+  "upload": {
+    "title": "Enviar comprovante",
+    "whatToInclude": "O que deve aparecer no comprovante",
+    "includeDate": "Data do pagamento",
+    "includeAmount": "Valor pago",
+    "includeName": "Nome do pagador ou placa do veiculo",
+    "includeAuth": "Comprovacao de autenticidade (selo, codigo de barras, etc.)",
+    "tapToSelect": "Toque para selecionar",
+    "fileTypes": "Foto ou PDF - Max. 10 MB",
+    "uploading": "Enviando...",
+    "submit": "Enviar comprovante",
+    "success": "Comprovante enviado!",
+    "successDesc": "Recebemos seu comprovante para <strong>{{name}}</strong>. Nossa equipe vai analisa-lo em ate 48 horas.",
+    "backToPendencies": "Voltar para pendencias",
+    "notFound": "Pendencia nao encontrada.",
+    "uploadError": "Nao foi possivel enviar o comprovante."
+  },
+  "term": {
+    "signSuccess": "Termo assinado com sucesso!",
+    "signSuccessDesc": "O {{title}} foi registrado.",
+    "signError": "Erro ao assinar termo",
+    "signErrorDesc": "Nao foi possivel assinar o termo agora.",
+    "notFound": "Termo nao encontrado.",
+    "backToProcess": "Voltar ao processo",
+    "alreadySigned": "Termo ja assinado",
+    "signedAt": "Este termo foi assinado em",
+    "scrollToRead": "Role para ler todo o documento",
+    "agreeLabel": "Declaro que li integralmente o documento acima e concordo com todos os termos e condicoes estabelecidos.",
+    "readFirst": "Leia o documento ate o final para poder aceitar os termos.",
+    "signing": "Assinando...",
+    "sign": "Assinar termo"
+  },
+  "install": {
+    "title": "Instalar aplicativo",
+    "appName": "Remocao Veicular",
+    "subtitle": "Instale o portal no seu celular para acompanhar o processo de remocao de forma rapida e pratica.",
+    "quickAccess": "Acesso rapido",
+    "quickAccessDesc": "Abra direto da tela inicial, como um app",
+    "offline": "Funciona offline",
+    "offlineDesc": "Consulte informacoes mesmo sem internet",
+    "notificationsLabel": "Notificacoes",
+    "notificationsDesc": "Receba alertas sobre seu processo",
+    "fullscreen": "Tela cheia",
+    "fullscreenDesc": "Experiencia imersiva sem barra do navegador",
+    "alreadyInstalled": "Aplicativo ja instalado!",
+    "alreadyInstalledDesc": "Voce ja pode acessar pela tela inicial do seu celular.",
+    "installNow": "Instalar agora",
+    "iosInstructions": "Como instalar no iPhone/iPad:",
+    "iosStep1Tap": "Toque em",
+    "iosStep1Share": "Compartilhar",
+    "iosStep2Select": "Selecione",
+    "iosStep2Add": "Adicionar a Tela de Inicio",
+    "iosStep3Tap": "Toque em",
+    "iosStep3Add": "Adicionar",
+    "genericInstructions": "Como instalar:",
+    "genericDesc": "Acesse este site pelo navegador do seu celular (Chrome, Edge ou Samsung Internet) para ver o botao de instalacao. No menu do navegador, procure por \"Instalar aplicativo\" ou \"Adicionar a tela inicial\".",
+    "accessPortal": "Acessar o portal pelo navegador"
+  },
+  "notFound": {
+    "title": "Pagina nao encontrada",
+    "backToHome": "Voltar ao inicio"
+  },
+  "notificationsPage": {
+    "title": "Notificacoes",
+    "filterAll": "Todos",
+    "filterImportant": "Importantes",
+    "filterUnread": "Nao lidos",
+    "empty": "Nenhuma notificacao encontrada.",
+    "updateError": "Nao foi possivel atualizar a notificacao."
+  },
+  "seizure": {
+    "reason": "Motivo da apreensao",
+    "location": "Local da apreensao:"
+  },
+  "vehicleCard": {
+    "code": "Codigo:"
   },
   "language": {
     "pt": "Português",

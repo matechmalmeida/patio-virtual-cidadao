@@ -11,7 +11,7 @@ import { AppErrorBoundary } from '@/components/error/AppErrorBoundary';
 import { GlobalErrorFallback } from '@/components/error/GlobalErrorFallback';
 import { RouteErrorFallback } from '@/components/error/RouteErrorFallback';
 
-const LandingPage = lazy(() => import('./pages/LandingPage'));
+const SitePage = lazy(() => import('./modules/site/pages/SitePage'));
 const LoginPage = lazy(() => import('./pages/LoginPage'));
 const OTPPage = lazy(() => import('./pages/OTPPage'));
 const DashboardPage = lazy(() => import('./pages/DashboardPage'));
@@ -36,12 +36,21 @@ const queryClient = new QueryClient({
     queries: {
       retry: 2,
       staleTime: 30_000,
+      refetchOnWindowFocus: false,
+      gcTime: 5 * 60_000,
     },
   },
 });
 
 function LoadingFallback() {
-  return <div className="px-4 py-6 text-sm text-muted-foreground">Carregando...</div>;
+  return (
+    <div className="flex min-h-screen items-center justify-center">
+      <div className="flex flex-col items-center gap-3">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
+        <span className="text-sm text-muted-foreground animate-pulse">Carregando...</span>
+      </div>
+    </div>
+  );
 }
 
 function RouteBoundary({ children }: { children: ReactNode }) {
@@ -74,7 +83,7 @@ const App = () => (
               <Suspense fallback={<LoadingFallback />}>
                 <Routes>
                   {/* Public routes */}
-                  <Route path="/" element={routeElement(<LandingPage />)} />
+                  <Route path="/" element={routeElement(<SitePage />)} />
                   <Route path="/acesso" element={routeElement(<LoginPage />)} />
                   <Route path="/otp" element={routeElement(<OTPPage />)} />
                   <Route path="/instalar" element={routeElement(<InstallPage />)} />

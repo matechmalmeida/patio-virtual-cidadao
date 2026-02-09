@@ -5,6 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { AlertBanner } from '@/components/AlertBanner';
 import { Switch } from '@/components/ui/switch';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
   ArrowLeft,
   Bell,
@@ -19,6 +20,7 @@ export default function NotificationSettingsPage() {
   const navigate = useNavigate();
   const { currentCase } = useAuth();
   const { toast } = useToast();
+  const { t } = useTranslation();
   const {
     isSupported,
     permission,
@@ -34,42 +36,42 @@ export default function NotificationSettingsPage() {
     const granted = await requestPermission();
     if (granted) {
       toast({
-        title: 'Notificações ativadas!',
-        description: 'Você receberá alertas sobre o andamento do seu processo.',
+        title: t('notifications.enabled'),
+        description: t('notifications.enabledDesc'),
       });
     }
   };
 
   const handleTest = () => {
-    sendLocalNotification('Pátio Virtual', {
-      body: `Atualização no processo ${currentCase?.code ?? ''}: seu documento foi aprovado!`,
+    sendLocalNotification(t('app.name'), {
+      body: t('notifications.testBody', { code: currentCase?.code ?? '' }),
       tag: 'test-notification',
     });
     toast({
-      title: 'Notificação de teste enviada',
-      description: 'Verifique a barra de notificações do seu dispositivo.',
+      title: t('notifications.testSent'),
+      description: t('notifications.testSentDesc'),
     });
   };
 
   const notificationTypes = [
     {
-      label: 'Mudança de status',
-      description: 'Quando o status do processo mudar',
+      label: t('notifications.typeLabels.statusChange'),
+      description: t('notifications.typeLabels.statusChangeDesc'),
       enabled: true,
     },
     {
-      label: 'Documentos analisados',
-      description: 'Quando um comprovante for aprovado ou reprovado',
+      label: t('notifications.typeLabels.docsAnalyzed'),
+      description: t('notifications.typeLabels.docsAnalyzedDesc'),
       enabled: true,
     },
     {
-      label: 'Prazo de pendência',
-      description: 'Lembrete antes do vencimento de uma pendência',
+      label: t('notifications.typeLabels.deadline'),
+      description: t('notifications.typeLabels.deadlineDesc'),
       enabled: true,
     },
     {
-      label: 'Alerta de movimentação',
-      description: 'Se o veículo sair da área permitida',
+      label: t('notifications.typeLabels.movementAlert'),
+      description: t('notifications.typeLabels.movementAlertDesc'),
       enabled: true,
     },
   ];
@@ -83,33 +85,32 @@ export default function NotificationSettingsPage() {
         className="-ml-2"
       >
         <ArrowLeft className="h-4 w-4 mr-1" />
-        Voltar
+        {t('common.back')}
       </Button>
 
       <div>
         <h1 className="text-xl font-bold flex items-center gap-2">
           <Bell className="h-5 w-5 text-primary" />
-          Notificações Push
+          {t('notifications.title')}
         </h1>
         <p className="text-sm text-muted-foreground mt-1">
-          Receba alertas sobre o andamento do seu processo diretamente no celular.
+          {t('notifications.subtitle')}
         </p>
       </div>
 
       {/* Permission status */}
       {!isSupported ? (
-        <AlertBanner variant="warning" title="Navegador não suportado">
-          Seu navegador não suporta notificações push. Tente usar o Chrome ou o Safari no celular.
+        <AlertBanner variant="warning" title={t('notifications.unsupported')}>
+          {t('notifications.unsupportedDesc')}
         </AlertBanner>
       ) : isDenied ? (
-        <AlertBanner variant="error" title="Notificações bloqueadas">
-          Você bloqueou as notificações. Para reativar, acesse as configurações do navegador e
-          permita notificações para este site.
+        <AlertBanner variant="error" title={t('notifications.blocked')}>
+          {t('notifications.blockedDesc')}
         </AlertBanner>
       ) : isGranted ? (
-        <AlertBanner variant="success" title="Notificações ativas">
+        <AlertBanner variant="success" title={t('notifications.active')}>
           <div className="flex items-center justify-between">
-            <span>Você receberá alertas sobre o seu processo.</span>
+            <span>{t('notifications.activeDesc')}</span>
           </div>
         </AlertBanner>
       ) : (
@@ -120,10 +121,9 @@ export default function NotificationSettingsPage() {
                 <BellRing className="h-5 w-5 text-primary" />
               </div>
               <div>
-                <p className="text-sm font-semibold">Ativar notificações</p>
+                <p className="text-sm font-semibold">{t('notifications.enable')}</p>
                 <p className="text-xs text-muted-foreground mt-0.5">
-                  Fique por dentro de cada atualização do processo — aprovações, prazos e alertas
-                  importantes.
+                  {t('notifications.enableDesc')}
                 </p>
               </div>
             </div>
@@ -135,12 +135,12 @@ export default function NotificationSettingsPage() {
               {isRequesting ? (
                 <>
                   <div className="h-4 w-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
-                  Solicitando...
+                  {t('notifications.requesting')}
                 </>
               ) : (
                 <>
                   <Bell className="h-4 w-4" />
-                  Permitir notificações
+                  {t('notifications.allow')}
                 </>
               )}
             </Button>
@@ -152,7 +152,7 @@ export default function NotificationSettingsPage() {
       {isGranted && (
         <Card className="border-0 shadow-md">
           <CardContent className="pt-5 space-y-1">
-            <h2 className="text-sm font-semibold mb-3">Tipos de notificação</h2>
+            <h2 className="text-sm font-semibold mb-3">{t('notifications.types')}</h2>
             {notificationTypes.map((type, i) => (
               <div key={i} className="flex items-center justify-between py-3 border-b last:border-0">
                 <div className="flex-1 min-w-0 mr-3">
@@ -170,7 +170,7 @@ export default function NotificationSettingsPage() {
       {isGranted && (
         <Button variant="outline" className="w-full" onClick={handleTest}>
           <BellRing className="h-4 w-4" />
-          Enviar notificação de teste
+          {t('notifications.testButton')}
         </Button>
       )}
 
@@ -178,8 +178,7 @@ export default function NotificationSettingsPage() {
       <div className="flex items-start gap-2 text-xs text-muted-foreground">
         <Info className="h-3.5 w-3.5 mt-0.5 shrink-0" />
         <p>
-          As notificações push funcionam mesmo com o navegador fechado. Você pode desativá-las a
-          qualquer momento nas configurações do dispositivo.
+          {t('notifications.info')}
         </p>
       </div>
     </div>

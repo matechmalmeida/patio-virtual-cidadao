@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -9,6 +10,7 @@ import { submitPendencyFile } from '@/services/case.service';
 import { getApiErrorMessage } from '@/services/http/api-error';
 
 export default function UploadPage() {
+  const { t } = useTranslation();
   const { id } = useParams<{ id: string }>();
   const { currentCase, updateCase } = useAuth();
   const navigate = useNavigate();
@@ -27,7 +29,7 @@ export default function UploadPage() {
   if (!pendency) {
     return (
       <div className="px-4 py-5">
-        <AlertBanner variant="error">Pendência não encontrada.</AlertBanner>
+        <AlertBanner variant="error">{t('upload.notFound')}</AlertBanner>
       </div>
     );
   }
@@ -64,7 +66,7 @@ export default function UploadPage() {
       setIsUploading(false);
       setUploaded(true);
     } catch (err) {
-      setError(getApiErrorMessage(err, 'Não foi possível enviar o comprovante.'));
+      setError(getApiErrorMessage(err, t('upload.uploadError')));
       setIsUploading(false);
     }
   };
@@ -76,15 +78,13 @@ export default function UploadPage() {
           <div className="h-16 w-16 rounded-full bg-success/10 flex items-center justify-center mx-auto mb-4">
             <CheckCircle2 className="h-8 w-8 text-success" />
           </div>
-          <h2 className="text-xl font-bold">Comprovante enviado!</h2>
-          <p className="text-sm text-muted-foreground mt-2 max-w-xs mx-auto">
-            Recebemos seu comprovante para <strong>{pendency.name}</strong>. Nossa equipe vai analisá-lo em até 48 horas.
-          </p>
+          <h2 className="text-xl font-bold">{t('upload.success')}</h2>
+          <p className="text-sm text-muted-foreground mt-2 max-w-xs mx-auto" dangerouslySetInnerHTML={{ __html: t('upload.successDesc', { name: pendency.name }) }} />
           <Button
             onClick={() => navigate('/pendencias')}
             className="mt-6 h-11 font-semibold"
           >
-            Voltar para pendências
+            {t('upload.backToPendencies')}
           </Button>
         </div>
       </div>
@@ -100,20 +100,20 @@ export default function UploadPage() {
         className="-ml-2"
       >
         <ArrowLeft className="h-4 w-4 mr-1" />
-        Voltar
+        {t('common.back')}
       </Button>
 
       <div>
-        <h1 className="text-xl font-bold">Enviar comprovante</h1>
+        <h1 className="text-xl font-bold">{t('upload.title')}</h1>
         <p className="text-sm text-muted-foreground mt-1">{pendency.name}</p>
       </div>
 
-      <AlertBanner variant="info" title="O que deve aparecer no comprovante">
+      <AlertBanner variant="info" title={t('upload.whatToInclude')}>
         <ul className="list-disc list-inside space-y-1 mt-1">
-          <li>Data do pagamento</li>
-          <li>Valor pago</li>
-          <li>Nome do pagador ou placa do veículo</li>
-          <li>Comprovação de autenticidade (selo, código de barras, etc.)</li>
+          <li>{t('upload.includeDate')}</li>
+          <li>{t('upload.includeAmount')}</li>
+          <li>{t('upload.includeName')}</li>
+          <li>{t('upload.includeAuth')}</li>
         </ul>
       </AlertBanner>
 
@@ -138,9 +138,9 @@ export default function UploadPage() {
                 <Upload className="h-6 w-6 text-primary" />
               </div>
               <div className="text-center">
-                <p className="text-sm font-semibold">Toque para selecionar</p>
+                <p className="text-sm font-semibold">{t('upload.tapToSelect')}</p>
                 <p className="text-xs text-muted-foreground mt-0.5">
-                  Foto ou PDF • Máx. 10 MB
+                  {t('upload.fileTypes')}
                 </p>
               </div>
             </button>
@@ -179,12 +179,12 @@ export default function UploadPage() {
                 {isUploading ? (
                   <>
                     <div className="h-4 w-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
-                    Enviando...
+                    {t('upload.uploading')}
                   </>
                 ) : (
                   <>
                     <Upload className="h-4 w-4" />
-                    Enviar comprovante
+                    {t('upload.submit')}
                   </>
                 )}
               </Button>

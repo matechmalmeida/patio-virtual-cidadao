@@ -10,10 +10,12 @@ import type { HistoricalCase } from '@/types/case';
 import { getHistoricalCases } from '@/services/history.service';
 import { AlertBanner } from '@/components/AlertBanner';
 import { getApiErrorMessage } from '@/services/http/api-error';
+import { useTranslation } from 'react-i18next';
 
 export default function HistoryPage() {
   const navigate = useNavigate();
   const { activeCases } = useAuth();
+  const { t } = useTranslation();
   const [historicalCases, setHistoricalCases] = useState<HistoricalCase[]>([]);
   const [error, setError] = useState('');
 
@@ -26,7 +28,7 @@ export default function HistoryPage() {
       })
       .catch((err) => {
         if (!isMounted) return;
-        setError(getApiErrorMessage(err, 'Não foi possível carregar o histórico de casos.'));
+        setError(getApiErrorMessage(err, t('history.loadError')));
       });
 
     return () => {
@@ -43,12 +45,12 @@ export default function HistoryPage() {
         className="-ml-2"
       >
         <ArrowLeft className="h-4 w-4 mr-1" />
-        Voltar
+        {t('common.back')}
       </Button>
 
-      <h1 className="text-xl font-bold">Histórico de remoções</h1>
+      <h1 className="text-xl font-bold">{t('history.title')}</h1>
       <p className="text-sm text-muted-foreground">
-        Remoções ativas e anteriores vinculadas ao seu cadastro.
+        {t('history.subtitle')}
       </p>
       {error && <AlertBanner variant="error">{error}</AlertBanner>}
 
@@ -57,7 +59,7 @@ export default function HistoryPage() {
         <div className="space-y-2">
           <p className="text-xs font-semibold text-warning uppercase tracking-wider flex items-center gap-1.5">
             <AlertTriangle className="h-3.5 w-3.5" />
-            Remoções ativas ({activeCases.length})
+            {t('history.activeRemovals', { count: activeCases.length })}
           </p>
           {activeCases.map((c) => (
             <Card key={c.id} className="border-2 border-warning/30 shadow-md">
@@ -69,12 +71,12 @@ export default function HistoryPage() {
                       <span className="text-sm font-bold">{c.plate}</span>
                     </div>
                     <p className="text-xs text-muted-foreground">{c.vehicle} — {c.vehicleColor}</p>
-                    <p className="text-xs text-muted-foreground">Código: {c.code}</p>
+                    <p className="text-xs text-muted-foreground">{t('history.code')} {c.code}</p>
                     <p className="text-xs text-muted-foreground">
-                      Motivo: {c.seizureReason.description}
+                      {t('history.reason')} {c.seizureReason.description}
                     </p>
                     <p className="text-[11px] text-muted-foreground/70">
-                      Desde {format(new Date(c.createdAt), "dd/MM/yyyy", { locale: ptBR })}
+                      {t('history.since')} {format(new Date(c.createdAt), "dd/MM/yyyy", { locale: ptBR })}
                     </p>
                   </div>
                   <ChevronRight className="h-5 w-5 text-muted-foreground mt-1" />
@@ -88,12 +90,12 @@ export default function HistoryPage() {
       {/* Historical cases */}
       <div className="space-y-2">
         <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-          Remoções anteriores
+          {t('history.previousRemovals')}
         </p>
         {historicalCases.length === 0 ? (
           <div className="text-center py-8">
             <Car className="h-10 w-10 text-muted-foreground/30 mx-auto mb-2" />
-            <p className="text-sm text-muted-foreground">Nenhuma remoção anterior.</p>
+            <p className="text-sm text-muted-foreground">{t('history.noPrevious')}</p>
           </div>
         ) : (
           historicalCases.map((c) => (
@@ -106,10 +108,10 @@ export default function HistoryPage() {
                       <span className="text-sm font-bold">{c.plate}</span>
                     </div>
                     <p className="text-xs text-muted-foreground">{c.vehicle}</p>
-                    <p className="text-xs text-muted-foreground">Motivo: {c.seizureReason}</p>
+                    <p className="text-xs text-muted-foreground">{t('history.reason')} {c.seizureReason}</p>
                     <div className="flex items-center gap-1 text-xs text-success">
                       <CheckCircle2 className="h-3.5 w-3.5" />
-                      <span className="font-medium">Finalizado</span>
+                      <span className="font-medium">{t('history.finished')}</span>
                     </div>
                     <p className="text-[11px] text-muted-foreground/70">
                       {format(new Date(c.createdAt), "dd/MM/yyyy", { locale: ptBR })} —{' '}

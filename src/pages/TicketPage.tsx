@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -14,18 +15,19 @@ import {
 } from '@/components/ui/select';
 import { ArrowLeft, Upload, CheckCircle2, Copy, X } from 'lucide-react';
 
-const categories = [
-  'Dúvidas sobre o processo',
-  'Problema com pendências',
-  'Problema com o dispositivo',
-  'Agendamento',
-  'Pagamento',
-  'Outro',
-];
-
 export default function TicketPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const categories = [
+    { key: 'process', label: t('ticket.categories.process') },
+    { key: 'pendencies', label: t('ticket.categories.pendencies') },
+    { key: 'device', label: t('ticket.categories.device') },
+    { key: 'scheduling', label: t('ticket.categories.scheduling') },
+    { key: 'payment', label: t('ticket.categories.payment') },
+    { key: 'other', label: t('ticket.categories.other') },
+  ];
 
   const [category, setCategory] = useState('');
   const [description, setDescription] = useState('');
@@ -61,20 +63,20 @@ export default function TicketPage() {
           <div className="h-16 w-16 rounded-full bg-success/10 flex items-center justify-center mx-auto mb-4">
             <CheckCircle2 className="h-8 w-8 text-success" />
           </div>
-          <h2 className="text-xl font-bold">Chamado aberto!</h2>
+          <h2 className="text-xl font-bold">{t('ticket.success')}</h2>
           <p className="text-sm text-muted-foreground mt-2 max-w-xs mx-auto">
-            Recebemos sua solicitação. Nossa equipe vai responder em até 48 horas úteis.
+            {t('ticket.successDesc')}
           </p>
 
           <div className="mt-6 inline-flex items-center gap-2 bg-muted rounded-lg px-4 py-3">
-            <span className="text-xs text-muted-foreground">Protocolo:</span>
+            <span className="text-xs text-muted-foreground">{t('ticket.protocol')}</span>
             <span className="font-bold tracking-wider">{protocol}</span>
             <button onClick={handleCopy} className="ml-1">
               <Copy className={`h-4 w-4 ${copied ? 'text-success' : 'text-muted-foreground'}`} />
             </button>
           </div>
           {copied && (
-            <p className="text-xs text-success mt-1">Copiado!</p>
+            <p className="text-xs text-success mt-1">{t('common.copied')}</p>
           )}
 
           <div className="mt-6">
@@ -82,7 +84,7 @@ export default function TicketPage() {
               onClick={() => navigate('/suporte')}
               className="h-11 font-semibold"
             >
-              Voltar ao suporte
+              {t('ticket.backToSupport')}
             </Button>
           </div>
         </div>
@@ -99,35 +101,35 @@ export default function TicketPage() {
         className="-ml-2"
       >
         <ArrowLeft className="h-4 w-4 mr-1" />
-        Voltar
+        {t('common.back')}
       </Button>
 
-      <h1 className="text-xl font-bold">Abrir chamado</h1>
+      <h1 className="text-xl font-bold">{t('ticket.title')}</h1>
       <p className="text-sm text-muted-foreground">
-        Descreva o que está acontecendo. Vamos ajudar o mais rápido possível.
+        {t('ticket.subtitle')}
       </p>
 
       <Card className="border-0 shadow-md">
         <CardContent className="pt-5">
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label>Categoria</Label>
+              <Label>{t('ticket.category')}</Label>
               <Select value={category} onValueChange={setCategory}>
                 <SelectTrigger className="h-11">
-                  <SelectValue placeholder="Selecione a categoria" />
+                  <SelectValue placeholder={t('ticket.categoryPlaceholder')} />
                 </SelectTrigger>
                 <SelectContent>
                   {categories.map((cat) => (
-                    <SelectItem key={cat} value={cat}>{cat}</SelectItem>
+                    <SelectItem key={cat.key} value={cat.key}>{cat.label}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
 
             <div className="space-y-2">
-              <Label>Descreva o problema</Label>
+              <Label>{t('ticket.description')}</Label>
               <Textarea
-                placeholder="Conte com detalhes o que está acontecendo..."
+                placeholder={t('ticket.descriptionPlaceholder')}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 className="min-h-[120px] resize-none"
@@ -139,7 +141,7 @@ export default function TicketPage() {
             </div>
 
             <div className="space-y-2">
-              <Label>Anexo (opcional)</Label>
+              <Label>{t('ticket.attachment')}</Label>
               <input
                 ref={fileInputRef}
                 type="file"
@@ -162,7 +164,7 @@ export default function TicketPage() {
                   className="w-full"
                 >
                   <Upload className="h-4 w-4" />
-                  Anexar arquivo
+                  {t('ticket.attachFile')}
                 </Button>
               )}
             </div>
@@ -175,10 +177,10 @@ export default function TicketPage() {
               {isSubmitting ? (
                 <>
                   <div className="h-4 w-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
-                  Enviando...
+                  {t('ticket.submitting')}
                 </>
               ) : (
-                'Enviar chamado'
+                t('ticket.submit')
               )}
             </Button>
           </form>

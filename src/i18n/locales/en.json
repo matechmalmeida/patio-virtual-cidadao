@@ -17,6 +17,7 @@
     "heroHighlight": "not in the yard.",
     "heroSubtitle": "Virtual Yard replaces vehicle towing. Resolve your issues from your phone and avoid towing fees, daily charges, and bureaucracy.",
     "accessCase": "Access my case",
+    "login": "Login",
     "howItWorks": "How it works",
     "advantages": "Advantages",
     "faq": "FAQ",
@@ -170,7 +171,11 @@
     "registered": "Payment registered!",
     "registeredText": "Your payment of <strong>R$ {{value}}</strong> for <strong>{{name}}</strong> was successfully registered.",
     "proofNote": "The receipt will be automatically verified. You'll be notified when it's approved.",
-    "backToPendencies": "Back to issues"
+    "backToPendencies": "Back to issues",
+    "pixCopied": "PIX code copied!",
+    "validationNote": "The receipt will be validated within 24h.",
+    "paymentError": "Error registering payment",
+    "tryAgainLater": "Please try again in a few moments."
   },
   "gps": {
     "title": "GPS Device Status",
@@ -224,6 +229,11 @@
     "types": "Notification types",
     "testButton": "Send test notification",
     "info": "Push notifications work even with the browser closed. You can disable them anytime in your device settings.",
+    "enabled": "Notifications enabled!",
+    "enabledDesc": "You'll receive alerts about your case progress.",
+    "testSent": "Test notification sent",
+    "testSentDesc": "Check your device's notification bar.",
+    "testBody": "Update on case {{code}}: your document was approved!",
     "typeLabels": {
       "statusChange": "Status change",
       "statusChangeDesc": "When the case status changes",
@@ -267,7 +277,182 @@
     "cancel": "Cancel",
     "save": "Save",
     "copied": "Copied!",
-    "openInMaps": "Open in Google Maps"
+    "openInMaps": "Open in Google Maps",
+    "loadError": "Failed to load content."
+  },
+  "otp": {
+    "title": "Verification",
+    "subtitle": "We sent a 6-digit code to",
+    "verify": "Verify code",
+    "resendIn": "Resend code in",
+    "resending": "Resending...",
+    "resend": "Resend code",
+    "errors": {
+      "incomplete": "Enter the full 6-digit code.",
+      "invalid": "Incorrect code. Check and try again.",
+      "generic": "Could not validate the code."
+    }
+  },
+  "scheduling": {
+    "title": "Scheduling",
+    "scheduleRemoval": "Schedule removal",
+    "loading": "Loading scheduling options...",
+    "cannotSchedule": "You can't schedule yet",
+    "cannotScheduleDesc": "Resolve all pending issues before scheduling the device removal.",
+    "whatToResolve": "What needs to be resolved:",
+    "goToPendencies": "Go to issues",
+    "chooseLocation": "Choose where to have the device removed:",
+    "chooseDate": "Choose the date:",
+    "availableSlots": "Available time slots:",
+    "noSlots": "No time slots available for this date.",
+    "confirm": "Confirm appointment",
+    "confirmError": "Could not confirm the appointment."
+  },
+  "schedulingConfirmation": {
+    "title": "Appointment confirmed!",
+    "subtitle": "Show up on the scheduled date and time.",
+    "appointmentCode": "Appointment code",
+    "location": "Location",
+    "date": "Date",
+    "time": "Time",
+    "bringOnDay": "Bring on the day:",
+    "bringId": "Photo ID (ID card or driver's license)",
+    "bringProof": "Appointment confirmation (this screen or the code)",
+    "viewRoute": "View route on Google Maps",
+    "addToCalendar": "Add to calendar",
+    "backToHome": "Back to home",
+    "notFound": "No appointment found."
+  },
+  "timeline": {
+    "title": "Process timeline",
+    "progress": "{{completed}} of {{total}} steps completed"
+  },
+  "history": {
+    "title": "Removal history",
+    "subtitle": "Active and previous removals linked to your account.",
+    "activeRemovals": "Active removals ({{count}})",
+    "code": "Code:",
+    "reason": "Reason:",
+    "since": "Since",
+    "previousRemovals": "Previous removals",
+    "noPrevious": "No previous removals.",
+    "finished": "Completed",
+    "loadError": "Could not load case history."
+  },
+  "support": {
+    "title": "Help & Support",
+    "openTicket": "Open ticket",
+    "openTicketDesc": "Talk to our team",
+    "caseHistory": "Case history",
+    "caseHistoryDesc": "View previous cases",
+    "logout": "Log out",
+    "logoutDesc": "End session",
+    "faq": "Frequently asked questions",
+    "searchPlaceholder": "Search questions...",
+    "results": "Results",
+    "noResults": "No questions found.",
+    "loadError": "Could not load frequently asked questions."
+  },
+  "ticket": {
+    "title": "Open ticket",
+    "subtitle": "Describe what's happening. We'll help as soon as possible.",
+    "category": "Category",
+    "categoryPlaceholder": "Select category",
+    "categories": {
+      "process": "Questions about the process",
+      "pendencies": "Issue with pending items",
+      "device": "Issue with the device",
+      "scheduling": "Scheduling",
+      "payment": "Payment",
+      "other": "Other"
+    },
+    "description": "Describe the problem",
+    "descriptionPlaceholder": "Tell us in detail what's happening...",
+    "attachment": "Attachment (optional)",
+    "attachFile": "Attach file",
+    "submitting": "Submitting...",
+    "submit": "Submit ticket",
+    "success": "Ticket opened!",
+    "successDesc": "We received your request. Our team will respond within 48 business hours.",
+    "protocol": "Protocol:",
+    "backToSupport": "Back to support"
+  },
+  "upload": {
+    "title": "Upload receipt",
+    "whatToInclude": "What the receipt should include",
+    "includeDate": "Payment date",
+    "includeAmount": "Amount paid",
+    "includeName": "Payer name or vehicle plate",
+    "includeAuth": "Proof of authenticity (stamp, barcode, etc.)",
+    "tapToSelect": "Tap to select",
+    "fileTypes": "Photo or PDF - Max. 10 MB",
+    "uploading": "Uploading...",
+    "submit": "Upload receipt",
+    "success": "Receipt uploaded!",
+    "successDesc": "We received your receipt for <strong>{{name}}</strong>. Our team will review it within 48 hours.",
+    "backToPendencies": "Back to issues",
+    "notFound": "Pending item not found.",
+    "uploadError": "Could not upload the receipt."
+  },
+  "term": {
+    "signSuccess": "Term signed successfully!",
+    "signSuccessDesc": "The {{title}} has been recorded.",
+    "signError": "Error signing term",
+    "signErrorDesc": "Could not sign the term right now.",
+    "notFound": "Term not found.",
+    "backToProcess": "Back to process",
+    "alreadySigned": "Term already signed",
+    "signedAt": "This term was signed on",
+    "scrollToRead": "Scroll to read the entire document",
+    "agreeLabel": "I declare that I have fully read the document above and agree with all terms and conditions set forth.",
+    "readFirst": "Read the document to the end to accept the terms.",
+    "signing": "Signing...",
+    "sign": "Sign term"
+  },
+  "install": {
+    "title": "Install app",
+    "appName": "Vehicle Removal",
+    "subtitle": "Install the portal on your phone to track the removal process quickly and conveniently.",
+    "quickAccess": "Quick access",
+    "quickAccessDesc": "Open directly from home screen, like an app",
+    "offline": "Works offline",
+    "offlineDesc": "View information even without internet",
+    "notificationsLabel": "Notifications",
+    "notificationsDesc": "Receive alerts about your process",
+    "fullscreen": "Full screen",
+    "fullscreenDesc": "Immersive experience without browser bar",
+    "alreadyInstalled": "App already installed!",
+    "alreadyInstalledDesc": "You can now access it from your phone's home screen.",
+    "installNow": "Install now",
+    "iosInstructions": "How to install on iPhone/iPad:",
+    "iosStep1Tap": "Tap",
+    "iosStep1Share": "Share",
+    "iosStep2Select": "Select",
+    "iosStep2Add": "Add to Home Screen",
+    "iosStep3Tap": "Tap",
+    "iosStep3Add": "Add",
+    "genericInstructions": "How to install:",
+    "genericDesc": "Access this site from your phone's browser (Chrome, Edge, or Samsung Internet) to see the install button. In the browser menu, look for \"Install app\" or \"Add to home screen\".",
+    "accessPortal": "Access portal via browser"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "backToHome": "Return to home"
+  },
+  "notificationsPage": {
+    "title": "Notifications",
+    "filterAll": "All",
+    "filterImportant": "Important",
+    "filterUnread": "Unread",
+    "empty": "No notifications found.",
+    "updateError": "Could not update the notification."
+  },
+  "seizure": {
+    "reason": "Seizure reason",
+    "location": "Seizure location:"
+  },
+  "vehicleCard": {
+    "code": "Code:"
   },
   "language": {
     "pt": "Português",

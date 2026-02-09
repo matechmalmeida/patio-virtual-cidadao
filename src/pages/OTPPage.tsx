@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -14,6 +15,7 @@ export default function OTPPage() {
   const [isResending, setIsResending] = useState(false);
   const { phone, verifyOTP, caseCode } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (!caseCode) {
@@ -34,7 +36,7 @@ export default function OTPPage() {
   const handleVerify = async () => {
     setError('');
     if (otp.length !== 6) {
-      setError('Digite o código completo de 6 dígitos.');
+      setError(t('otp.errors.incomplete'));
       return;
     }
 
@@ -43,11 +45,11 @@ export default function OTPPage() {
       if (success) {
         navigate('/dashboard', { replace: true });
       } else {
-        setError('Código incorreto. Verifique e tente novamente.');
+        setError(t('otp.errors.invalid'));
         setOtp('');
       }
     } catch (err) {
-      setError(getApiErrorMessage(err, 'Não foi possível validar o código.'));
+      setError(getApiErrorMessage(err, t('otp.errors.generic')));
       setOtp('');
     }
   };
@@ -71,15 +73,15 @@ export default function OTPPage() {
         className="self-start mb-6"
       >
         <ArrowLeft className="h-4 w-4 mr-1" />
-        Voltar
+        {t('common.back')}
       </Button>
 
       <Card className="max-w-md mx-auto w-full border-0 shadow-lg">
         <CardContent className="pt-6 space-y-6">
           <div className="text-center">
-            <h2 className="text-lg font-semibold">Verificação</h2>
+            <h2 className="text-lg font-semibold">{t('otp.title')}</h2>
             <p className="text-sm text-muted-foreground mt-1">
-              Enviamos um código de 6 dígitos para
+              {t('otp.subtitle')}
             </p>
             <p className="text-sm font-medium mt-0.5">{maskedPhone}</p>
           </div>
@@ -106,13 +108,13 @@ export default function OTPPage() {
             className="w-full h-12 text-base font-semibold"
             disabled={otp.length !== 6}
           >
-            Verificar código
+            {t('otp.verify')}
           </Button>
 
           <div className="text-center">
             {resendTimer > 0 ? (
               <p className="text-sm text-muted-foreground">
-                Reenviar código em <span className="font-semibold">{resendTimer}s</span>
+                {t('otp.resendIn')} <span className="font-semibold">{resendTimer}s</span>
               </p>
             ) : (
               <Button
@@ -122,7 +124,7 @@ export default function OTPPage() {
                 disabled={isResending}
               >
                 <RefreshCw className={`h-4 w-4 mr-1 ${isResending ? 'animate-spin' : ''}`} />
-                {isResending ? 'Reenviando...' : 'Reenviar código'}
+                {isResending ? t('otp.resending') : t('otp.resend')}
               </Button>
             )}
           </div>

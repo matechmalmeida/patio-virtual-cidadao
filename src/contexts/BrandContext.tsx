@@ -2,12 +2,12 @@ import {
   createContext,
   useContext,
   useEffect,
-  useState,
   type ReactNode,
 } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import type { BrandConfig, BrandColors } from '@/types/brand';
 import { getBrandConfig } from '@/services/brand.service';
-import { getApiErrorMessage } from '@/services/http/api-error';
+import { queryKeys } from '@/lib/query-keys';
 
 interface BrandContextType {
   brand: BrandConfig | null;
@@ -19,7 +19,6 @@ const BrandContext = createContext<BrandContextType>({
   isLoading: true,
 });
 
-/** Map of BrandColors keys → CSS custom property names */
 const COLOR_MAP: Record<keyof BrandColors, string> = {
   primary: '--primary',
   primaryForeground: '--primary-foreground',
@@ -58,10 +57,8 @@ function applyColors(colors: Partial<BrandColors>, target: HTMLElement) {
 function applyBrandToDOM(brand: BrandConfig) {
   const root = document.documentElement;
 
-  // Apply light mode colors to :root
   applyColors(brand.colors, root);
 
-  // Apply dark mode colors via a style tag
   if (Object.keys(brand.darkColors).length > 0) {
     let styleEl = document.getElementById('brand-dark-overrides');
     if (!styleEl) {
@@ -81,26 +78,21 @@ function applyBrandToDOM(brand: BrandConfig) {
     styleEl.textContent = `.dark {\n${darkVars}\n}`;
   }
 
-  // Update page title
   document.title = `${brand.appName} — ${brand.appSubtitle}`;
 
-  // Update theme-color meta tag
   const metaTheme = document.querySelector('meta[name="theme-color"]');
   if (metaTheme && brand.colors.primary) {
-    // Convert HSL string to actual color for meta tag
     metaTheme.setAttribute(
       'content',
       `hsl(${brand.colors.primary})`
     );
   }
 
-  // Update favicon if provided
   if (brand.faviconUrl) {
     const favicon = document.querySelector<HTMLLinkElement>('link[rel="icon"]');
     if (favicon) favicon.href = brand.faviconUrl;
   }
 
-  // Update apple-touch-icon if provided
   if (brand.pwaIcon192) {
     const appleIcon = document.querySelector<HTMLLinkElement>(
       'link[rel="apple-touch-icon"]'
@@ -110,23 +102,18 @@ function applyBrandToDOM(brand: BrandConfig) {
 }
 
 export function BrandProvider({ children }: { children: ReactNode }) {
-  const [brand, setBrand] = useState<BrandConfig | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { data: brand = null, isPending: isLoading } = useQuery({
+    queryKey: queryKeys.brand.config(),
+    queryFn: getBrandConfig,
+    staleTime: Infinity,
+    gcTime: Infinity,
+  });
 
   useEffect(() => {
-    getBrandConfig()
-      .then((config) => {
-        setBrand(config);
-        applyBrandToDOM(config);
-      })
-      .catch((err) => {
-        console.error('Failed to load brand config:', err);
-        console.error(getApiErrorMessage(err));
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-  }, []);
+    if (brand) {
+      applyBrandToDOM(brand);
+    }
+  }, [brand]);
 
   return (
     <BrandContext.Provider value={{ brand, isLoading }}>

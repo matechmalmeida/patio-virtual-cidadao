@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -24,6 +25,7 @@ import { AlertBanner } from '@/components/AlertBanner';
 import { getApiErrorMessage } from '@/services/http/api-error';
 
 export default function SupportPage() {
+  const { t } = useTranslation();
   const [search, setSearch] = useState('');
   const [faqItems, setFaqItems] = useState<FAQItem[]>([]);
   const [error, setError] = useState('');
@@ -39,7 +41,7 @@ export default function SupportPage() {
       })
       .catch((err) => {
         if (!isMounted) return;
-        setError(getApiErrorMessage(err, 'Não foi possível carregar as perguntas frequentes.'));
+        setError(getApiErrorMessage(err, t('support.loadError')));
       });
 
     return () => {
@@ -71,10 +73,10 @@ export default function SupportPage() {
         className="-ml-2"
       >
         <ArrowLeft className="h-4 w-4 mr-1" />
-        Voltar
+        {t('common.back')}
       </Button>
 
-      <h1 className="text-xl font-bold">Ajuda e Suporte</h1>
+      <h1 className="text-xl font-bold">{t('support.title')}</h1>
       {error && <AlertBanner variant="error">{error}</AlertBanner>}
 
       {/* Quick actions */}
@@ -86,8 +88,8 @@ export default function SupportPage() {
           <div className="flex items-center gap-3">
             <MessageSquare className="h-5 w-5 text-primary" />
             <div>
-              <p className="text-sm font-semibold">Abrir chamado</p>
-              <p className="text-xs text-muted-foreground">Fale com nossa equipe</p>
+              <p className="text-sm font-semibold">{t('support.openTicket')}</p>
+              <p className="text-xs text-muted-foreground">{t('support.openTicketDesc')}</p>
             </div>
           </div>
           <ChevronRight className="h-4 w-4 text-muted-foreground" />
@@ -100,8 +102,8 @@ export default function SupportPage() {
           <div className="flex items-center gap-3">
             <History className="h-5 w-5 text-muted-foreground" />
             <div>
-              <p className="text-sm font-semibold">Histórico de casos</p>
-              <p className="text-xs text-muted-foreground">Ver casos anteriores</p>
+              <p className="text-sm font-semibold">{t('support.caseHistory')}</p>
+              <p className="text-xs text-muted-foreground">{t('support.caseHistoryDesc')}</p>
             </div>
           </div>
           <ChevronRight className="h-4 w-4 text-muted-foreground" />
@@ -114,8 +116,8 @@ export default function SupportPage() {
           <div className="flex items-center gap-3">
             <LogOut className="h-5 w-5 text-destructive" />
             <div>
-              <p className="text-sm font-semibold text-destructive">Sair da conta</p>
-              <p className="text-xs text-muted-foreground">Encerrar sessão</p>
+              <p className="text-sm font-semibold text-destructive">{t('support.logout')}</p>
+              <p className="text-xs text-muted-foreground">{t('support.logoutDesc')}</p>
             </div>
           </div>
         </button>
@@ -125,20 +127,20 @@ export default function SupportPage() {
       <div className="space-y-3">
         <div className="flex items-center gap-2">
           <HelpCircle className="h-5 w-5 text-primary" />
-          <h2 className="text-base font-semibold">Perguntas frequentes</h2>
+          <h2 className="text-base font-semibold">{t('support.faq')}</h2>
         </div>
 
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           <Input
-            placeholder="Buscar pergunta..."
+            placeholder={t('support.searchPlaceholder')}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="pl-9 h-10"
           />
         </div>
 
-        {(search.trim() ? ['Resultados'] : categories).map((category) => {
+        {(search.trim() ? [t('support.results')] : categories).map((category) => {
           const items = search.trim()
             ? filteredFAQ
             : filteredFAQ.filter((f) => f.category === category);
@@ -168,7 +170,7 @@ export default function SupportPage() {
 
         {filteredFAQ.length === 0 && (
           <p className="text-sm text-muted-foreground text-center py-4">
-            Nenhuma pergunta encontrada.
+            {t('support.noResults')}
           </p>
         )}
       </div>

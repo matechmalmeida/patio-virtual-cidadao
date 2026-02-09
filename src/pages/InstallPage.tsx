@@ -2,6 +2,7 @@ import { usePWAInstall } from '@/hooks/usePWAInstall';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
   Download,
   Smartphone,
@@ -16,12 +17,13 @@ import {
 
 export default function InstallPage() {
   const { canInstall, isInstalled, isIOS, install } = usePWAInstall();
+  const { t } = useTranslation();
 
   const benefits = [
-    { icon: Zap, title: 'Acesso rápido', description: 'Abra direto da tela inicial, como um app' },
-    { icon: Wifi, title: 'Funciona offline', description: 'Consulte informações mesmo sem internet' },
-    { icon: Bell, title: 'Notificações', description: 'Receba alertas sobre seu processo' },
-    { icon: Smartphone, title: 'Tela cheia', description: 'Experiência imersiva sem barra do navegador' },
+    { icon: Zap, title: t('install.quickAccess'), description: t('install.quickAccessDesc') },
+    { icon: Wifi, title: t('install.offline'), description: t('install.offlineDesc') },
+    { icon: Bell, title: t('install.notificationsLabel'), description: t('install.notificationsDesc') },
+    { icon: Smartphone, title: t('install.fullscreen'), description: t('install.fullscreenDesc') },
   ];
 
   return (
@@ -32,7 +34,7 @@ export default function InstallPage() {
           <Link to="/" className="p-2 -ml-2 rounded-lg hover:bg-muted transition-colors">
             <ArrowLeft className="h-5 w-5" />
           </Link>
-          <h1 className="text-xl font-bold">Instalar aplicativo</h1>
+          <h1 className="text-xl font-bold">{t('install.title')}</h1>
         </div>
 
         {/* Hero */}
@@ -40,9 +42,9 @@ export default function InstallPage() {
           <div className="mx-auto w-20 h-20 rounded-2xl bg-primary/10 flex items-center justify-center">
             <Download className="h-10 w-10 text-primary" />
           </div>
-          <h2 className="text-lg font-semibold">Remoção Veicular</h2>
+          <h2 className="text-lg font-semibold">{t('install.appName')}</h2>
           <p className="text-sm text-muted-foreground">
-            Instale o portal no seu celular para acompanhar o processo de remoção de forma rápida e prática.
+            {t('install.subtitle')}
           </p>
         </div>
 
@@ -65,9 +67,9 @@ export default function InstallPage() {
             <CardContent className="p-5 flex items-center gap-3">
               <CheckCircle2 className="h-6 w-6 text-primary flex-shrink-0" />
               <div>
-                <p className="text-sm font-semibold">Aplicativo já instalado!</p>
+                <p className="text-sm font-semibold">{t('install.alreadyInstalled')}</p>
                 <p className="text-xs text-muted-foreground">
-                  Você já pode acessar pela tela inicial do seu celular.
+                  {t('install.alreadyInstalledDesc')}
                 </p>
               </div>
             </CardContent>
@@ -75,19 +77,19 @@ export default function InstallPage() {
         ) : canInstall ? (
           <Button onClick={install} className="w-full h-12 font-semibold text-base" size="lg">
             <Download className="h-5 w-5" />
-            Instalar agora
+            {t('install.installNow')}
           </Button>
         ) : isIOS ? (
           <Card className="border-0 shadow-md">
             <CardContent className="p-5 space-y-4">
-              <p className="text-sm font-semibold">Como instalar no iPhone/iPad:</p>
+              <p className="text-sm font-semibold">{t('install.iosInstructions')}</p>
               <ol className="space-y-3">
                 <li className="flex items-start gap-3">
                   <span className="flex-shrink-0 w-6 h-6 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-xs font-bold">
                     1
                   </span>
                   <div className="flex items-center gap-2 text-sm">
-                    Toque em <Share className="h-4 w-4 text-primary" /> <strong>Compartilhar</strong>
+                    {t('install.iosStep1Tap')} <Share className="h-4 w-4 text-primary" /> <strong>{t('install.iosStep1Share')}</strong>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
@@ -95,8 +97,8 @@ export default function InstallPage() {
                     2
                   </span>
                   <div className="flex items-center gap-2 text-sm">
-                    Selecione <PlusSquare className="h-4 w-4 text-primary" />{' '}
-                    <strong>Adicionar à Tela de Início</strong>
+                    {t('install.iosStep2Select')} <PlusSquare className="h-4 w-4 text-primary" />{' '}
+                    <strong>{t('install.iosStep2Add')}</strong>
                   </div>
                 </li>
                 <li className="flex items-start gap-3">
@@ -104,7 +106,7 @@ export default function InstallPage() {
                     3
                   </span>
                   <p className="text-sm">
-                    Toque em <strong>Adicionar</strong>
+                    {t('install.iosStep3Tap')} <strong>{t('install.iosStep3Add')}</strong>
                   </p>
                 </li>
               </ol>
@@ -113,9 +115,9 @@ export default function InstallPage() {
         ) : (
           <Card className="border-0 shadow-md">
             <CardContent className="p-5 space-y-2">
-              <p className="text-sm font-semibold">Como instalar:</p>
+              <p className="text-sm font-semibold">{t('install.genericInstructions')}</p>
               <p className="text-xs text-muted-foreground">
-                Acesse este site pelo navegador do seu celular (Chrome, Edge ou Samsung Internet) para ver o botão de instalação. No menu do navegador, procure por "Instalar aplicativo" ou "Adicionar à tela inicial".
+                {t('install.genericDesc')}
               </p>
             </CardContent>
           </Card>
@@ -124,7 +126,7 @@ export default function InstallPage() {
         {/* CTA back */}
         <div className="text-center pt-2">
           <Link to="/acesso" className="text-sm text-primary font-medium hover:underline">
-            Acessar o portal pelo navegador →
+            {t('install.accessPortal')} →
           </Link>
         </div>
       </div>

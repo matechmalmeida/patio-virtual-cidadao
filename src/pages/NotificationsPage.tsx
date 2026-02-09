@@ -8,12 +8,14 @@ import { cn } from '@/lib/utils';
 import { markNotificationAsRead } from '@/services/case.service';
 import { getApiErrorMessage } from '@/services/http/api-error';
 import { AlertBanner } from '@/components/AlertBanner';
+import { useTranslation } from 'react-i18next';
 
 type Filter = 'todos' | 'importantes' | 'pendentes';
 
 export default function NotificationsPage() {
   const { currentCase, updateCase } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [filter, setFilter] = useState<Filter>('todos');
   const [error, setError] = useState('');
 
@@ -27,7 +29,7 @@ export default function NotificationsPage() {
       const updated = await markNotificationAsRead(currentCase, id);
       updateCase(currentCase.id, { notifications: updated });
     } catch (err) {
-      setError(getApiErrorMessage(err, 'Não foi possível atualizar a notificação.'));
+      setError(getApiErrorMessage(err, t('notificationsPage.updateError')));
     }
   };
 
@@ -38,9 +40,9 @@ export default function NotificationsPage() {
   });
 
   const filters: { key: Filter; label: string }[] = [
-    { key: 'todos', label: 'Todos' },
-    { key: 'importantes', label: 'Importantes' },
-    { key: 'pendentes', label: 'Não lidos' },
+    { key: 'todos', label: t('notificationsPage.filterAll') },
+    { key: 'importantes', label: t('notificationsPage.filterImportant') },
+    { key: 'pendentes', label: t('notificationsPage.filterUnread') },
   ];
 
   return (
@@ -52,10 +54,10 @@ export default function NotificationsPage() {
         className="-ml-2"
       >
         <ArrowLeft className="h-4 w-4 mr-1" />
-        Voltar
+        {t('common.back')}
       </Button>
 
-      <h1 className="text-xl font-bold">Notificações</h1>
+      <h1 className="text-xl font-bold">{t('notificationsPage.title')}</h1>
 
       {error && <AlertBanner variant="error">{error}</AlertBanner>}
 
@@ -81,7 +83,7 @@ export default function NotificationsPage() {
       <div className="space-y-3">
         {filtered.length === 0 ? (
           <div className="text-center py-8 text-sm text-muted-foreground">
-            Nenhuma notificação encontrada.
+            {t('notificationsPage.empty')}
           </div>
         ) : (
           filtered.map((notification) => (

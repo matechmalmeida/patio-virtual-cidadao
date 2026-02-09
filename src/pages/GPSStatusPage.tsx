@@ -7,6 +7,7 @@ import { AlertBanner } from '@/components/AlertBanner';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import {
   ArrowLeft,
   Satellite,
@@ -69,20 +70,21 @@ function formatTimeFull(isoString: string) {
   });
 }
 
-function getTimeAgo(isoString: string) {
+function getTimeAgo(isoString: string, t: (key: string, options?: Record<string, unknown>) => string) {
   const diff = Date.now() - new Date(isoString).getTime();
   const minutes = Math.floor(diff / 60000);
-  if (minutes < 1) return 'Agora mesmo';
-  if (minutes < 60) return `Há ${minutes} min`;
+  if (minutes < 1) return t('gps.timeAgo.now');
+  if (minutes < 60) return t('gps.timeAgo.minutes', { count: minutes });
   const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `Há ${hours}h`;
+  if (hours < 24) return t('gps.timeAgo.hours', { count: hours });
   const days = Math.floor(hours / 24);
-  return `Há ${days} dia${days > 1 ? 's' : ''}`;
+  return t('gps.timeAgo.days', { count: days });
 }
 
 export default function GPSStatusPage() {
   const navigate = useNavigate();
   const { currentCase } = useAuth();
+  const { t } = useTranslation();
   const [gpsData, setGpsData] = useState<GPSDeviceData | null>(null);
   const [error, setError] = useState('');
 
@@ -118,21 +120,21 @@ export default function GPSStatusPage() {
   if (!gpsData) {
     return (
       <div className="px-4 py-5">
-        <AlertBanner variant="info">Carregando status do dispositivo...</AlertBanner>
+        <AlertBanner variant="info">{t('common.loading')}</AlertBanner>
       </div>
     );
   }
 
   const statusConfig = {
-    ativo: { label: 'Ativo', variant: 'default' as const, className: 'bg-success text-success-foreground' },
-    inativo: { label: 'Inativo', variant: 'secondary' as const, className: 'bg-muted text-muted-foreground' },
-    alerta: { label: 'Alerta', variant: 'destructive' as const, className: 'bg-destructive text-destructive-foreground' },
+    ativo: { label: t('gps.active'), variant: 'default' as const, className: 'bg-success text-success-foreground' },
+    inativo: { label: t('gps.inactive'), variant: 'secondary' as const, className: 'bg-muted text-muted-foreground' },
+    alerta: { label: t('gps.alert'), variant: 'destructive' as const, className: 'bg-destructive text-destructive-foreground' },
   };
 
   const signalConfig = {
-    forte: { label: 'Forte', bars: 3 },
-    moderado: { label: 'Moderado', bars: 2 },
-    fraco: { label: 'Fraco', bars: 1 },
+    forte: { label: t('gps.signalStrong'), bars: 3 },
+    moderado: { label: t('gps.signalModerate'), bars: 2 },
+    fraco: { label: t('gps.signalWeak'), bars: 1 },
   };
 
   const status = statusConfig[gpsData.status];
@@ -146,24 +148,23 @@ export default function GPSStatusPage() {
     <div className="px-4 py-5 space-y-5">
       <Button variant="ghost" size="sm" onClick={() => navigate(-1)} className="-ml-2">
         <ArrowLeft className="h-4 w-4 mr-1" />
-        Voltar
+        {t('common.back')}
       </Button>
 
       <div>
         <h1 className="text-xl font-bold flex items-center gap-2">
           <Satellite className="h-5 w-5 text-primary" />
-          Status do Dispositivo GPS
+          {t('gps.title')}
         </h1>
         <p className="text-sm text-muted-foreground mt-1">
-          Monitoramento em tempo real do dispositivo instalado no {currentCase.vehicle}.
+          {t('gps.subtitle', { vehicle: currentCase.vehicle })}
         </p>
       </div>
 
       {/* Movement alert */}
       {hasMovementAlert && (
-        <AlertBanner variant="error" title="Movimentação detectada">
-          Foi registrada uma movimentação do veículo. O veículo deve permanecer estacionado durante
-          todo o processo.
+        <AlertBanner variant="error" title={t('gps.movementDetected')}>
+          {t('gps.movementWarning')}
         </AlertBanner>
       )}
 
@@ -172,7 +173,7 @@ export default function GPSStatusPage() {
         <CardContent className="pt-5 space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs text-muted-foreground">Dispositivo</p>
+              <p className="text-xs text-muted-foreground">{t('gps.device')}</p>
               <p className="text-sm font-semibold font-mono">{gpsData.deviceId}</p>
             </div>
             <Badge className={status.className}>{status.label}</Badge>
@@ -183,7 +184,7 @@ export default function GPSStatusPage() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <BatteryIcon level={gpsData.batteryLevel} />
-                <span className="text-sm font-medium">Bateria</span>
+                <span className="text-sm font-medium">{t('gps.battery')}</span>
               </div>
               <span className="text-sm font-bold">{gpsData.batteryLevel}%</span>
             </div>
@@ -197,7 +198,7 @@ export default function GPSStatusPage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Signal className="h-5 w-5 text-primary" />
-              <span className="text-sm font-medium">Sinal</span>
+              <span className="text-sm font-medium">{t('gps.signal')}</span>
             </div>
             <div className="flex items-center gap-1.5">
               <div className="flex items-end gap-0.5 h-4">
@@ -219,10 +220,10 @@ export default function GPSStatusPage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Activity className="h-5 w-5 text-primary" />
-              <span className="text-sm font-medium">Última transmissão</span>
+              <span className="text-sm font-medium">{t('gps.lastTransmission')}</span>
             </div>
             <span className="text-xs text-muted-foreground">
-              {getTimeAgo(gpsData.lastTransmission)}
+              {getTimeAgo(gpsData.lastTransmission, t)}
             </span>
           </div>
 
@@ -230,7 +231,7 @@ export default function GPSStatusPage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <Zap className="h-5 w-5 text-primary" />
-              <span className="text-sm font-medium">Instalado em</span>
+              <span className="text-sm font-medium">{t('gps.installedAt')}</span>
             </div>
             <span className="text-xs text-muted-foreground">
               {formatTimeFull(gpsData.installedAt)}
@@ -242,7 +243,7 @@ export default function GPSStatusPage() {
       {/* Location */}
       <Card className="border-0 shadow-md">
         <CardContent className="pt-5">
-          <h2 className="text-base font-semibold mb-4">Localização atual</h2>
+          <h2 className="text-base font-semibold mb-4">{t('gps.currentLocation')}</h2>
           <LocationMap location={gpsData.location} />
         </CardContent>
       </Card>
@@ -252,7 +253,7 @@ export default function GPSStatusPage() {
         <CardContent className="pt-5">
           <h2 className="text-base font-semibold mb-4 flex items-center gap-2">
             <Clock className="h-4 w-4 text-primary" />
-            Histórico de transmissões
+            {t('gps.transmissionHistory')}
           </h2>
           <div className="space-y-1">
             {gpsData.transmissionHistory.map((tx) => {
@@ -274,7 +275,7 @@ export default function GPSStatusPage() {
                     </p>
                     {tx.speed > 0 && (
                       <p className="text-xs text-destructive font-medium">
-                        Velocidade: {tx.speed} km/h
+                        {t('gps.speed', { speed: tx.speed })}
                       </p>
                     )}
                   </div>
@@ -290,7 +291,7 @@ export default function GPSStatusPage() {
 
       {/* Firmware info */}
       <div className="text-center text-xs text-muted-foreground py-2">
-        Firmware {gpsData.firmwareVersion} • Atualização a cada 30 min
+        {t('gps.firmwareInfo', { version: gpsData.firmwareVersion })}
       </div>
     </div>
   );

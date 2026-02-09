@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -17,6 +18,7 @@ import { signTerm } from '@/services/case.service';
 import { getApiErrorMessage } from '@/services/http/api-error';
 
 export default function TermSigningPage() {
+  const { t } = useTranslation();
   const { termId } = useParams<{ termId: string }>();
   const navigate = useNavigate();
   const { currentCase, updateCase } = useAuth();
@@ -60,8 +62,8 @@ export default function TermSigningPage() {
         updateCase(currentCase.id, { terms: updatedTerms });
 
         toast({
-          title: 'Termo assinado com sucesso!',
-          description: `O ${term.title} foi registrado.`,
+          title: t('term.signSuccess'),
+          description: t('term.signSuccessDesc', { title: term.title }),
         });
 
         setIsSigning(false);
@@ -69,8 +71,8 @@ export default function TermSigningPage() {
       })
       .catch((err) => {
         toast({
-          title: 'Erro ao assinar termo',
-          description: getApiErrorMessage(err, 'Não foi possível assinar o termo agora.'),
+          title: t('term.signError'),
+          description: getApiErrorMessage(err, t('term.signErrorDesc')),
           variant: 'destructive',
         });
         setIsSigning(false);
@@ -80,9 +82,9 @@ export default function TermSigningPage() {
   if (!currentCase || !term) {
     return (
       <div className="px-4 py-8 text-center">
-        <p className="text-muted-foreground">Termo não encontrado.</p>
+        <p className="text-muted-foreground">{t('term.notFound')}</p>
         <Button variant="outline" className="mt-4" onClick={() => navigate('/dashboard')}>
-          Voltar ao processo
+          {t('term.backToProcess')}
         </Button>
       </div>
     );
@@ -97,11 +99,11 @@ export default function TermSigningPage() {
           className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
         >
           <ArrowLeft className="h-4 w-4" />
-          Voltar
+          {t('common.back')}
         </button>
 
-        <AlertBanner variant="success" title="Termo já assinado">
-          Este termo foi assinado em{' '}
+        <AlertBanner variant="success" title={t('term.alreadySigned')}>
+          {t('term.signedAt')}{' '}
           {new Date(term.signedAt!).toLocaleDateString('pt-BR', {
             day: '2-digit',
             month: '2-digit',
@@ -136,7 +138,7 @@ export default function TermSigningPage() {
           className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
         >
           <ArrowLeft className="h-4 w-4" />
-          Voltar
+          {t('common.back')}
         </button>
         <h1 className="text-lg font-bold flex items-center gap-2">
           <ScrollText className="h-5 w-5 text-primary" />
@@ -171,7 +173,7 @@ export default function TermSigningPage() {
               <div className="h-16 w-full bg-gradient-to-t from-card to-transparent" />
               <div className="flex items-center gap-1.5 text-xs text-primary font-medium animate-bounce bg-card px-3 py-1.5 rounded-full shadow-sm">
                 <ChevronDown className="h-3.5 w-3.5" />
-                Role para ler todo o documento
+                {t('term.scrollToRead')}
               </div>
             </div>
           )}
@@ -194,14 +196,13 @@ export default function TermSigningPage() {
             className="mt-0.5"
           />
           <span className="text-sm leading-snug">
-            Declaro que li integralmente o documento acima e concordo com todos os termos e
-            condições estabelecidos.
+            {t('term.agreeLabel')}
           </span>
         </label>
 
         {!hasScrolledToEnd && (
           <p className="text-xs text-muted-foreground text-center">
-            Leia o documento até o final para poder aceitar os termos.
+            {t('term.readFirst')}
           </p>
         )}
 
@@ -213,12 +214,12 @@ export default function TermSigningPage() {
           {isSigning ? (
             <>
               <div className="h-4 w-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
-              Assinando...
+              {t('term.signing')}
             </>
           ) : (
             <>
               <CheckCircle2 className="h-5 w-5" />
-              Assinar termo
+              {t('term.sign')}
             </>
           )}
         </Button>

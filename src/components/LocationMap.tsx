@@ -24,7 +24,7 @@ export function LocationMap({ location }: LocationMapProps) {
 
       <div className="rounded-xl overflow-hidden border h-40">
         <iframe
-          title="Localização do veículo"
+          title={t('dashboard.vehicleLocation')}
           src={embedUrl}
           className="w-full h-full"
           loading="lazy"

@@ -1,9 +1,9 @@
 import type { CaseData } from '@/types/case';
 import { Card, CardContent } from '@/components/ui/card';
 import { StatusBadge } from '@/components/StatusBadge';
-import { statusLabels } from '@/data/statusConfig';
 import { Car, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useTranslation } from 'react-i18next';
 
 interface VehicleCardProps {
   caseData: CaseData;
@@ -13,6 +13,8 @@ interface VehicleCardProps {
 }
 
 export function VehicleCard({ caseData, isSelected, onClick, compact }: VehicleCardProps) {
+  const { t } = useTranslation();
+
   return (
     <Card
       className={cn(
@@ -40,7 +42,7 @@ export function VehicleCard({ caseData, isSelected, onClick, compact }: VehicleC
               </span>
               <StatusBadge
                 status={caseData.status}
-                label={statusLabels[caseData.status]}
+                label={t('status.' + caseData.status)}
               />
             </div>
             <p className="text-xs text-muted-foreground truncate">
@@ -48,7 +50,7 @@ export function VehicleCard({ caseData, isSelected, onClick, compact }: VehicleC
             </p>
             {!compact && (
               <p className="text-[11px] text-muted-foreground/70 mt-0.5">
-                Código: {caseData.code}
+                {t('vehicleCard.code')} {caseData.code}
               </p>
             )}
           </div>

@@ -1,5 +1,7 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { useQuery } from '@tanstack/react-query';
 import { useAuth } from '@/contexts/AuthContext';
 import { AlertBanner } from '@/components/AlertBanner';
 import { Button } from '@/components/ui/button';
@@ -20,44 +22,28 @@ import type { ScheduleLocation, ScheduleSlot } from '@/types/case';
 import { createAppointment } from '@/services/case.service';
 import { getScheduleLocations, getScheduleSlots } from '@/services/schedule.service';
 import { getApiErrorMessage } from '@/services/http/api-error';
+import { queryKeys } from '@/lib/query-keys';
 
 export default function SchedulingPage() {
   const { currentCase, updateCase } = useAuth();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
-  const [locations, setLocations] = useState<ScheduleLocation[]>([]);
-  const [slots, setSlots] = useState<ScheduleSlot[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { data: locations = [], isPending: isLocationsLoading } = useQuery<ScheduleLocation[]>({
+    queryKey: queryKeys.schedule.locations(),
+    queryFn: getScheduleLocations,
+  });
+  const { data: slots = [], isPending: isSlotsLoading } = useQuery<ScheduleSlot[]>({
+    queryKey: queryKeys.schedule.slots(),
+    queryFn: getScheduleSlots,
+  });
+  const isLoading = isLocationsLoading || isSlotsLoading;
+
   const [error, setError] = useState('');
   const [selectedLocation, setSelectedLocation] = useState<ScheduleLocation | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
   const [step, setStep] = useState<'location' | 'datetime'>('location');
-
-  useEffect(() => {
-    let isMounted = true;
-    setIsLoading(true);
-    setError('');
-
-    Promise.all([getScheduleLocations(), getScheduleSlots()])
-      .then(([loadedLocations, loadedSlots]) => {
-        if (!isMounted) return;
-        setLocations(loadedLocations);
-        setSlots(loadedSlots);
-      })
-      .catch((err) => {
-        if (!isMounted) return;
-        setError(getApiErrorMessage(err, 'Não foi possível carregar os horários de agendamento.'));
-      })
-      .finally(() => {
-        if (!isMounted) return;
-        setIsLoading(false);
-      });
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
 
   const availableSlots = useMemo(() => {
     if (!selectedDate) return [];
@@ -88,7 +74,7 @@ export default function SchedulingPage() {
       updateCase(currentCase.id, result);
       navigate('/agendamento/confirmacao');
     } catch (err) {
-      setError(getApiErrorMessage(err, 'Não foi possível confirmar o agendamento.'));
+      setError(getApiErrorMessage(err, t('scheduling.confirmError')));
     }
   };
 
@@ -102,18 +88,18 @@ export default function SchedulingPage() {
           className="-ml-2"
         >
           <ArrowLeft className="h-4 w-4 mr-1" />
-          Voltar
+          {t('common.back')}
         </Button>
 
-        <h1 className="text-xl font-bold">Agendamento</h1>
+        <h1 className="text-xl font-bold">{t('scheduling.title')}</h1>
 
-        <AlertBanner variant="warning" title="Você ainda não pode agendar">
-          Resolva todas as pendências antes de agendar a retirada do dispositivo.
+        <AlertBanner variant="warning" title={t('scheduling.cannotSchedule')}>
+          {t('scheduling.cannotScheduleDesc')}
         </AlertBanner>
 
         <Card className="border-0 shadow-md">
           <CardContent className="pt-5 space-y-3">
-            <h3 className="text-sm font-semibold">O que falta resolver:</h3>
+            <h3 className="text-sm font-semibold">{t('scheduling.whatToResolve')}</h3>
             {pendingItems.map((item) => (
               <div
                 key={item.id}
@@ -130,7 +116,7 @@ export default function SchedulingPage() {
               onClick={() => navigate('/pendencias')}
               className="w-full mt-2"
             >
-              Ir para pendências
+              {t('scheduling.goToPendencies')}
             </Button>
           </CardContent>
         </Card>
@@ -150,17 +136,17 @@ export default function SchedulingPage() {
         className="-ml-2"
       >
         <ArrowLeft className="h-4 w-4 mr-1" />
-        Voltar
+        {t('common.back')}
       </Button>
 
-      <h1 className="text-xl font-bold">Agendar retirada</h1>
+      <h1 className="text-xl font-bold">{t('scheduling.scheduleRemoval')}</h1>
       {error && <AlertBanner variant="error">{error}</AlertBanner>}
-      {isLoading && <AlertBanner variant="info">Carregando opções de agendamento...</AlertBanner>}
+      {isLoading && <AlertBanner variant="info">{t('scheduling.loading')}</AlertBanner>}
 
       {step === 'location' && (
         <div className="space-y-4">
           <p className="text-sm text-muted-foreground">
-            Escolha o local onde você vai retirar o dispositivo:
+            {t('scheduling.chooseLocation')}
           </p>
 
           <div className="space-y-3">
@@ -201,7 +187,7 @@ export default function SchedulingPage() {
           )}
 
           <div>
-            <h3 className="text-sm font-semibold mb-3">Escolha a data:</h3>
+            <h3 className="text-sm font-semibold mb-3">{t('scheduling.chooseDate')}</h3>
             <Card className="border-0 shadow-md">
               <CardContent className="pt-4 flex justify-center">
                 <Calendar
@@ -225,11 +211,11 @@ export default function SchedulingPage() {
 
           {selectedDate && (
             <div>
-              <h3 className="text-sm font-semibold mb-3">Horários disponíveis:</h3>
+              <h3 className="text-sm font-semibold mb-3">{t('scheduling.availableSlots')}</h3>
               <div className="grid grid-cols-3 gap-2">
                 {availableSlots.length === 0 ? (
                   <p className="col-span-3 text-sm text-muted-foreground py-4 text-center">
-                    Nenhum horário disponível nesta data.
+                    {t('scheduling.noSlots')}
                   </p>
                 ) : (
                   availableSlots.map((slot) => (
@@ -267,7 +253,7 @@ export default function SchedulingPage() {
               className="w-full h-12 font-semibold"
             >
               <CheckCircle2 className="h-4 w-4" />
-              Confirmar agendamento
+              {t('scheduling.confirm')}
             </Button>
           )}
         </div>
