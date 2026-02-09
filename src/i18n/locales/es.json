@@ -201,7 +201,21 @@
     "support": "Soporte",
     "newAlert_one": "{{count}} aviso nuevo",
     "newAlert_other": "{{count}} avisos nuevos",
-    "pendingTerm": "Firma pendiente — toca para leer y firmar"
+    "pendingTerm": "Firma pendiente — toca para leer y firmar",
+    "step_em_deslocamento": "Traslado",
+    "step_custodia_domiciliar": "Custodia",
+    "step_pendencias_regularizar": "Pendientes",
+    "step_aguardando_validacao": "Validacion",
+    "step_apto_retirada": "Listo",
+    "step_aguardando_retirada": "Remocion",
+    "step_finalizado": "Finalizado",
+    "processProgress": "Progreso del proceso",
+    "pendenciesResolved": "Pendientes",
+    "documentsToSignShort": "Documentos",
+    "unreadNotifications": "Notificaciones",
+    "pendenciesOverview": "Tus pendientes",
+    "viewAll": "Ver todos",
+    "resolved": "resueltas"
   },
   "status": {
     "em_deslocamento": "En tránsito",

@@ -134,7 +134,7 @@ export default function ProcessDetailPage() {
         </button>
 
         <button
-          onClick={() => navigate('/documentos')}
+          onClick={() => navigate('/app/documentos')}
           className="flex items-center justify-between w-full p-4 rounded-xl bg-card border hover:bg-muted/50 transition-colors text-left"
         >
           <div className="flex items-center gap-3">

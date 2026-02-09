@@ -108,7 +108,7 @@ const App = () => (
 
                   {/* Protected routes */}
                   <Route element={routeElement(<AppLayout />)}>
-                    <Route path="/dashboard" element={routeElement(<DashboardPage />)} />
+                    <Route path="/app/dashboard" element={routeElement(<DashboardPage />)} />
                     <Route path="/timeline" element={routeElement(<TimelinePage />)} />
                     <Route path="/app/process" element={routeElement(<ProcessListPage />)} />
                     <Route path="/app/process/:id" element={routeElement(<ProcessDetailPage />)} />
@@ -128,8 +128,8 @@ const App = () => (
                       path="/app/process/:id/pendencias/:pendencyId/pagamento"
                       element={routeElement(<PaymentPage />)}
                     />
-                    <Route path="/documentos" element={routeElement(<DocumentListPage />)} />
-                    <Route path="/documentos/:termId" element={routeElement(<DocumentSigningPage />)} />
+                    <Route path="/app/documentos" element={routeElement(<DocumentListPage />)} />
+                    <Route path="/app/documentos/:termId" element={routeElement(<DocumentSigningPage />)} />
                     <Route path="/app/notifications" element={routeElement(<NotificationsPage />)} />
                     <Route path="/agendamento" element={routeElement(<SchedulingPage />)} />
                     <Route

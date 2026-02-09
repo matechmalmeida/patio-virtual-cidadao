@@ -201,7 +201,21 @@
     "support": "Suporte",
     "newAlert_one": "{{count}} aviso novo",
     "newAlert_other": "{{count}} avisos novos",
-    "pendingTerm": "Assinatura pendente — toque para ler e assinar"
+    "pendingTerm": "Assinatura pendente — toque para ler e assinar",
+    "step_em_deslocamento": "Deslocamento",
+    "step_custodia_domiciliar": "Custodia",
+    "step_pendencias_regularizar": "Pendencias",
+    "step_aguardando_validacao": "Validacao",
+    "step_apto_retirada": "Apto",
+    "step_aguardando_retirada": "Retirada",
+    "step_finalizado": "Finalizado",
+    "processProgress": "Progresso do processo",
+    "pendenciesResolved": "Pendencias",
+    "documentsToSignShort": "Documentos",
+    "unreadNotifications": "Notificacoes",
+    "pendenciesOverview": "Suas pendencias",
+    "viewAll": "Ver todas",
+    "resolved": "resolvidas"
   },
   "status": {
     "em_deslocamento": "Em deslocamento",

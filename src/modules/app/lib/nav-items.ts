@@ -7,8 +7,8 @@ export interface NavItem {
 }
 
 export const navItems: NavItem[] = [
-  { to: '/dashboard', labelKey: 'nav.process', icon: Home },
-  { to: '/documentos', labelKey: 'nav.documents', icon: ScrollText },
+  { to: '/app/dashboard', labelKey: 'nav.process', icon: Home },
+  { to: '/app/documentos', labelKey: 'nav.documents', icon: ScrollText },
   { to: '/app/process', labelKey: 'nav.processes', icon: ClipboardList },
   { to: '/app/notifications', labelKey: 'nav.alerts', icon: Bell },
   { to: '/app/profile', labelKey: 'nav.profile', icon: User },

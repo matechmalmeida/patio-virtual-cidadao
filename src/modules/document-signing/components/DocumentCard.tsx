@@ -62,7 +62,7 @@ export function DocumentCard({ term, className }: DocumentCardProps) {
         <Button
           size="sm"
           className="w-full text-xs"
-          onClick={() => navigate(`/documentos/${term.id}`)}
+          onClick={() => navigate(`/app/documentos/${term.id}`)}
         >
           <CheckCircle2 className="h-3.5 w-3.5" />
           {t('document.sign')}

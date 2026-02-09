@@ -201,7 +201,21 @@
     "support": "Support",
     "newAlert_one": "{{count}} new alert",
     "newAlert_other": "{{count}} new alerts",
-    "pendingTerm": "Signature pending — tap to read and sign"
+    "pendingTerm": "Signature pending — tap to read and sign",
+    "step_em_deslocamento": "Transit",
+    "step_custodia_domiciliar": "Custody",
+    "step_pendencias_regularizar": "Issues",
+    "step_aguardando_validacao": "Validation",
+    "step_apto_retirada": "Ready",
+    "step_aguardando_retirada": "Removal",
+    "step_finalizado": "Done",
+    "processProgress": "Process progress",
+    "pendenciesResolved": "Issues",
+    "documentsToSignShort": "Documents",
+    "unreadNotifications": "Notifications",
+    "pendenciesOverview": "Your issues",
+    "viewAll": "View all",
+    "resolved": "resolved"
   },
   "status": {
     "em_deslocamento": "In transit",

@@ -66,7 +66,7 @@ export default function DocumentSigningPage() {
         });
 
         setIsSigning(false);
-        navigate('/documentos');
+        navigate('/app/documentos');
       })
       .catch((err) => {
         toast({
@@ -82,7 +82,7 @@ export default function DocumentSigningPage() {
     return (
       <div className="px-4 py-8 text-center">
         <p className="text-muted-foreground">{t('term.notFound')}</p>
-        <Button variant="outline" className="mt-4" onClick={() => navigate('/documentos')}>
+        <Button variant="outline" className="mt-4" onClick={() => navigate('/app/documentos')}>
           {t('term.backToProcess')}
         </Button>
       </div>
@@ -93,7 +93,7 @@ export default function DocumentSigningPage() {
     return (
       <div className="px-4 py-5 space-y-5">
         <button
-          onClick={() => navigate('/documentos')}
+          onClick={() => navigate('/app/documentos')}
           className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
         >
           <ArrowLeft className="h-4 w-4" />
@@ -131,7 +131,7 @@ export default function DocumentSigningPage() {
     <div className="px-4 py-5 space-y-5">
       <div className="space-y-1">
         <button
-          onClick={() => navigate('/documentos')}
+          onClick={() => navigate('/app/documentos')}
           className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
         >
           <ArrowLeft className="h-4 w-4" />
