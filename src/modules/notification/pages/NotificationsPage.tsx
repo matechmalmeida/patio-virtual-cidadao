@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { useNotifications } from '../hooks/useNotifications';
 import { NotificationItem } from '../components/NotificationItem';
+import { BatchActionBar } from '../components/BatchActionBar';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, CheckSquare, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { getApiErrorMessage } from '@/services/http/api-error';
@@ -12,11 +13,24 @@ import { useTranslation } from 'react-i18next';
 type Filter = 'todos' | 'importantes' | 'pendentes';
 
 export default function NotificationsPage() {
-  const { markAsRead, getFiltered } = useNotifications();
+  const {
+    markAsRead,
+    markAllAsRead,
+    deleteNotification,
+    markBatchAsRead,
+    deleteBatch,
+    getFiltered,
+    unreadCount,
+  } = useNotifications();
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [filter, setFilter] = useState<Filter>('todos');
   const [error, setError] = useState('');
+  const [selectionMode, setSelectionMode] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  const [loading, setLoading] = useState(false);
+
+  const filtered = getFiltered(filter);
 
   const handleMarkRead = async (id: string) => {
     setError('');
@@ -27,7 +41,86 @@ export default function NotificationsPage() {
     }
   };
 
-  const filtered = getFiltered(filter);
+  const handleDelete = async (id: string) => {
+    setError('');
+    try {
+      await deleteNotification(id);
+      setSelectedIds((prev) => {
+        const next = new Set(prev);
+        next.delete(id);
+        return next;
+      });
+    } catch (err) {
+      setError(getApiErrorMessage(err, t('notificationsPage.deleteError')));
+    }
+  };
+
+  const handleMarkAllAsRead = async () => {
+    setError('');
+    try {
+      await markAllAsRead();
+    } catch (err) {
+      setError(getApiErrorMessage(err, t('notificationsPage.batchError')));
+    }
+  };
+
+  const handleFilterChange = (f: Filter) => {
+    setFilter(f);
+    setSelectedIds(new Set());
+  };
+
+  const toggleSelect = useCallback((id: string) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }, []);
+
+  const selectAll = () => {
+    setSelectedIds(new Set(filtered.map((n) => n.id)));
+  };
+
+  const deselectAll = () => {
+    setSelectedIds(new Set());
+  };
+
+  const exitSelectionMode = () => {
+    setSelectionMode(false);
+    setSelectedIds(new Set());
+  };
+
+  const hasUnreadInSelection = useMemo(
+    () => filtered.some((n) => selectedIds.has(n.id) && !n.read),
+    [filtered, selectedIds]
+  );
+
+  const handleBatchMarkRead = async () => {
+    setError('');
+    setLoading(true);
+    try {
+      await markBatchAsRead(Array.from(selectedIds));
+      exitSelectionMode();
+    } catch (err) {
+      setError(getApiErrorMessage(err, t('notificationsPage.batchError')));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleBatchDelete = async () => {
+    setError('');
+    setLoading(true);
+    try {
+      await deleteBatch(Array.from(selectedIds));
+      exitSelectionMode();
+    } catch (err) {
+      setError(getApiErrorMessage(err, t('notificationsPage.batchError')));
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const filters: { key: Filter; label: string }[] = [
     { key: 'todos', label: t('notificationsPage.filterAll') },
@@ -47,7 +140,35 @@ export default function NotificationsPage() {
         {t('common.back')}
       </Button>
 
-      <h1 className="text-xl font-bold">{t('notificationsPage.title')}</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-xl font-bold">{t('notificationsPage.title')}</h1>
+        {selectionMode ? (
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-muted-foreground">
+              {selectedIds.size} / {filtered.length}
+            </span>
+            <Button variant="outline" size="sm" onClick={selectAll}>
+              {t('notificationsPage.selectAll')}
+            </Button>
+            <Button variant="ghost" size="sm" onClick={exitSelectionMode}>
+              <X className="h-4 w-4 mr-1" />
+              {t('common.cancel')}
+            </Button>
+          </div>
+        ) : (
+          <div className="flex items-center gap-2">
+            {unreadCount > 0 && (
+              <Button variant="outline" size="sm" onClick={handleMarkAllAsRead}>
+                {t('notificationsPage.markAllAsRead')}
+              </Button>
+            )}
+            <Button variant="outline" size="sm" onClick={() => setSelectionMode(true)}>
+              <CheckSquare className="h-4 w-4 mr-1" />
+              {t('notificationsPage.select')}
+            </Button>
+          </div>
+        )}
+      </div>
 
       {error && <AlertBanner variant="error">{error}</AlertBanner>}
 
@@ -55,7 +176,7 @@ export default function NotificationsPage() {
         {filters.map(({ key, label }) => (
           <button
             key={key}
-            onClick={() => setFilter(key)}
+            onClick={() => handleFilterChange(key)}
             className={cn(
               'px-3 py-1.5 rounded-full text-xs font-medium transition-colors border',
               filter === key
@@ -79,10 +200,25 @@ export default function NotificationsPage() {
               key={notification.id}
               notification={notification}
               onMarkRead={handleMarkRead}
+              onDelete={handleDelete}
+              selectionMode={selectionMode}
+              selected={selectedIds.has(notification.id)}
+              onToggleSelect={toggleSelect}
             />
           ))
         )}
       </div>
+
+      {selectionMode && selectedIds.size > 0 && (
+        <BatchActionBar
+          selectedCount={selectedIds.size}
+          hasUnreadInSelection={hasUnreadInSelection}
+          onMarkRead={handleBatchMarkRead}
+          onDelete={handleBatchDelete}
+          onDeselectAll={deselectAll}
+          loading={loading}
+        />
+      )}
     </div>
   );
 }

@@ -532,7 +532,18 @@
     "filterImportant": "Important",
     "filterUnread": "Unread",
     "empty": "No notifications found.",
-    "updateError": "Could not update the notification."
+    "updateError": "Could not update the notification.",
+    "delete": "Delete",
+    "deleteError": "Could not delete the notification.",
+    "batchError": "Could not complete the operation.",
+    "select": "Select",
+    "selectAll": "Select all",
+    "deselectAll": "Deselect all",
+    "batchMarkRead": "Mark as read",
+    "batchDelete": "Delete",
+    "markAllAsRead": "Mark all as read",
+    "selectedCount_one": "{{count}} selected",
+    "selectedCount_other": "{{count}} selected"
   },
   "seizure": {
     "reason": "Seizure reason",

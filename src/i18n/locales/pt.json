@@ -532,7 +532,18 @@
     "filterImportant": "Importantes",
     "filterUnread": "Nao lidos",
     "empty": "Nenhuma notificacao encontrada.",
-    "updateError": "Nao foi possivel atualizar a notificacao."
+    "updateError": "Nao foi possivel atualizar a notificacao.",
+    "delete": "Excluir",
+    "deleteError": "Nao foi possivel excluir a notificacao.",
+    "batchError": "Nao foi possivel completar a operacao.",
+    "select": "Selecionar",
+    "selectAll": "Selecionar todos",
+    "deselectAll": "Desmarcar todos",
+    "batchMarkRead": "Marcar como lidos",
+    "batchDelete": "Excluir",
+    "markAllAsRead": "Marcar todos como lidos",
+    "selectedCount_one": "{{count}} selecionado",
+    "selectedCount_other": "{{count}} selecionados"
   },
   "seizure": {
     "reason": "Motivo da apreensao",

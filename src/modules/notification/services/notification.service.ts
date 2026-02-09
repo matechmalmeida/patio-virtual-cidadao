@@ -43,3 +43,37 @@ export async function markAllAsRead(
     return caseData.notifications.map((item) => ({ ...item, read: true }));
   }, { delayMs: 200 });
 }
+
+export async function deleteNotification(
+  caseData: CaseData | null,
+  notificationId: string
+): Promise<Notification[]> {
+  return executeMockRequest(() => {
+    ensureCase(caseData);
+    return caseData.notifications.filter((item) => item.id !== notificationId);
+  }, { delayMs: 180 });
+}
+
+export async function markBatchAsRead(
+  caseData: CaseData | null,
+  notificationIds: string[]
+): Promise<Notification[]> {
+  return executeMockRequest(() => {
+    ensureCase(caseData);
+    const idSet = new Set(notificationIds);
+    return caseData.notifications.map((item) =>
+      idSet.has(item.id) ? { ...item, read: true } : item
+    );
+  }, { delayMs: 200 });
+}
+
+export async function deleteBatch(
+  caseData: CaseData | null,
+  notificationIds: string[]
+): Promise<Notification[]> {
+  return executeMockRequest(() => {
+    ensureCase(caseData);
+    const idSet = new Set(notificationIds);
+    return caseData.notifications.filter((item) => !idSet.has(item.id));
+  }, { delayMs: 200 });
+}
