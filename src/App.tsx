@@ -6,7 +6,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
 import { AuthProvider } from '@/modules/auth';
 import { BrandProvider } from '@/contexts/BrandContext';
-import { AppLayout } from '@/components/layout/AppLayout';
+import { AppLayout } from '@/modules/app';
 import { AppErrorBoundary } from '@/components/error/AppErrorBoundary';
 import { GlobalErrorFallback } from '@/components/error/GlobalErrorFallback';
 import { RouteErrorFallback } from '@/components/error/RouteErrorFallback';
