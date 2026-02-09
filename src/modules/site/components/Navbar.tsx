@@ -16,9 +16,9 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   const navLinks = [
-    { href: '#como-funciona', label: t('landing.howItWorks') },
-    { href: '#vantagens', label: t('landing.advantages') },
-    { href: '#faq', label: t('landing.faq') },
+    { href: '/#como-funciona', label: t('landing.howItWorks') },
+    { href: '/#vantagens', label: t('landing.advantages') },
+    { href: '/#faq', label: t('landing.faq') },
   ];
 
   return (

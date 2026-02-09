@@ -1,6 +1,6 @@
 import { NavLink } from '@/components/NavLink';
 import { Home, FileText, MapPin, Bell, MoreHorizontal } from 'lucide-react';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/modules/auth';
 import { useTranslation } from 'react-i18next';
 
 export function BottomNav() {

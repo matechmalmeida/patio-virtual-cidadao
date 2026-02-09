@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/modules/auth';
 import { NotificationItem } from '@/components/NotificationItem';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';

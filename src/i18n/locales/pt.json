@@ -76,22 +76,82 @@
       "5": { "q": "Como acesso o portal?", "a": "Basta usar o código do caso que você recebeu durante a abordagem e o telefone cadastrado. Você receberá um código SMS para verificação." }
     }
   },
-  "login": {
-    "title": "Acessar meu caso",
-    "subtitle": "Digite o código que você recebeu durante a abordagem e o telefone cadastrado.",
-    "caseCode": "Código do caso",
-    "caseCodePlaceholder": "Ex: PV-2026-004821",
-    "phone": "Telefone com DDD",
-    "phonePlaceholder": "(85) 99999-9999",
-    "submit": "Enviar código de verificação",
-    "securityNote": "Vamos enviar um código SMS para confirmar sua identidade. Seus dados estão seguros.",
-    "whatIs": "O que é o Pátio Virtual?",
-    "whatIsText1": "O Pátio Virtual é um programa que permite que, em vez de ter seu veículo guinchado para o pátio, você leve o carro para casa com um dispositivo de monitoramento.",
-    "whatIsText2": "Enquanto o veículo está em casa, você resolve as pendências (multas, licenciamento, etc.) pelo celular. Quando tudo estiver regularizado, basta agendar a retirada do dispositivo.",
-    "whatIsText3": "É mais rápido, mais barato e mais prático do que o pátio tradicional.",
-    "errors": {
-      "emptyCode": "Digite o código do seu caso.",
-      "invalidPhone": "Digite um número de telefone válido."
+  "auth": {
+    "login": {
+      "title": "Entrar",
+      "subtitle": "Acesse sua conta para acompanhar o processo.",
+      "email": "Email",
+      "emailPlaceholder": "seu@email.com",
+      "password": "Senha",
+      "passwordPlaceholder": "Sua senha",
+      "submit": "Entrar",
+      "forgotPassword": "Esqueceu a senha?",
+      "magicLink": "Entrar com link magico",
+      "errors": {
+        "invalidCredentials": "Email ou senha incorretos.",
+        "generic": "Nao foi possivel realizar o login."
+      }
+    },
+    "forgotPassword": {
+      "title": "Recuperar senha",
+      "subtitle": "Informe seu email para receber o link de recuperacao.",
+      "email": "Email cadastrado",
+      "submit": "Enviar link de recuperacao",
+      "successTitle": "Email enviado!",
+      "successDesc": "Se o email estiver cadastrado, voce recebera um link para redefinir sua senha.",
+      "backToLogin": "Voltar ao login"
+    },
+    "resetPassword": {
+      "title": "Criar nova senha",
+      "subtitle": "Escolha uma nova senha segura para sua conta.",
+      "password": "Nova senha",
+      "confirmPassword": "Confirmar senha",
+      "submit": "Redefinir senha",
+      "successTitle": "Senha alterada!",
+      "successDesc": "Sua senha foi redefinida com sucesso. Agora voce pode fazer login.",
+      "goToLogin": "Ir para login",
+      "errors": {
+        "mismatch": "As senhas nao coincidem.",
+        "weak": "A senha deve ter no minimo 8 caracteres, 1 letra maiuscula e 1 numero.",
+        "invalidToken": "Link expirado ou invalido.",
+        "generic": "Nao foi possivel redefinir a senha."
+      }
+    },
+    "magicLink": {
+      "title": "Login com link magico",
+      "subtitle": "Enviaremos um link de acesso direto para seu email.",
+      "email": "Email cadastrado",
+      "submit": "Enviar link",
+      "successTitle": "Verifique seu email",
+      "successDesc": "Enviamos um link de acesso para seu email. Clique no link para entrar.",
+      "backToLogin": "Voltar ao login",
+      "verifying": "Verificando...",
+      "errorTitle": "Link invalido",
+      "errorDesc": "Este link expirou ou e invalido. Solicite um novo.",
+      "requestNew": "Solicitar novo link"
+    },
+    "totp": {
+      "title": "Verificacao em duas etapas",
+      "subtitle": "Digite o codigo de 6 digitos do seu aplicativo autenticador.",
+      "placeholder": "000000",
+      "submit": "Verificar",
+      "backToLogin": "Voltar ao login",
+      "errors": {
+        "invalid": "Codigo incorreto.",
+        "generic": "Nao foi possivel verificar o codigo."
+      },
+      "setup": {
+        "title": "Ativar autenticacao de dois fatores",
+        "scanQR": "Escaneie o QR code com seu aplicativo autenticador (Google Authenticator, Authy, etc.).",
+        "secretLabel": "Chave secreta (se nao conseguir escanear)",
+        "confirmCode": "Digite o codigo gerado pelo app para confirmar",
+        "submit": "Ativar",
+        "successTitle": "2FA ativado!",
+        "successDesc": "Sua conta agora esta protegida com autenticacao de dois fatores.",
+        "disableTitle": "Desativar 2FA",
+        "disableDesc": "Digite o codigo do seu app autenticador para desativar.",
+        "disableSubmit": "Desativar"
+      }
     }
   },
   "dashboard": {
@@ -280,19 +340,6 @@
     "openInMaps": "Abrir no Google Maps",
     "loadError": "Erro ao carregar conteudo."
   },
-  "otp": {
-    "title": "Verificacao",
-    "subtitle": "Enviamos um codigo de 6 digitos para",
-    "verify": "Verificar codigo",
-    "resendIn": "Reenviar codigo em",
-    "resending": "Reenviando...",
-    "resend": "Reenviar codigo",
-    "errors": {
-      "incomplete": "Digite o codigo completo de 6 digitos.",
-      "invalid": "Codigo incorreto. Verifique e tente novamente.",
-      "generic": "Nao foi possivel validar o codigo."
-    }
-  },
   "scheduling": {
     "title": "Agendamento",
     "scheduleRemoval": "Agendar retirada",
@@ -453,6 +500,122 @@
   },
   "vehicleCard": {
     "code": "Codigo:"
+  },
+  "legal": {
+    "backToHome": "Voltar ao inicio",
+    "lastUpdated": "Ultima atualizacao",
+    "errorNotFound": "Pagina legal nao encontrada.",
+    "footerLinks": {
+      "title": "Legal",
+      "termsOfUse": "Termos de Uso",
+      "privacy": "Politica de Privacidade",
+      "cookies": "Politica de Cookies",
+      "lgpd": "LGPD"
+    },
+    "termos-de-uso": {
+      "title": "Termos de Uso",
+      "lastUpdated": "01 de fevereiro de 2026",
+      "sections": {
+        "1": {
+          "title": "Aceitacao dos Termos",
+          "content": "Ao acessar e utilizar o portal Patio Virtual, voce concorda integralmente com estes Termos de Uso. Caso nao concorde com alguma disposicao, solicitamos que nao utilize o servico.\n\nEstes termos regulam o uso da plataforma digital destinada ao acompanhamento do processo de remocao virtual de veiculos."
+        },
+        "2": {
+          "title": "Descricao do Servico",
+          "content": "O Patio Virtual e uma plataforma digital que permite ao cidadao acompanhar o processo de custodia domiciliar do veiculo, resolver pendencias documentais e financeiras, e agendar a retirada do dispositivo de monitoramento.\n\nO servico e oferecido como alternativa a remocao fisica do veiculo para o patio de apreensao, mediante instalacao de dispositivo GPS."
+        },
+        "3": {
+          "title": "Cadastro e Acesso",
+          "content": "O acesso ao portal e realizado por meio do codigo do caso fornecido durante a abordagem e do numero de telefone cadastrado. O cidadao e responsavel por manter seus dados de acesso em sigilo.\n\nO codigo de verificacao enviado por SMS e pessoal e intransferivel."
+        },
+        "4": {
+          "title": "Obrigacoes do Usuario",
+          "content": "O usuario compromete-se a manter o veiculo estacionado em sua residencia durante todo o processo de regularizacao. Nao e permitido mover o veiculo ou tentar remover o dispositivo GPS instalado.\n\nO usuario deve fornecer informacoes verdadeiras e manter seus dados atualizados na plataforma."
+        },
+        "5": {
+          "title": "Limitacao de Responsabilidade",
+          "content": "O Patio Virtual nao se responsabiliza por interrupcoes temporarias no servico decorrentes de manutencao programada ou falhas tecnicas de terceiros.\n\nA plataforma atua como ferramenta de acompanhamento e nao substitui os procedimentos legais e administrativos do orgao de transito."
+        },
+        "6": {
+          "title": "Alteracoes nos Termos",
+          "content": "Reservamo-nos o direito de alterar estes Termos de Uso a qualquer momento. As alteracoes serao comunicadas por meio da plataforma e entrarao em vigor na data de sua publicacao.\n\nO uso continuado do servico apos as alteracoes constitui aceitacao dos novos termos."
+        }
+      }
+    },
+    "privacidade": {
+      "title": "Politica de Privacidade",
+      "lastUpdated": "01 de fevereiro de 2026",
+      "sections": {
+        "1": {
+          "title": "Dados Coletados",
+          "content": "Coletamos os seguintes dados pessoais: nome completo, CPF, numero de telefone, placa do veiculo, endereco residencial e dados de localizacao do dispositivo GPS.\n\nTambem coletamos dados de uso da plataforma, como paginas acessadas, horarios de acesso e acoes realizadas."
+        },
+        "2": {
+          "title": "Finalidade do Tratamento",
+          "content": "Os dados sao utilizados para viabilizar o servico de custodia domiciliar virtual, incluindo o monitoramento do veiculo, a gestao de pendencias e o agendamento de retirada do dispositivo.\n\nOs dados de localizacao sao utilizados exclusivamente para verificar o cumprimento das condicoes de custodia domiciliar."
+        },
+        "3": {
+          "title": "Compartilhamento de Dados",
+          "content": "Os dados pessoais podem ser compartilhados com o orgao de transito responsavel pelo processo de remocao, conforme previsto na legislacao vigente.\n\nNao compartilhamos dados pessoais com terceiros para fins comerciais ou de marketing."
+        },
+        "4": {
+          "title": "Armazenamento e Seguranca",
+          "content": "Os dados sao armazenados em servidores seguros com criptografia em transito e em repouso. Adotamos medidas tecnicas e administrativas para proteger seus dados contra acesso nao autorizado.\n\nOs dados sao retidos pelo periodo necessario ao cumprimento das finalidades para as quais foram coletados, respeitando os prazos legais."
+        },
+        "5": {
+          "title": "Direitos do Titular",
+          "content": "Voce tem direito a acessar, corrigir, eliminar e portar seus dados pessoais, conforme previsto na LGPD. Para exercer seus direitos, entre em contato pelo canal de suporte da plataforma.\n\nVoce tambem pode solicitar informacoes sobre o compartilhamento de seus dados e revogar o consentimento a qualquer momento."
+        }
+      }
+    },
+    "cookies": {
+      "title": "Politica de Cookies",
+      "lastUpdated": "01 de fevereiro de 2026",
+      "sections": {
+        "1": {
+          "title": "O que sao Cookies",
+          "content": "Cookies sao pequenos arquivos de texto armazenados no seu navegador quando voce acessa um site. Eles permitem que o site lembre suas preferencias e melhore sua experiencia de navegacao.\n\nO Patio Virtual utiliza cookies para garantir o funcionamento adequado da plataforma."
+        },
+        "2": {
+          "title": "Cookies Essenciais",
+          "content": "Utilizamos cookies essenciais para o funcionamento basico da plataforma, incluindo autenticacao, seguranca e preferencias de idioma.\n\nEstes cookies sao necessarios e nao podem ser desativados sem comprometer o uso do servico."
+        },
+        "3": {
+          "title": "Cookies de Desempenho",
+          "content": "Utilizamos cookies de desempenho para coletar informacoes anonimas sobre como os usuarios interagem com a plataforma, permitindo melhorias continuas.\n\nEstes cookies nao coletam informacoes que identifiquem o usuario individualmente."
+        },
+        "4": {
+          "title": "Gerenciamento de Cookies",
+          "content": "Voce pode gerenciar suas preferencias de cookies por meio das configuracoes do seu navegador. A desativacao de cookies essenciais pode afetar o funcionamento da plataforma.\n\nPara mais informacoes sobre como gerenciar cookies, consulte a documentacao do seu navegador."
+        }
+      }
+    },
+    "lgpd": {
+      "title": "Protecao de Dados (LGPD)",
+      "lastUpdated": "01 de fevereiro de 2026",
+      "sections": {
+        "1": {
+          "title": "Base Legal",
+          "content": "O tratamento de dados pessoais pelo Patio Virtual esta fundamentado nas bases legais previstas na Lei Geral de Protecao de Dados (Lei 13.709/2018), incluindo o cumprimento de obrigacao legal, a execucao de politicas publicas e o consentimento do titular.\n\nO orgao de transito atua como controlador dos dados, e o Patio Virtual como operador."
+        },
+        "2": {
+          "title": "Principios do Tratamento",
+          "content": "Seguimos os principios da LGPD: finalidade, adequacao, necessidade, livre acesso, qualidade dos dados, transparencia, seguranca, prevencao, nao discriminacao e responsabilizacao.\n\nColetamos apenas os dados estritamente necessarios para a prestacao do servico de custodia domiciliar virtual."
+        },
+        "3": {
+          "title": "Direitos do Titular",
+          "content": "Conforme a LGPD, voce tem direito a confirmacao da existencia de tratamento, acesso aos dados, correcao de dados incompletos ou desatualizados, anonimizacao, bloqueio ou eliminacao de dados desnecessarios, portabilidade dos dados e revogacao do consentimento.\n\nPara exercer qualquer desses direitos, utilize o canal de suporte disponivel na plataforma."
+        },
+        "4": {
+          "title": "Encarregado de Dados (DPO)",
+          "content": "O encarregado de dados (Data Protection Officer) e o responsavel por atender as solicitacoes dos titulares e pela comunicacao com a Autoridade Nacional de Protecao de Dados (ANPD).\n\nPara entrar em contato com o encarregado de dados, utilize o canal de suporte da plataforma."
+        },
+        "5": {
+          "title": "Incidentes de Seguranca",
+          "content": "Em caso de incidente de seguranca que possa acarretar risco ou dano relevante aos titulares, comunicaremos a ocorrencia a Autoridade Nacional de Protecao de Dados e aos titulares afetados, conforme previsto na LGPD.\n\nAdotamos medidas tecnicas e administrativas para prevenir e mitigar incidentes de seguranca."
+        }
+      }
+    }
   },
   "language": {
     "pt": "Português",

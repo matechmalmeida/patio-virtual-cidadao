@@ -1,5 +1,5 @@
 import { Outlet, Navigate } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/modules/auth';
 import { AppHeader } from './AppHeader';
 import { BottomNav } from './BottomNav';
 

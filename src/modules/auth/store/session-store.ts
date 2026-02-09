@@ -1,35 +1,15 @@
-import type { CaseData } from '@/types/case';
+import type { SessionState, SessionAction } from '../types/auth';
 
-const SESSION_KEY = 'pv-session-v1';
-const SESSION_DURATION_MS = 1000 * 60 * 60 * 8; // 8h
-
-export interface SessionState {
-  isAuthenticated: boolean;
-  caseCode: string;
-  phone: string;
-  otpChallengeId: string | null;
-  sessionToken: string | null;
-  activeCases: CaseData[];
-  selectedCaseId: string | null;
-  expiresAt: number | null;
-}
-
-export type SessionAction =
-  | { type: 'LOGIN_REQUESTED'; payload: { caseCode: string; phone: string; otpChallengeId: string } }
-  | {
-      type: 'OTP_VERIFIED';
-      payload: { token: string; activeCases: CaseData[] };
-    }
-  | { type: 'LOGOUT' }
-  | { type: 'SELECT_CASE'; payload: { caseId: string } }
-  | { type: 'UPDATE_CASE'; payload: { caseId: string; updates: Partial<CaseData> } };
+const SESSION_KEY = 'pv-session-v2';
+const SESSION_DURATION_MS = 1000 * 60 * 60 * 8;
 
 export const initialSessionState: SessionState = {
   isAuthenticated: false,
-  caseCode: '',
-  phone: '',
-  otpChallengeId: null,
+  user: null,
   sessionToken: null,
+  totpPending: false,
+  totpTempToken: null,
+  totpEmail: null,
   activeCases: [],
   selectedCaseId: null,
   expiresAt: null,
@@ -37,23 +17,17 @@ export const initialSessionState: SessionState = {
 
 export function sessionReducer(state: SessionState, action: SessionAction): SessionState {
   switch (action.type) {
-    case 'LOGIN_REQUESTED':
-      return {
-        ...state,
-        caseCode: action.payload.caseCode,
-        phone: action.payload.phone,
-        otpChallengeId: action.payload.otpChallengeId,
-      };
-
-    case 'OTP_VERIFIED': {
+    case 'LOGIN_SUCCESS': {
       const cases = action.payload.activeCases;
-      const preferredCaseId = state.selectedCaseId && cases.some((item) => item.id === state.selectedCaseId)
-        ? state.selectedCaseId
-        : (cases[0]?.id ?? null);
+      const preferredCaseId =
+        state.selectedCaseId && cases.some((item) => item.id === state.selectedCaseId)
+          ? state.selectedCaseId
+          : (cases[0]?.id ?? null);
 
       return {
-        ...state,
+        ...initialSessionState,
         isAuthenticated: true,
+        user: action.payload.user,
         sessionToken: action.payload.token,
         activeCases: cases,
         selectedCaseId: preferredCaseId,
@@ -61,20 +35,28 @@ export function sessionReducer(state: SessionState, action: SessionAction): Sess
       };
     }
 
+    case 'TOTP_PENDING':
+      return {
+        ...state,
+        totpPending: true,
+        totpTempToken: action.payload.tempToken,
+        totpEmail: action.payload.email,
+      };
+
     case 'LOGOUT':
       return initialSessionState;
 
     case 'SELECT_CASE':
       return {
         ...state,
-        selectedCaseId: action.payload.caseId,
+        selectedCaseId: action.payload,
       };
 
     case 'UPDATE_CASE':
       return {
         ...state,
         activeCases: state.activeCases.map((item) =>
-          item.id === action.payload.caseId ? { ...item, ...action.payload.updates } : item
+          item.id === action.payload.id ? { ...item, ...action.payload.data } : item
         ),
       };
 
@@ -91,8 +73,6 @@ function isValidSessionShape(value: unknown): value is SessionState {
   const candidate = value as Partial<SessionState>;
   return (
     typeof candidate.isAuthenticated === 'boolean' &&
-    typeof candidate.caseCode === 'string' &&
-    typeof candidate.phone === 'string' &&
     Array.isArray(candidate.activeCases)
   );
 }

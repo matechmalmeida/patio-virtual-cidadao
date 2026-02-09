@@ -1,4 +1,4 @@
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/modules/auth';
 import { TimelineItem } from '@/components/TimelineItem';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';

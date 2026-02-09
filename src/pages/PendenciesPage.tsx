@@ -1,4 +1,4 @@
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/modules/auth';
 import { PendencyCard } from '@/components/PendencyCard';
 import { AlertBanner } from '@/components/AlertBanner';
 import { Button } from '@/components/ui/button';

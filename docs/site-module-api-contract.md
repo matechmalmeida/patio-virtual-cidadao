@@ -397,3 +397,103 @@ GET /api/site/content?lang=pt
 ```
 
 Ao trocar o idioma, o hook refaz a requisicao com o novo `lang` e o cache e independente por idioma.
+
+---
+
+# Legal Pages - API Contract
+
+Contrato da API para as paginas legais do Patio Virtual.
+
+O frontend consome um endpoint que retorna o conteudo de uma pagina legal especifica, localizado por idioma.
+
+---
+
+## Endpoint
+
+```
+GET /api/legal/:slug?lang={lang}
+```
+
+### Path Parameters
+
+| Parametro | Tipo     | Obrigatorio | Descricao                                      |
+|-----------|----------|-------------|-------------------------------------------------|
+| `slug`    | `string` | Sim         | Identificador da pagina legal. Valores aceitos: `termos-de-uso`, `privacidade`, `cookies`, `lgpd` |
+
+### Query Parameters
+
+| Parametro | Tipo     | Obrigatorio | Descricao                                      |
+|-----------|----------|-------------|-------------------------------------------------|
+| `lang`    | `string` | Sim         | Codigo do idioma. Valores aceitos: `pt`, `en`, `es` |
+
+### Response
+
+`200 OK` retorna um objeto `LegalPageContent` ou `null` se o slug nao for valido.
+
+---
+
+## Interfaces
+
+### LegalPageContent (raiz)
+
+```typescript
+interface LegalPageContent {
+  title: string;
+  lastUpdated: string;
+  sections: LegalSection[];
+  footerCopyright: string;
+}
+```
+
+| Campo             | Tipo              | Descricao                                    |
+|-------------------|-------------------|----------------------------------------------|
+| `title`           | `string`          | Titulo da pagina legal                       |
+| `lastUpdated`     | `string`          | Data da ultima atualizacao (formato localizado) |
+| `sections`        | `LegalSection[]`  | Secoes do conteudo legal                     |
+| `footerCopyright` | `string`          | Texto de copyright do rodape                 |
+
+### LegalSection
+
+```typescript
+interface LegalSection {
+  title: string;
+  content: string;
+}
+```
+
+| Campo     | Tipo     | Descricao                                          |
+|-----------|----------|----------------------------------------------------|
+| `title`   | `string` | Titulo da secao                                    |
+| `content` | `string` | Conteudo da secao. Paragrafos separados por `\n\n` |
+
+---
+
+## Slugs validos
+
+| Slug               | Titulo (pt)                    | Rota                     |
+|---------------------|-------------------------------|--------------------------|
+| `termos-de-uso`     | Termos de Uso                 | `/legal/termos-de-uso`   |
+| `privacidade`       | Politica de Privacidade       | `/legal/privacidade`     |
+| `cookies`           | Politica de Cookies           | `/legal/cookies`         |
+| `lgpd`              | Protecao de Dados (LGPD)     | `/legal/lgpd`            |
+
+---
+
+## Frontend: como o dado e consumido
+
+```
+GET /api/legal/:slug?lang=pt
+        |
+        v
+  useLegalContent(slug) hook (React Query)
+        |
+        v
+  queryKey: ['legal', slug, lang]
+  staleTime: 30s | gcTime: 5min
+        |
+        v
+  LegalPage.tsx renderiza:
+    Navbar, conteudo legal (titulo, data, secoes), Footer
+```
+
+Ao trocar o idioma, o hook refaz a requisicao com o novo `lang` e o cache e independente por idioma e slug.

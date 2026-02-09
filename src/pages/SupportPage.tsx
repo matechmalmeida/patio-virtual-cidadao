@@ -18,7 +18,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/modules/auth';
 import type { FAQItem } from '@/types/case';
 import { getFaqItems } from '@/services/support.service';
 import { AlertBanner } from '@/components/AlertBanner';

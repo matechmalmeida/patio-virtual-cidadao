@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/modules/auth';
 import { useBrand } from '@/contexts/BrandContext';
 import { Button } from '@/components/ui/button';
 import { LogOut, Car, Moon, Sun } from 'lucide-react';

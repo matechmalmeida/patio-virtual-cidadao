@@ -1,4 +1,4 @@
-import { useAuth } from '@/contexts/AuthContext';
+import { useAuth } from '@/modules/auth';
 import { VehicleCard } from '@/components/VehicleCard';
 import { SeizureInfo } from '@/components/SeizureInfo';
 import { LocationMap } from '@/components/LocationMap';

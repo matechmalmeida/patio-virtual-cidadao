@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Navbar from '../components/Navbar';
 import HeroSection from '../components/HeroSection';
@@ -14,6 +16,15 @@ import { useSiteContent } from '../hooks/useSiteContent';
 export default function SitePage() {
   const { t } = useTranslation();
   const { data, loading, error } = useSiteContent();
+  const { hash } = useLocation();
+
+  useEffect(() => {
+    if (!data || !hash) return;
+    const el = document.getElementById(hash.slice(1));
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [data, hash]);
 
   if (loading) {
     return <SitePageSkeleton />;

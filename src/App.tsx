@@ -4,7 +4,7 @@ import { Toaster as Sonner } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
-import { AuthProvider } from '@/contexts/AuthContext';
+import { AuthProvider } from '@/modules/auth';
 import { BrandProvider } from '@/contexts/BrandContext';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { AppErrorBoundary } from '@/components/error/AppErrorBoundary';
@@ -12,8 +12,13 @@ import { GlobalErrorFallback } from '@/components/error/GlobalErrorFallback';
 import { RouteErrorFallback } from '@/components/error/RouteErrorFallback';
 
 const SitePage = lazy(() => import('./modules/site/pages/SitePage'));
-const LoginPage = lazy(() => import('./pages/LoginPage'));
-const OTPPage = lazy(() => import('./pages/OTPPage'));
+const LegalPage = lazy(() => import('./modules/site/pages/LegalPage'));
+const LoginPage = lazy(() => import('./modules/auth/pages/LoginPage'));
+const ForgotPasswordPage = lazy(() => import('./modules/auth/pages/ForgotPasswordPage'));
+const ResetPasswordPage = lazy(() => import('./modules/auth/pages/ResetPasswordPage'));
+const MagicLinkRequestPage = lazy(() => import('./modules/auth/pages/MagicLinkRequestPage'));
+const MagicLinkVerifyPage = lazy(() => import('./modules/auth/pages/MagicLinkVerifyPage'));
+const TotpChallengePage = lazy(() => import('./modules/auth/pages/TotpChallengePage'));
 const DashboardPage = lazy(() => import('./pages/DashboardPage'));
 const TimelinePage = lazy(() => import('./pages/TimelinePage'));
 const PendenciesPage = lazy(() => import('./pages/PendenciesPage'));
@@ -84,8 +89,13 @@ const App = () => (
                 <Routes>
                   {/* Public routes */}
                   <Route path="/" element={routeElement(<SitePage />)} />
+                  <Route path="/legal/:slug" element={routeElement(<LegalPage />)} />
                   <Route path="/acesso" element={routeElement(<LoginPage />)} />
-                  <Route path="/otp" element={routeElement(<OTPPage />)} />
+                  <Route path="/acesso/esqueci-senha" element={routeElement(<ForgotPasswordPage />)} />
+                  <Route path="/acesso/nova-senha" element={routeElement(<ResetPasswordPage />)} />
+                  <Route path="/acesso/link-magico" element={routeElement(<MagicLinkRequestPage />)} />
+                  <Route path="/acesso/verificar" element={routeElement(<MagicLinkVerifyPage />)} />
+                  <Route path="/acesso/2fa" element={routeElement(<TotpChallengePage />)} />
                   <Route path="/instalar" element={routeElement(<InstallPage />)} />
 
                   {/* Protected routes */}
