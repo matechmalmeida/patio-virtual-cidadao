@@ -1,0 +1,121 @@
+import { lazy, Suspense, type ReactNode } from 'react';
+import { Toaster } from '@/components/ui/toaster';
+import { Toaster as Sonner } from '@/components/ui/sonner';
+import { TooltipProvider } from '@/components/ui/tooltip';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
+import { AuthProvider } from '@/contexts/AuthContext';
+import { BrandProvider } from '@/contexts/BrandContext';
+import { AppLayout } from '@/components/layout/AppLayout';
+import { AppErrorBoundary } from '@/components/error/AppErrorBoundary';
+import { GlobalErrorFallback } from '@/components/error/GlobalErrorFallback';
+import { RouteErrorFallback } from '@/components/error/RouteErrorFallback';
+
+const LandingPage = lazy(() => import('./pages/LandingPage'));
+const LoginPage = lazy(() => import('./pages/LoginPage'));
+const OTPPage = lazy(() => import('./pages/OTPPage'));
+const DashboardPage = lazy(() => import('./pages/DashboardPage'));
+const TimelinePage = lazy(() => import('./pages/TimelinePage'));
+const PendenciesPage = lazy(() => import('./pages/PendenciesPage'));
+const UploadPage = lazy(() => import('./pages/UploadPage'));
+const NotificationsPage = lazy(() => import('./pages/NotificationsPage'));
+const SchedulingPage = lazy(() => import('./pages/SchedulingPage'));
+const SchedulingConfirmationPage = lazy(() => import('./pages/SchedulingConfirmationPage'));
+const HistoryPage = lazy(() => import('./pages/HistoryPage'));
+const SupportPage = lazy(() => import('./pages/SupportPage'));
+const TicketPage = lazy(() => import('./pages/TicketPage'));
+const TermSigningPage = lazy(() => import('./pages/TermSigningPage'));
+const InstallPage = lazy(() => import('./pages/InstallPage'));
+const GPSStatusPage = lazy(() => import('./pages/GPSStatusPage'));
+const PaymentPage = lazy(() => import('./pages/PaymentPage'));
+const NotificationSettingsPage = lazy(() => import('./pages/NotificationSettingsPage'));
+const NotFound = lazy(() => import('./pages/NotFound'));
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 2,
+      staleTime: 30_000,
+    },
+  },
+});
+
+function LoadingFallback() {
+  return <div className="px-4 py-6 text-sm text-muted-foreground">Carregando...</div>;
+}
+
+function RouteBoundary({ children }: { children: ReactNode }) {
+  const location = useLocation();
+
+  return (
+    <AppErrorBoundary key={location.pathname} fallback={<RouteErrorFallback />}>
+      {children}
+    </AppErrorBoundary>
+  );
+}
+
+function routeElement(node: ReactNode) {
+  return (
+    <RouteBoundary>
+      {node}
+    </RouteBoundary>
+  );
+}
+
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <AppErrorBoundary fallback={<GlobalErrorFallback />}>
+      <BrandProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <AuthProvider>
+            <BrowserRouter>
+              <Suspense fallback={<LoadingFallback />}>
+                <Routes>
+                  {/* Public routes */}
+                  <Route path="/" element={routeElement(<LandingPage />)} />
+                  <Route path="/acesso" element={routeElement(<LoginPage />)} />
+                  <Route path="/otp" element={routeElement(<OTPPage />)} />
+                  <Route path="/instalar" element={routeElement(<InstallPage />)} />
+
+                  {/* Protected routes */}
+                  <Route element={routeElement(<AppLayout />)}>
+                    <Route path="/dashboard" element={routeElement(<DashboardPage />)} />
+                    <Route path="/timeline" element={routeElement(<TimelinePage />)} />
+                    <Route path="/pendencias" element={routeElement(<PendenciesPage />)} />
+                    <Route path="/pendencias/:id/upload" element={routeElement(<UploadPage />)} />
+                    <Route path="/notificacoes" element={routeElement(<NotificationsPage />)} />
+                    <Route path="/agendamento" element={routeElement(<SchedulingPage />)} />
+                    <Route
+                      path="/agendamento/confirmacao"
+                      element={routeElement(<SchedulingConfirmationPage />)}
+                    />
+                    <Route path="/historico" element={routeElement(<HistoryPage />)} />
+                    <Route path="/suporte" element={routeElement(<SupportPage />)} />
+                    <Route path="/suporte/chamado" element={routeElement(<TicketPage />)} />
+                    <Route path="/termo/:termId" element={routeElement(<TermSigningPage />)} />
+                    <Route path="/gps" element={routeElement(<GPSStatusPage />)} />
+                    <Route
+                      path="/pendencias/:pendencyId/pagamento"
+                      element={routeElement(<PaymentPage />)}
+                    />
+                    <Route
+                      path="/notificacoes/configurar"
+                      element={routeElement(<NotificationSettingsPage />)}
+                    />
+                  </Route>
+
+                  {/* Catch-all */}
+                  <Route path="*" element={routeElement(<NotFound />)} />
+                </Routes>
+              </Suspense>
+            </BrowserRouter>
+          </AuthProvider>
+        </TooltipProvider>
+      </BrandProvider>
+    </AppErrorBoundary>
+  </QueryClientProvider>
+);
+
+export default App;

@@ -1,0 +1,277 @@
+{
+  "app": {
+    "name": "Patio Virtual",
+    "subtitle": "Portal del Ciudadano",
+    "copyright": "Patio Virtual © 2026 — Todos los derechos reservados"
+  },
+  "nav": {
+    "process": "Proceso",
+    "pendencies": "Pendientes",
+    "timeline": "Timeline",
+    "alerts": "Avisos",
+    "more": "Más"
+  },
+  "landing": {
+    "badge": "Programa oficial de la autoridad de tránsito",
+    "heroTitle": "Tu carro se queda en casa,",
+    "heroHighlight": "no en el patio.",
+    "heroSubtitle": "El Patio Virtual reemplaza la remoción del vehículo. Resuelve tus pendientes desde el celular y evita grúa, tarifas diarias y burocracia.",
+    "accessCase": "Acceder a mi caso",
+    "howItWorks": "Cómo funciona",
+    "advantages": "Ventajas",
+    "faq": "Preguntas",
+    "statsNoTow": "Tarifa de grúa",
+    "statsNoDailyFee": "Tarifas diarias",
+    "statsDigital": "Digital y en línea",
+    "stepByStep": "Paso a paso",
+    "howItWorksTitle": "Cómo funciona el Patio Virtual",
+    "howItWorksSubtitle": "Un proceso simple, transparente y 100% digital.",
+    "benefitsLabel": "Beneficios",
+    "benefitsTitle": "Ventajas para el ciudadano",
+    "benefitsSubtitle": "Menos estrés, menos costo y más practicidad.",
+    "comparisonTitle": "Patio Virtual vs. Patio Tradicional",
+    "traditional": "Patio Tradicional",
+    "virtual": "Patio Virtual",
+    "recommended": "RECOMENDADO",
+    "faqLabel": "¿Tienes preguntas?",
+    "faqTitle": "Preguntas frecuentes",
+    "ctaTitle": "Accede a tu caso ahora",
+    "ctaSubtitle": "Usa el código que recibiste durante la intervención para acompañar y resolver tus pendientes.",
+    "steps": {
+      "1": { "title": "Intervención en blitz", "description": "El agente identifica la irregularidad y ofrece el Patio Virtual como alternativa a la remoción." },
+      "2": { "title": "Dispositivo instalado", "description": "Un dispositivo GPS se conecta al vehículo. Llevas el carro a casa de forma segura." },
+      "3": { "title": "Regulariza en línea", "description": "Accede al portal, revisa tus pendientes, paga y envía los comprobantes desde el celular." },
+      "4": { "title": "Retira el dispositivo", "description": "Con todo regularizado, agenda la remoción del dispositivo en un punto autorizado." }
+    },
+    "advantages_list": {
+      "1": { "title": "Tu carro se queda en casa", "description": "En lugar de ir al patio, el vehículo va directo a tu residencia con un dispositivo de monitoreo." },
+      "2": { "title": "Ahorro real", "description": "Sin costos de grúa, tarifas de patio ni cargos extras. Solo pagas tus pendientes." },
+      "3": { "title": "Resuelve desde el celular", "description": "Acompaña pendientes, envía comprobantes y agenda la remoción del dispositivo — todo en línea." },
+      "4": { "title": "Seguro y transparente", "description": "Todo el proceso se registra digitalmente con auditoría completa y timeline en tiempo real." },
+      "5": { "title": "Sin burocracia", "description": "Accede al portal con el código del caso y resuelve todo sin filas ni desplazamientos." },
+      "6": { "title": "Agendamiento fácil", "description": "Cuando todo esté regularizado, elige día y hora para retirar el dispositivo." }
+    },
+    "traditional_items": [
+      "Vehículo remolcado",
+      "Costo de grúa + tarifas diarias",
+      "Desplazamiento al patio",
+      "Filas y burocracia presencial",
+      "Riesgo de daños al vehículo",
+      "Proceso lento"
+    ],
+    "virtual_items": [
+      "Vehículo se queda en casa",
+      "Sin costos de grúa ni tarifas",
+      "Resuelve todo desde el celular",
+      "100% digital, sin filas",
+      "Vehículo seguro en tu residencia",
+      "Proceso rápido y transparente"
+    ],
+    "faqs": {
+      "1": { "q": "¿Qué es el Patio Virtual?", "a": "Es un programa que reemplaza la remoción del vehículo al patio. En lugar de que tu carro sea remolcado, se instala un dispositivo de monitoreo y llevas el vehículo a casa hasta regularizar los pendientes." },
+      "2": { "q": "¿Puedo usar el carro durante el proceso?", "a": "No. El vehículo debe permanecer estacionado en tu residencia durante todo el proceso de regularización. El sistema monitorea y detecta cualquier movimiento." },
+      "3": { "q": "¿Cuánto cuesta?", "a": "No hay costo de grúa ni tarifas diarias de patio. Solo pagas los pendientes de tu vehículo (multas, registro, etc.)." },
+      "4": { "q": "¿Y si quito el dispositivo?", "a": "La remoción se detecta automáticamente y genera una violación grave, que puede resultar en la remoción física del vehículo al patio." },
+      "5": { "q": "¿Cómo accedo al portal?", "a": "Solo usa el código del caso que recibiste durante la intervención y tu teléfono registrado. Recibirás un código SMS para verificación." }
+    }
+  },
+  "login": {
+    "title": "Acceder a mi caso",
+    "subtitle": "Ingresa el código que recibiste durante la intervención y el teléfono registrado.",
+    "caseCode": "Código del caso",
+    "caseCodePlaceholder": "Ej: PV-2026-004821",
+    "phone": "Teléfono con código de área",
+    "phonePlaceholder": "(85) 99999-9999",
+    "submit": "Enviar código de verificación",
+    "securityNote": "Enviaremos un código SMS para verificar tu identidad. Tus datos están seguros.",
+    "whatIs": "¿Qué es el Patio Virtual?",
+    "whatIsText1": "El Patio Virtual es un programa que te permite llevar tu carro a casa con un dispositivo de monitoreo en lugar de que sea remolcado al patio.",
+    "whatIsText2": "Mientras el vehículo está en casa, resuelves los pendientes (multas, registro, etc.) desde el celular. Cuando todo esté regularizado, solo agenda la remoción del dispositivo.",
+    "whatIsText3": "Es más rápido, más barato y más práctico que el patio tradicional.",
+    "errors": {
+      "emptyCode": "Ingresa el código de tu caso.",
+      "invalidPhone": "Ingresa un número de teléfono válido."
+    }
+  },
+  "dashboard": {
+    "activeRemovals": "Tus remociones activas",
+    "howToResolve": "Cómo resolver",
+    "pendenciesCount_one": "{{count}} pendiente",
+    "pendenciesCount_other": "{{count}} pendientes",
+    "pendenciesToResolve": "Tienes <strong>{{count}} {{label}}</strong> para regularizar. Resuélvelas para liberar el vehículo.",
+    "viewPendencies": "Ver pendientes",
+    "allClear": "¡Todo regularizado! Agenda la remoción del dispositivo GPS para liberar tu vehículo.",
+    "scheduleRemoval": "Agendar remoción del dispositivo",
+    "waitingValidation": "Tus documentos están siendo analizados. No es necesario hacer nada por ahora. Serás notificado cuando haya una actualización.",
+    "appointmentConfirmed": "Cita confirmada",
+    "appointmentDetails": "Preséntate en <strong>{{location}}</strong> el día <strong>{{date}}</strong> a las <strong>{{time}}</strong> con documento de identidad.",
+    "vehicleReleased": "¡Vehículo liberado! 🎉",
+    "vehicleReleasedText": "El dispositivo fue retirado y tu vehículo está totalmente liberado. Proceso concluido.",
+    "vehicleLocation": "Ubicación del vehículo",
+    "gpsStatus": "Estado del dispositivo GPS",
+    "processTimeline": "Timeline del proceso",
+    "removalHistory": "Historial de remociones",
+    "pushSettings": "Configurar notificaciones push",
+    "needHelp": "¿Necesitas ayuda?",
+    "support": "Soporte",
+    "newAlert_one": "{{count}} aviso nuevo",
+    "newAlert_other": "{{count}} avisos nuevos",
+    "pendingTerm": "Firma pendiente — toca para leer y firmar"
+  },
+  "status": {
+    "em_deslocamento": "En tránsito",
+    "custodia_domiciliar": "Custodia domiciliaria",
+    "pendencias_regularizar": "Pendientes a regularizar",
+    "aguardando_validacao": "Esperando validación",
+    "apto_retirada": "Listo para remoción",
+    "aguardando_retirada": "Esperando remoción",
+    "finalizado": "Finalizado",
+    "desc_em_deslocamento": "Estás camino a tu residencia. Ve directo a casa.",
+    "desc_custodia_domiciliar": "Tu vehículo está en régimen de custodia. No puede ser movido.",
+    "desc_pendencias_regularizar": "Tienes pendientes por resolver antes de liberar el vehículo.",
+    "desc_aguardando_validacao": "Estamos verificando tus documentos. Espera.",
+    "desc_apto_retirada": "¡Todo listo! Agenda la remoción del dispositivo.",
+    "desc_aguardando_retirada": "Cita confirmada. Preséntate en el día y hora programados.",
+    "desc_finalizado": "¡Proceso concluido con éxito!",
+    "timeRemaining": "Tiempo restante"
+  },
+  "pendency": {
+    "title": "Pendientes",
+    "allResolved": "¡Todos los pendientes están resueltos!",
+    "pendingCount_one": "Tienes {{count}} ítem pendiente por resolver.",
+    "pendingCount_other": "Tienes {{count}} ítems pendientes por resolver.",
+    "congrats": "¡Felicidades! 🎉",
+    "allResolvedBanner": "Todos los pendientes fueron regularizados. Ahora puedes agendar la remoción del dispositivo.",
+    "pay": "Pagar",
+    "sendProof": "Enviar comprobante",
+    "rejectionReason": "Motivo del rechazo:",
+    "statusLabels": {
+      "pendente": "Pendiente",
+      "enviado": "Enviado",
+      "em_analise": "En análisis",
+      "aprovado": "Aprobado",
+      "reprovado": "Rechazado"
+    }
+  },
+  "payment": {
+    "title": "Pago",
+    "amountToPay": "Monto a pagar",
+    "paymentMethod": "Forma de pago",
+    "pix": "PIX",
+    "pixDesc": "Pago instantáneo, 24h",
+    "boleto": "Boleta Bancaria",
+    "boletoDesc": "Compensación en hasta 3 días hábiles",
+    "scanQR": "Escanea el código QR o copia el código abajo",
+    "pixValid": "Este código PIX es válido por 24 horas. Después del pago, haz clic en confirmar abajo.",
+    "alreadyPaid": "Ya pagué — confirmar",
+    "processing": "Procesando...",
+    "generateBoleto": "Generar boleta",
+    "boletoNote": "Después de pagar la boleta, envía el comprobante en la pantalla de pendientes para agilizar la aprobación.",
+    "registered": "¡Pago registrado!",
+    "registeredText": "Tu pago de <strong>R$ {{value}}</strong> para <strong>{{name}}</strong> fue registrado con éxito.",
+    "proofNote": "El comprobante será verificado automáticamente. Serás notificado cuando sea aprobado.",
+    "backToPendencies": "Volver a pendientes"
+  },
+  "gps": {
+    "title": "Estado del Dispositivo GPS",
+    "subtitle": "Monitoreo en tiempo real del dispositivo instalado en el {{vehicle}}.",
+    "movementDetected": "Movimiento detectado",
+    "movementWarning": "Se registró un movimiento del vehículo. El vehículo debe permanecer estacionado durante todo el proceso.",
+    "device": "Dispositivo",
+    "battery": "Batería",
+    "signal": "Señal",
+    "signalStrong": "Fuerte",
+    "signalModerate": "Moderada",
+    "signalWeak": "Débil",
+    "lastTransmission": "Última transmisión",
+    "installedAt": "Instalado el",
+    "currentLocation": "Ubicación actual",
+    "transmissionHistory": "Historial de transmisiones",
+    "active": "Activo",
+    "inactive": "Inactivo",
+    "alert": "Alerta",
+    "speed": "Velocidad: {{speed}} km/h",
+    "firmwareInfo": "Firmware {{version}} • Actualización cada 30 min",
+    "timeAgo": {
+      "now": "Ahora mismo",
+      "minutes": "Hace {{count}} min",
+      "hours": "Hace {{count}}h",
+      "days_one": "Hace {{count}} día",
+      "days_other": "Hace {{count}} días"
+    },
+    "events": {
+      "heartbeat": "Transmisión periódica",
+      "ignition_on": "Ignición encendida",
+      "ignition_off": "Ignición apagada",
+      "movement": "Movimiento detectado",
+      "tamper": "Intento de manipulación",
+      "low_battery": "Batería baja detectada"
+    }
+  },
+  "notifications": {
+    "title": "Notificaciones Push",
+    "subtitle": "Recibe alertas sobre el avance de tu proceso directamente en tu celular.",
+    "enable": "Activar notificaciones",
+    "enableDesc": "Mantente al tanto de cada actualización del proceso — aprobaciones, plazos y alertas importantes.",
+    "allow": "Permitir notificaciones",
+    "requesting": "Solicitando...",
+    "active": "Notificaciones activas",
+    "activeDesc": "Recibirás alertas sobre tu proceso.",
+    "blocked": "Notificaciones bloqueadas",
+    "blockedDesc": "Has bloqueado las notificaciones. Para reactivarlas, accede a la configuración del navegador y permite notificaciones para este sitio.",
+    "unsupported": "Navegador no compatible",
+    "unsupportedDesc": "Tu navegador no soporta notificaciones push. Intenta usar Chrome o Safari en el celular.",
+    "types": "Tipos de notificación",
+    "testButton": "Enviar notificación de prueba",
+    "info": "Las notificaciones push funcionan incluso con el navegador cerrado. Puedes desactivarlas en cualquier momento en la configuración del dispositivo.",
+    "typeLabels": {
+      "statusChange": "Cambio de estado",
+      "statusChangeDesc": "Cuando el estado del proceso cambie",
+      "docsAnalyzed": "Documentos analizados",
+      "docsAnalyzedDesc": "Cuando un comprobante sea aprobado o rechazado",
+      "deadline": "Plazo de pendiente",
+      "deadlineDesc": "Recordatorio antes del vencimiento de un pendiente",
+      "movementAlert": "Alerta de movimiento",
+      "movementAlertDesc": "Si el vehículo sale del área permitida"
+    }
+  },
+  "onboarding": {
+    "skip": "Saltar",
+    "next": "Siguiente",
+    "start": "Empezar",
+    "steps": {
+      "0": {
+        "title": "Bienvenido al Patio Virtual",
+        "description": "Tu vehículo se quedó en casa en lugar de ser remolcado. Aquí puedes seguir todo el proceso de regularización desde tu celular."
+      },
+      "1": {
+        "title": "Dispositivo GPS instalado",
+        "description": "Un dispositivo de monitoreo fue conectado a tu vehículo. Debe permanecer estacionado durante todo el proceso."
+      },
+      "2": {
+        "title": "Resuelve tus pendientes",
+        "description": "Paga multas, envía comprobantes y acompaña el análisis de tus documentos — todo directo por el portal."
+      },
+      "3": {
+        "title": "Agenda la remoción",
+        "description": "Cuando todo esté regularizado, elige día y hora para retirar el dispositivo en un punto autorizado."
+      }
+    }
+  },
+  "common": {
+    "back": "Volver",
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "confirm": "Confirmar",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "copied": "¡Copiado!",
+    "openInMaps": "Abrir en Google Maps"
+  },
+  "language": {
+    "pt": "Português",
+    "en": "English",
+    "es": "Español"
+  }
+}

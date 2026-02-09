@@ -1,0 +1,277 @@
+{
+  "app": {
+    "name": "Pátio Virtual",
+    "subtitle": "Portal do Cidadão",
+    "copyright": "Pátio Virtual © 2026 — Todos os direitos reservados"
+  },
+  "nav": {
+    "process": "Processo",
+    "pendencies": "Pendências",
+    "timeline": "Timeline",
+    "alerts": "Avisos",
+    "more": "Mais"
+  },
+  "landing": {
+    "badge": "Programa oficial da autarquia de trânsito",
+    "heroTitle": "Seu carro fica em casa,",
+    "heroHighlight": "não no pátio.",
+    "heroSubtitle": "O Pátio Virtual substitui a remoção do veículo. Resolva suas pendências pelo celular e evite guincho, diárias e burocracia.",
+    "accessCase": "Acessar meu caso",
+    "howItWorks": "Como funciona",
+    "advantages": "Vantagens",
+    "faq": "Dúvidas",
+    "statsNoTow": "Taxa de guincho",
+    "statsNoDailyFee": "Diárias de pátio",
+    "statsDigital": "Digital e online",
+    "stepByStep": "Passo a passo",
+    "howItWorksTitle": "Como funciona o Pátio Virtual",
+    "howItWorksSubtitle": "Um processo simples, transparente e 100% digital.",
+    "benefitsLabel": "Benefícios",
+    "benefitsTitle": "Vantagens para o cidadão",
+    "benefitsSubtitle": "Menos estresse, menos custo e mais praticidade.",
+    "comparisonTitle": "Pátio Virtual vs. Pátio Tradicional",
+    "traditional": "Pátio Tradicional",
+    "virtual": "Pátio Virtual",
+    "recommended": "RECOMENDADO",
+    "faqLabel": "Tire suas dúvidas",
+    "faqTitle": "Perguntas frequentes",
+    "ctaTitle": "Acesse seu caso agora",
+    "ctaSubtitle": "Use o código que você recebeu durante a abordagem para acompanhar e resolver suas pendências.",
+    "steps": {
+      "1": { "title": "Abordagem na blitz", "description": "O agente identifica a irregularidade e oferece o Pátio Virtual como alternativa à remoção." },
+      "2": { "title": "Dispositivo instalado", "description": "Um dispositivo GPS é conectado ao veículo. Você leva o carro para casa em segurança." },
+      "3": { "title": "Regularize online", "description": "Acesse o portal, veja suas pendências, pague e envie os comprovantes pelo celular." },
+      "4": { "title": "Retire o dispositivo", "description": "Com tudo regularizado, agende a retirada do dispositivo em um ponto autorizado." }
+    },
+    "advantages_list": {
+      "1": { "title": "Seu carro fica em casa", "description": "Em vez de ir para o pátio, o veículo vai direto para sua residência com um dispositivo de monitoramento." },
+      "2": { "title": "Economia real", "description": "Sem custos de guincho, diárias de pátio ou taxas extras. Você paga apenas suas pendências." },
+      "3": { "title": "Resolva pelo celular", "description": "Acompanhe pendências, envie comprovantes e agende a retirada do dispositivo — tudo online." },
+      "4": { "title": "Seguro e transparente", "description": "Todo o processo é registrado digitalmente com auditoria completa e timeline em tempo real." },
+      "5": { "title": "Sem burocracia", "description": "Acesse o portal com o código do caso e resolva tudo sem filas, sem deslocamentos." },
+      "6": { "title": "Agendamento fácil", "description": "Quando tudo estiver regularizado, agende dia e horário para retirar o dispositivo." }
+    },
+    "traditional_items": [
+      "Veículo guinchado",
+      "Custo de guincho + diárias",
+      "Deslocamento até o pátio",
+      "Filas e burocracia presencial",
+      "Risco de danos ao veículo",
+      "Processo demorado"
+    ],
+    "virtual_items": [
+      "Veículo fica em casa",
+      "Sem custos de guincho ou diárias",
+      "Resolva tudo pelo celular",
+      "100% digital, sem filas",
+      "Veículo seguro na sua residência",
+      "Processo rápido e transparente"
+    ],
+    "faqs": {
+      "1": { "q": "O que é o Pátio Virtual?", "a": "É um programa que substitui a remoção do veículo para o pátio. Em vez de ter o carro guinchado, você instala um dispositivo de monitoramento e leva o veículo para casa até regularizar as pendências." },
+      "2": { "q": "Posso usar o carro durante o processo?", "a": "Não. O veículo deve permanecer estacionado na sua residência durante todo o processo de regularização. O sistema monitora e detecta qualquer movimentação." },
+      "3": { "q": "Quanto custa?", "a": "Não há custo de guincho nem diárias de pátio. Você paga apenas as pendências do seu veículo (multas, licenciamento, etc.)." },
+      "4": { "q": "E se eu tirar o dispositivo?", "a": "A remoção é detectada automaticamente e gera uma violação grave, podendo resultar na remoção física do veículo para o pátio." },
+      "5": { "q": "Como acesso o portal?", "a": "Basta usar o código do caso que você recebeu durante a abordagem e o telefone cadastrado. Você receberá um código SMS para verificação." }
+    }
+  },
+  "login": {
+    "title": "Acessar meu caso",
+    "subtitle": "Digite o código que você recebeu durante a abordagem e o telefone cadastrado.",
+    "caseCode": "Código do caso",
+    "caseCodePlaceholder": "Ex: PV-2026-004821",
+    "phone": "Telefone com DDD",
+    "phonePlaceholder": "(85) 99999-9999",
+    "submit": "Enviar código de verificação",
+    "securityNote": "Vamos enviar um código SMS para confirmar sua identidade. Seus dados estão seguros.",
+    "whatIs": "O que é o Pátio Virtual?",
+    "whatIsText1": "O Pátio Virtual é um programa que permite que, em vez de ter seu veículo guinchado para o pátio, você leve o carro para casa com um dispositivo de monitoramento.",
+    "whatIsText2": "Enquanto o veículo está em casa, você resolve as pendências (multas, licenciamento, etc.) pelo celular. Quando tudo estiver regularizado, basta agendar a retirada do dispositivo.",
+    "whatIsText3": "É mais rápido, mais barato e mais prático do que o pátio tradicional.",
+    "errors": {
+      "emptyCode": "Digite o código do seu caso.",
+      "invalidPhone": "Digite um número de telefone válido."
+    }
+  },
+  "dashboard": {
+    "activeRemovals": "Suas remoções ativas",
+    "howToResolve": "Como resolver",
+    "pendenciesCount_one": "{{count}} pendência",
+    "pendenciesCount_other": "{{count}} pendências",
+    "pendenciesToResolve": "Você tem <strong>{{count}} {{label}}</strong> para regularizar. Resolva-as para liberar o veículo.",
+    "viewPendencies": "Ver pendências",
+    "allClear": "Tudo regularizado! Agende a retirada do dispositivo GPS para liberar seu veículo.",
+    "scheduleRemoval": "Agendar retirada do dispositivo",
+    "waitingValidation": "Seus documentos estão sendo analisados. Não é necessário fazer nada por enquanto. Você será notificado quando houver uma atualização.",
+    "appointmentConfirmed": "Agendamento confirmado",
+    "appointmentDetails": "Compareça ao <strong>{{location}}</strong> no dia <strong>{{date}}</strong> às <strong>{{time}}</strong> com documento de identidade.",
+    "vehicleReleased": "Veículo liberado! 🎉",
+    "vehicleReleasedText": "O dispositivo foi retirado e seu veículo está totalmente liberado. Processo concluído.",
+    "vehicleLocation": "Localização do veículo",
+    "gpsStatus": "Status do dispositivo GPS",
+    "processTimeline": "Timeline do processo",
+    "removalHistory": "Histórico de remoções",
+    "pushSettings": "Configurar notificações push",
+    "needHelp": "Precisa de ajuda?",
+    "support": "Suporte",
+    "newAlert_one": "{{count}} aviso novo",
+    "newAlert_other": "{{count}} avisos novos",
+    "pendingTerm": "Assinatura pendente — toque para ler e assinar"
+  },
+  "status": {
+    "em_deslocamento": "Em deslocamento",
+    "custodia_domiciliar": "Em custódia domiciliar",
+    "pendencias_regularizar": "Pendências a regularizar",
+    "aguardando_validacao": "Aguardando validação",
+    "apto_retirada": "Apto para retirada",
+    "aguardando_retirada": "Aguardando retirada",
+    "finalizado": "Finalizado",
+    "desc_em_deslocamento": "Você está a caminho da sua residência. Siga direto para casa.",
+    "desc_custodia_domiciliar": "Seu veículo está em regime de custódia. Não pode ser movido.",
+    "desc_pendencias_regularizar": "Você tem pendências para resolver antes de liberar o veículo.",
+    "desc_aguardando_validacao": "Estamos verificando seus documentos. Aguarde.",
+    "desc_apto_retirada": "Tudo certo! Agende a retirada do dispositivo.",
+    "desc_aguardando_retirada": "Agendamento confirmado. Compareça no dia e horário marcados.",
+    "desc_finalizado": "Processo concluído com sucesso!",
+    "timeRemaining": "Tempo restante"
+  },
+  "pendency": {
+    "title": "Pendências",
+    "allResolved": "Todas as pendências estão resolvidas!",
+    "pendingCount_one": "Você tem {{count}} item pendente para resolver.",
+    "pendingCount_other": "Você tem {{count}} itens pendentes para resolver.",
+    "congrats": "Parabéns! 🎉",
+    "allResolvedBanner": "Todas as pendências foram regularizadas. Agora você pode agendar a retirada do dispositivo.",
+    "pay": "Pagar",
+    "sendProof": "Enviar comprovante",
+    "rejectionReason": "Motivo da recusa:",
+    "statusLabels": {
+      "pendente": "Pendente",
+      "enviado": "Enviado",
+      "em_analise": "Em análise",
+      "aprovado": "Aprovado",
+      "reprovado": "Reprovado"
+    }
+  },
+  "payment": {
+    "title": "Pagamento",
+    "amountToPay": "Valor a pagar",
+    "paymentMethod": "Forma de pagamento",
+    "pix": "PIX",
+    "pixDesc": "Pagamento instantâneo, 24h",
+    "boleto": "Boleto Bancário",
+    "boletoDesc": "Compensação em até 3 dias úteis",
+    "scanQR": "Escaneie o QR Code ou copie o código abaixo",
+    "pixValid": "Este código PIX é válido por 24 horas. Após o pagamento, clique em confirmar abaixo.",
+    "alreadyPaid": "Já paguei — confirmar",
+    "processing": "Processando...",
+    "generateBoleto": "Gerar boleto",
+    "boletoNote": "Após o pagamento do boleto, envie o comprovante na tela de pendências para agilizar a aprovação.",
+    "registered": "Pagamento registrado!",
+    "registeredText": "Seu pagamento de <strong>R$ {{value}}</strong> para <strong>{{name}}</strong> foi registrado com sucesso.",
+    "proofNote": "O comprovante será analisado automaticamente. Você receberá uma notificação quando for aprovado.",
+    "backToPendencies": "Voltar às pendências"
+  },
+  "gps": {
+    "title": "Status do Dispositivo GPS",
+    "subtitle": "Monitoramento em tempo real do dispositivo instalado no {{vehicle}}.",
+    "movementDetected": "Movimentação detectada",
+    "movementWarning": "Foi registrada uma movimentação do veículo. O veículo deve permanecer estacionado durante todo o processo.",
+    "device": "Dispositivo",
+    "battery": "Bateria",
+    "signal": "Sinal",
+    "signalStrong": "Forte",
+    "signalModerate": "Moderado",
+    "signalWeak": "Fraco",
+    "lastTransmission": "Última transmissão",
+    "installedAt": "Instalado em",
+    "currentLocation": "Localização atual",
+    "transmissionHistory": "Histórico de transmissões",
+    "active": "Ativo",
+    "inactive": "Inativo",
+    "alert": "Alerta",
+    "speed": "Velocidade: {{speed}} km/h",
+    "firmwareInfo": "Firmware {{version}} • Atualização a cada 30 min",
+    "timeAgo": {
+      "now": "Agora mesmo",
+      "minutes": "Há {{count}} min",
+      "hours": "Há {{count}}h",
+      "days_one": "Há {{count}} dia",
+      "days_other": "Há {{count}} dias"
+    },
+    "events": {
+      "heartbeat": "Transmissão periódica",
+      "ignition_on": "Ignição ligada",
+      "ignition_off": "Ignição desligada",
+      "movement": "Movimentação detectada",
+      "tamper": "Tentativa de violação",
+      "low_battery": "Bateria baixa detectada"
+    }
+  },
+  "notifications": {
+    "title": "Notificações Push",
+    "subtitle": "Receba alertas sobre o andamento do seu processo diretamente no celular.",
+    "enable": "Ativar notificações",
+    "enableDesc": "Fique por dentro de cada atualização do processo — aprovações, prazos e alertas importantes.",
+    "allow": "Permitir notificações",
+    "requesting": "Solicitando...",
+    "active": "Notificações ativas",
+    "activeDesc": "Você receberá alertas sobre o seu processo.",
+    "blocked": "Notificações bloqueadas",
+    "blockedDesc": "Você bloqueou as notificações. Para reativar, acesse as configurações do navegador e permita notificações para este site.",
+    "unsupported": "Navegador não suportado",
+    "unsupportedDesc": "Seu navegador não suporta notificações push. Tente usar o Chrome ou o Safari no celular.",
+    "types": "Tipos de notificação",
+    "testButton": "Enviar notificação de teste",
+    "info": "As notificações push funcionam mesmo com o navegador fechado. Você pode desativá-las a qualquer momento nas configurações do dispositivo.",
+    "typeLabels": {
+      "statusChange": "Mudança de status",
+      "statusChangeDesc": "Quando o status do processo mudar",
+      "docsAnalyzed": "Documentos analisados",
+      "docsAnalyzedDesc": "Quando um comprovante for aprovado ou reprovado",
+      "deadline": "Prazo de pendência",
+      "deadlineDesc": "Lembrete antes do vencimento de uma pendência",
+      "movementAlert": "Alerta de movimentação",
+      "movementAlertDesc": "Se o veículo sair da área permitida"
+    }
+  },
+  "onboarding": {
+    "skip": "Pular",
+    "next": "Próximo",
+    "start": "Começar",
+    "steps": {
+      "0": {
+        "title": "Bem-vindo ao Pátio Virtual",
+        "description": "Seu veículo ficou em casa em vez de ir para o pátio. Aqui você acompanha todo o processo de regularização pelo celular."
+      },
+      "1": {
+        "title": "Dispositivo GPS instalado",
+        "description": "Um dispositivo de monitoramento foi conectado ao seu veículo. Ele deve permanecer estacionado durante todo o processo."
+      },
+      "2": {
+        "title": "Resolva suas pendências",
+        "description": "Pague multas, envie comprovantes e acompanhe a análise dos seus documentos — tudo direto pelo portal."
+      },
+      "3": {
+        "title": "Agende a retirada",
+        "description": "Quando tudo estiver regularizado, escolha dia e horário para retirar o dispositivo em um ponto autorizado."
+      }
+    }
+  },
+  "common": {
+    "back": "Voltar",
+    "loading": "Carregando...",
+    "error": "Erro",
+    "success": "Sucesso",
+    "confirm": "Confirmar",
+    "cancel": "Cancelar",
+    "save": "Salvar",
+    "copied": "Copiado!",
+    "openInMaps": "Abrir no Google Maps"
+  },
+  "language": {
+    "pt": "Português",
+    "en": "English",
+    "es": "Español"
+  }
+}

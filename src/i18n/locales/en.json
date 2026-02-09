@@ -1,0 +1,277 @@
+{
+  "app": {
+    "name": "Virtual Yard",
+    "subtitle": "Citizen Portal",
+    "copyright": "Virtual Yard © 2026 — All rights reserved"
+  },
+  "nav": {
+    "process": "Process",
+    "pendencies": "Pendencies",
+    "timeline": "Timeline",
+    "alerts": "Alerts",
+    "more": "More"
+  },
+  "landing": {
+    "badge": "Official traffic authority program",
+    "heroTitle": "Your car stays home,",
+    "heroHighlight": "not in the yard.",
+    "heroSubtitle": "Virtual Yard replaces vehicle towing. Resolve your issues from your phone and avoid towing fees, daily charges, and bureaucracy.",
+    "accessCase": "Access my case",
+    "howItWorks": "How it works",
+    "advantages": "Advantages",
+    "faq": "FAQ",
+    "statsNoTow": "Towing fee",
+    "statsNoDailyFee": "Daily storage fees",
+    "statsDigital": "Digital & online",
+    "stepByStep": "Step by step",
+    "howItWorksTitle": "How Virtual Yard works",
+    "howItWorksSubtitle": "A simple, transparent, and 100% digital process.",
+    "benefitsLabel": "Benefits",
+    "benefitsTitle": "Advantages for citizens",
+    "benefitsSubtitle": "Less stress, lower costs, and more convenience.",
+    "comparisonTitle": "Virtual Yard vs. Traditional Yard",
+    "traditional": "Traditional Yard",
+    "virtual": "Virtual Yard",
+    "recommended": "RECOMMENDED",
+    "faqLabel": "Got questions?",
+    "faqTitle": "Frequently asked questions",
+    "ctaTitle": "Access your case now",
+    "ctaSubtitle": "Use the code you received during the traffic stop to track and resolve your issues.",
+    "steps": {
+      "1": { "title": "Traffic stop", "description": "The officer identifies the violation and offers Virtual Yard as an alternative to towing." },
+      "2": { "title": "Device installed", "description": "A GPS tracking device is connected to the vehicle. You drive your car home safely." },
+      "3": { "title": "Resolve online", "description": "Access the portal, check your issues, pay, and upload receipts from your phone." },
+      "4": { "title": "Remove the device", "description": "Once everything is resolved, schedule the device removal at an authorized location." }
+    },
+    "advantages_list": {
+      "1": { "title": "Your car stays home", "description": "Instead of going to the yard, the vehicle goes directly to your home with a monitoring device." },
+      "2": { "title": "Real savings", "description": "No towing costs, no daily yard fees. You only pay your outstanding issues." },
+      "3": { "title": "Resolve from your phone", "description": "Track issues, upload receipts, and schedule device removal — all online." },
+      "4": { "title": "Safe and transparent", "description": "The entire process is digitally recorded with full audit trail and real-time timeline." },
+      "5": { "title": "No bureaucracy", "description": "Access the portal with your case code and resolve everything without lines or travel." },
+      "6": { "title": "Easy scheduling", "description": "When everything is settled, pick a date and time to have the device removed." }
+    },
+    "traditional_items": [
+      "Vehicle towed",
+      "Towing + daily fees",
+      "Travel to the yard",
+      "Lines and in-person bureaucracy",
+      "Risk of vehicle damage",
+      "Slow process"
+    ],
+    "virtual_items": [
+      "Vehicle stays at home",
+      "No towing or daily fees",
+      "Resolve everything from your phone",
+      "100% digital, no lines",
+      "Vehicle safe at your residence",
+      "Fast and transparent process"
+    ],
+    "faqs": {
+      "1": { "q": "What is Virtual Yard?", "a": "It's a program that replaces vehicle towing. Instead of having your car towed, a monitoring device is installed and you take the vehicle home until you resolve all issues." },
+      "2": { "q": "Can I use the car during the process?", "a": "No. The vehicle must remain parked at your residence throughout the entire process. The system monitors and detects any movement." },
+      "3": { "q": "How much does it cost?", "a": "There are no towing fees or daily yard charges. You only pay your vehicle's outstanding issues (fines, registration, etc.)." },
+      "4": { "q": "What if I remove the device?", "a": "Removal is automatically detected and generates a serious violation, which may result in the physical towing of the vehicle to the yard." },
+      "5": { "q": "How do I access the portal?", "a": "Simply use the case code you received during the traffic stop and your registered phone number. You'll receive an SMS code for verification." }
+    }
+  },
+  "login": {
+    "title": "Access my case",
+    "subtitle": "Enter the code you received during the traffic stop and your registered phone number.",
+    "caseCode": "Case code",
+    "caseCodePlaceholder": "E.g.: PV-2026-004821",
+    "phone": "Phone with area code",
+    "phonePlaceholder": "(85) 99999-9999",
+    "submit": "Send verification code",
+    "securityNote": "We'll send an SMS code to verify your identity. Your data is secure.",
+    "whatIs": "What is Virtual Yard?",
+    "whatIsText1": "Virtual Yard is a program that allows you to take your car home with a monitoring device instead of having it towed to a yard.",
+    "whatIsText2": "While the vehicle is at home, you resolve the issues (fines, registration, etc.) from your phone. Once everything is settled, just schedule the device removal.",
+    "whatIsText3": "It's faster, cheaper, and more convenient than the traditional yard.",
+    "errors": {
+      "emptyCode": "Please enter your case code.",
+      "invalidPhone": "Please enter a valid phone number."
+    }
+  },
+  "dashboard": {
+    "activeRemovals": "Your active removals",
+    "howToResolve": "How to resolve",
+    "pendenciesCount_one": "{{count}} issue",
+    "pendenciesCount_other": "{{count}} issues",
+    "pendenciesToResolve": "You have <strong>{{count}} {{label}}</strong> to resolve. Fix them to release your vehicle.",
+    "viewPendencies": "View issues",
+    "allClear": "All set! Schedule the GPS device removal to release your vehicle.",
+    "scheduleRemoval": "Schedule device removal",
+    "waitingValidation": "Your documents are being reviewed. No action needed for now. You'll be notified when there's an update.",
+    "appointmentConfirmed": "Appointment confirmed",
+    "appointmentDetails": "Go to <strong>{{location}}</strong> on <strong>{{date}}</strong> at <strong>{{time}}</strong> with your ID.",
+    "vehicleReleased": "Vehicle released! 🎉",
+    "vehicleReleasedText": "The device has been removed and your vehicle is fully released. Process completed.",
+    "vehicleLocation": "Vehicle location",
+    "gpsStatus": "GPS device status",
+    "processTimeline": "Process timeline",
+    "removalHistory": "Removal history",
+    "pushSettings": "Push notification settings",
+    "needHelp": "Need help?",
+    "support": "Support",
+    "newAlert_one": "{{count}} new alert",
+    "newAlert_other": "{{count}} new alerts",
+    "pendingTerm": "Signature pending — tap to read and sign"
+  },
+  "status": {
+    "em_deslocamento": "In transit",
+    "custodia_domiciliar": "Home custody",
+    "pendencias_regularizar": "Issues to resolve",
+    "aguardando_validacao": "Awaiting validation",
+    "apto_retirada": "Ready for removal",
+    "aguardando_retirada": "Awaiting removal",
+    "finalizado": "Completed",
+    "desc_em_deslocamento": "You're on your way home. Head straight to your residence.",
+    "desc_custodia_domiciliar": "Your vehicle is in home custody. It cannot be moved.",
+    "desc_pendencias_regularizar": "You have pending issues to resolve before releasing the vehicle.",
+    "desc_aguardando_validacao": "We're reviewing your documents. Please wait.",
+    "desc_apto_retirada": "All set! Schedule the device removal.",
+    "desc_aguardando_retirada": "Appointment confirmed. Show up on the scheduled date and time.",
+    "desc_finalizado": "Process completed successfully!",
+    "timeRemaining": "Time remaining"
+  },
+  "pendency": {
+    "title": "Pending Issues",
+    "allResolved": "All issues have been resolved!",
+    "pendingCount_one": "You have {{count}} pending item to resolve.",
+    "pendingCount_other": "You have {{count}} pending items to resolve.",
+    "congrats": "Congratulations! 🎉",
+    "allResolvedBanner": "All issues have been resolved. You can now schedule the device removal.",
+    "pay": "Pay",
+    "sendProof": "Upload receipt",
+    "rejectionReason": "Rejection reason:",
+    "statusLabels": {
+      "pendente": "Pending",
+      "enviado": "Submitted",
+      "em_analise": "Under review",
+      "aprovado": "Approved",
+      "reprovado": "Rejected"
+    }
+  },
+  "payment": {
+    "title": "Payment",
+    "amountToPay": "Amount to pay",
+    "paymentMethod": "Payment method",
+    "pix": "PIX",
+    "pixDesc": "Instant payment, 24h",
+    "boleto": "Bank Slip",
+    "boletoDesc": "Clears in up to 3 business days",
+    "scanQR": "Scan the QR code or copy the code below",
+    "pixValid": "This PIX code is valid for 24 hours. After payment, click confirm below.",
+    "alreadyPaid": "Already paid — confirm",
+    "processing": "Processing...",
+    "generateBoleto": "Generate bank slip",
+    "boletoNote": "After paying the bank slip, upload the receipt on the issues page to speed up approval.",
+    "registered": "Payment registered!",
+    "registeredText": "Your payment of <strong>R$ {{value}}</strong> for <strong>{{name}}</strong> was successfully registered.",
+    "proofNote": "The receipt will be automatically verified. You'll be notified when it's approved.",
+    "backToPendencies": "Back to issues"
+  },
+  "gps": {
+    "title": "GPS Device Status",
+    "subtitle": "Real-time monitoring of the device installed on the {{vehicle}}.",
+    "movementDetected": "Movement detected",
+    "movementWarning": "Vehicle movement was detected. The vehicle must remain parked throughout the process.",
+    "device": "Device",
+    "battery": "Battery",
+    "signal": "Signal",
+    "signalStrong": "Strong",
+    "signalModerate": "Moderate",
+    "signalWeak": "Weak",
+    "lastTransmission": "Last transmission",
+    "installedAt": "Installed on",
+    "currentLocation": "Current location",
+    "transmissionHistory": "Transmission history",
+    "active": "Active",
+    "inactive": "Inactive",
+    "alert": "Alert",
+    "speed": "Speed: {{speed}} km/h",
+    "firmwareInfo": "Firmware {{version}} • Updates every 30 min",
+    "timeAgo": {
+      "now": "Just now",
+      "minutes": "{{count}} min ago",
+      "hours": "{{count}}h ago",
+      "days_one": "{{count}} day ago",
+      "days_other": "{{count}} days ago"
+    },
+    "events": {
+      "heartbeat": "Periodic transmission",
+      "ignition_on": "Ignition on",
+      "ignition_off": "Ignition off",
+      "movement": "Movement detected",
+      "tamper": "Tamper attempt",
+      "low_battery": "Low battery detected"
+    }
+  },
+  "notifications": {
+    "title": "Push Notifications",
+    "subtitle": "Receive alerts about your case directly on your phone.",
+    "enable": "Enable notifications",
+    "enableDesc": "Stay updated on every process change — approvals, deadlines, and important alerts.",
+    "allow": "Allow notifications",
+    "requesting": "Requesting...",
+    "active": "Notifications active",
+    "activeDesc": "You'll receive alerts about your case.",
+    "blocked": "Notifications blocked",
+    "blockedDesc": "You've blocked notifications. To re-enable, go to your browser settings and allow notifications for this site.",
+    "unsupported": "Browser not supported",
+    "unsupportedDesc": "Your browser doesn't support push notifications. Try using Chrome or Safari on mobile.",
+    "types": "Notification types",
+    "testButton": "Send test notification",
+    "info": "Push notifications work even with the browser closed. You can disable them anytime in your device settings.",
+    "typeLabels": {
+      "statusChange": "Status change",
+      "statusChangeDesc": "When the case status changes",
+      "docsAnalyzed": "Documents analyzed",
+      "docsAnalyzedDesc": "When a receipt is approved or rejected",
+      "deadline": "Issue deadline",
+      "deadlineDesc": "Reminder before an issue expires",
+      "movementAlert": "Movement alert",
+      "movementAlertDesc": "If the vehicle leaves the allowed area"
+    }
+  },
+  "onboarding": {
+    "skip": "Skip",
+    "next": "Next",
+    "start": "Get started",
+    "steps": {
+      "0": {
+        "title": "Welcome to Virtual Yard",
+        "description": "Your vehicle stayed home instead of being towed. Here you can track the entire process from your phone."
+      },
+      "1": {
+        "title": "GPS device installed",
+        "description": "A monitoring device has been connected to your vehicle. It must remain parked throughout the process."
+      },
+      "2": {
+        "title": "Resolve your issues",
+        "description": "Pay fines, upload receipts, and track document review — all directly from the portal."
+      },
+      "3": {
+        "title": "Schedule removal",
+        "description": "Once everything is resolved, choose a date and time to have the device removed at an authorized location."
+      }
+    }
+  },
+  "common": {
+    "back": "Back",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "save": "Save",
+    "copied": "Copied!",
+    "openInMaps": "Open in Google Maps"
+  },
+  "language": {
+    "pt": "Português",
+    "en": "English",
+    "es": "Español"
+  }
+}
