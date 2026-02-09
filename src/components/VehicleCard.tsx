@@ -36,7 +36,7 @@ export function VehicleCard({ caseData, isSelected, onClick, compact }: VehicleC
           </div>
 
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-0.5">
+            <div className="flex flex-col gap-1 mb-0.5 lg:flex-row lg:items-center lg:gap-2">
               <span className={cn('font-bold tracking-wide', compact ? 'text-sm' : 'text-lg')}>
                 {caseData.plate}
               </span>
