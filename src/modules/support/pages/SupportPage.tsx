@@ -18,7 +18,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import type { FAQItem } from '@/types/case';
-import { getFaqItems } from '@/services/support.service';
+import { getFaqItems } from '../services/support.service';
 import { AlertBanner } from '@/components/AlertBanner';
 import { getApiErrorMessage } from '@/services/http/api-error';
 

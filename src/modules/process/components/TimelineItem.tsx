@@ -64,7 +64,7 @@ export function TimelineItem({ event, isLast }: TimelineItemProps) {
         </p>
         {event.timestamp && (
           <p className="text-[11px] text-muted-foreground/70 mt-1">
-            {format(new Date(event.timestamp), "dd/MM/yyyy 'às' HH:mm", { locale: ptBR })}
+            {format(new Date(event.timestamp), "dd/MM/yyyy 'as' HH:mm", { locale: ptBR })}
           </p>
         )}
         {event.link && event.linkLabel && (

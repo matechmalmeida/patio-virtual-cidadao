@@ -1,4 +1,4 @@
-import { executeMockRequest } from './http/mock-adapter';
+import { executeMockRequest } from '@/services/http/mock-adapter';
 import { mockLocations, mockSlots } from '@/data/mockSchedule';
 import type { ScheduleLocation, ScheduleSlot } from '@/types/case';
 

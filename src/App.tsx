@@ -20,29 +20,28 @@ const MagicLinkRequestPage = lazy(() => import('./modules/auth/pages/MagicLinkRe
 const MagicLinkVerifyPage = lazy(() => import('./modules/auth/pages/MagicLinkVerifyPage'));
 const TotpChallengePage = lazy(() => import('./modules/auth/pages/TotpChallengePage'));
 const DashboardPage = lazy(() => import('./modules/dashboard/pages/DashboardPage'));
-const TimelinePage = lazy(() => import('./pages/TimelinePage'));
 const ProcessListPage = lazy(() => import('./modules/process/pages/ProcessListPage'));
 const ProcessDetailPage = lazy(() => import('./modules/process/pages/ProcessDetailPage'));
 const ProcessTimelinePage = lazy(() => import('./modules/process/pages/ProcessTimelinePage'));
 const PendenciesPage = lazy(() => import('./modules/process/pages/PendenciesPage'));
 const UploadPage = lazy(() => import('./modules/process/pages/UploadPage'));
 const PaymentPage = lazy(() => import('./modules/process/pages/PaymentPage'));
+const GPSStatusPage = lazy(() => import('./modules/process/pages/GPSStatusPage'));
+const HistoryPage = lazy(() => import('./modules/process/pages/HistoryPage'));
 const DocumentListPage = lazy(() => import('./modules/document-signing/pages/DocumentListPage'));
 const DocumentSigningPage = lazy(() => import('./modules/document-signing/pages/DocumentSigningPage'));
 const NotificationsPage = lazy(() => import('./modules/notification/pages/NotificationsPage'));
-const SchedulingPage = lazy(() => import('./pages/SchedulingPage'));
-const SchedulingConfirmationPage = lazy(() => import('./pages/SchedulingConfirmationPage'));
-const HistoryPage = lazy(() => import('./pages/HistoryPage'));
-const SupportPage = lazy(() => import('./pages/SupportPage'));
-const TicketPage = lazy(() => import('./pages/TicketPage'));
-const InstallPage = lazy(() => import('./pages/InstallPage'));
-const GPSStatusPage = lazy(() => import('./pages/GPSStatusPage'));
 const NotificationSettingsPage = lazy(() => import('./modules/notification/pages/NotificationSettingsPage'));
+const SchedulingPage = lazy(() => import('./modules/scheduling/pages/SchedulingPage'));
+const SchedulingConfirmationPage = lazy(() => import('./modules/scheduling/pages/SchedulingConfirmationPage'));
+const SupportPage = lazy(() => import('./modules/support/pages/SupportPage'));
+const TicketPage = lazy(() => import('./modules/support/pages/TicketPage'));
+const InstallPage = lazy(() => import('./modules/app/pages/InstallPage'));
 const ProfilePage = lazy(() => import('./modules/profile/pages/ProfilePage'));
 const PersonalDataPage = lazy(() => import('./modules/profile/pages/PersonalDataPage'));
 const AddressPage = lazy(() => import('./modules/profile/pages/AddressPage'));
 const PreferencesPage = lazy(() => import('./modules/profile/pages/PreferencesPage'));
-const NotFound = lazy(() => import('./pages/NotFound'));
+const NotFound = lazy(() => import('./modules/app/pages/NotFound'));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -109,7 +108,6 @@ const App = () => (
                   {/* Protected routes */}
                   <Route element={routeElement(<AppLayout />)}>
                     <Route path="/app/dashboard" element={routeElement(<DashboardPage />)} />
-                    <Route path="/timeline" element={routeElement(<TimelinePage />)} />
                     <Route path="/app/process" element={routeElement(<ProcessListPage />)} />
                     <Route path="/app/process/:id" element={routeElement(<ProcessDetailPage />)} />
                     <Route

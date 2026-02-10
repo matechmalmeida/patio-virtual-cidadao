@@ -24,7 +24,7 @@ import {
   PowerOff,
   ShieldAlert,
 } from 'lucide-react';
-import { getGpsStatusByCase, type GPSDeviceData } from '@/services/gps.service';
+import { getGpsStatusByCase, type GPSDeviceData } from '../services/gps.service';
 import { getApiErrorMessage } from '@/services/http/api-error';
 
 const eventIcons: Record<string, typeof Clock> = {
@@ -101,7 +101,7 @@ export default function GPSStatusPage() {
       })
       .catch((err) => {
         if (!isMounted) return;
-        setError(getApiErrorMessage(err, 'Não foi possível carregar o status do GPS.'));
+        setError(getApiErrorMessage(err, 'Nao foi possivel carregar o status do GPS.'));
       });
 
     return () => {

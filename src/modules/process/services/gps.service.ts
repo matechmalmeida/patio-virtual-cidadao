@@ -1,4 +1,4 @@
-import { executeMockRequest } from './http/mock-adapter';
+import { executeMockRequest } from '@/services/http/mock-adapter';
 import { getMockGPSData, type GPSDeviceData } from '@/data/mockGPS';
 
 export type { GPSDeviceData };

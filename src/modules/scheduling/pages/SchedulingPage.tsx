@@ -20,7 +20,7 @@ import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import type { ScheduleLocation, ScheduleSlot } from '@/types/case';
 import { createAppointment } from '@/services/case.service';
-import { getScheduleLocations, getScheduleSlots } from '@/services/schedule.service';
+import { getScheduleLocations, getScheduleSlots } from '../services/schedule.service';
 import { getApiErrorMessage } from '@/services/http/api-error';
 import { queryKeys } from '@/lib/query-keys';
 

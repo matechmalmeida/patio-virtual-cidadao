@@ -11,13 +11,11 @@ export function usePWAInstall() {
   const [isIOS, setIsIOS] = useState(false);
 
   useEffect(() => {
-    // Check if already installed
     const isStandalone =
       window.matchMedia('(display-mode: standalone)').matches ||
       (window.navigator as any).standalone === true;
     setIsInstalled(isStandalone);
 
-    // Detect iOS
     const ua = window.navigator.userAgent;
     const isiOS = /iPad|iPhone|iPod/.test(ua) && !(window as any).MSStream;
     setIsIOS(isiOS);

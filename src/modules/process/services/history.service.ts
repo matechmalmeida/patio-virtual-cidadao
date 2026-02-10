@@ -1,4 +1,4 @@
-import { executeMockRequest } from './http/mock-adapter';
+import { executeMockRequest } from '@/services/http/mock-adapter';
 import { mockHistoricalCases } from '@/data/mockCases';
 import type { HistoricalCase } from '@/types/case';
 

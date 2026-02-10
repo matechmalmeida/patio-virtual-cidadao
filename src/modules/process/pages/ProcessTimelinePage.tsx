@@ -1,5 +1,5 @@
 import { useAuth } from '@/modules/auth';
-import { TimelineItem } from '@/components/TimelineItem';
+import { TimelineItem } from '../components/TimelineItem';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';

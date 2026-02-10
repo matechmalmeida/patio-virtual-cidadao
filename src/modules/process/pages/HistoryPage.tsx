@@ -7,7 +7,7 @@ import { ArrowLeft, CheckCircle2, Car, ChevronRight, AlertTriangle } from 'lucid
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import type { HistoricalCase } from '@/types/case';
-import { getHistoricalCases } from '@/services/history.service';
+import { getHistoricalCases } from '../services/history.service';
 import { AlertBanner } from '@/components/AlertBanner';
 import { getApiErrorMessage } from '@/services/http/api-error';
 import { useTranslation } from 'react-i18next';
