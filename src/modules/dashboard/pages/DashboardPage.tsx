@@ -3,13 +3,13 @@ import { useNotifications } from '@/modules/notification';
 import { VehicleCard } from '@/components/VehicleCard';
 import { SeizureInfo } from '@/components/SeizureInfo';
 import { LocationMap } from '@/components/LocationMap';
-import { StatusCard } from '@/components/StatusCard';
+
 import { AlertBanner } from '@/components/AlertBanner';
-import { OnboardingTutorial } from '@/components/OnboardingTutorial';
-import { ProcessStepper } from '@/components/ProcessStepper';
-import { SummaryStatCard } from '@/components/SummaryStatCard';
-import { PendenciesOverview } from '@/components/PendenciesOverview';
-import { useOnboarding } from '@/hooks/useOnboarding';
+import { OnboardingTutorial } from '../components/OnboardingTutorial';
+import { ProcessStepper } from '../components/ProcessStepper';
+import { SummaryStatCard } from '../components/SummaryStatCard';
+import { PendenciesOverview } from '../components/PendenciesOverview';
+import { useOnboarding } from '../hooks/useOnboarding';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
@@ -58,7 +58,6 @@ export default function DashboardPage() {
       <OnboardingTutorial isOpen={showOnboarding} onComplete={completeOnboarding} />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* Vehicle selector / header — full width */}
         <div className="lg:col-span-2">
           {hasMultipleCases ? (
             <div className="space-y-2">
@@ -83,12 +82,10 @@ export default function DashboardPage() {
           )}
         </div>
 
-        {/* Process Stepper — full width */}
         <div className="lg:col-span-2">
           <ProcessStepper status={currentCase.status} />
         </div>
 
-        {/* Summary Stats — 3 columns */}
         <div className="lg:col-span-2 grid grid-cols-3 gap-3">
           <SummaryStatCard
             value={`${approvedCount}/${currentCase.pendencies.length}`}
@@ -113,7 +110,6 @@ export default function DashboardPage() {
           />
         </div>
 
-        {/* Next Action CTA */}
         <Card className="border-0 shadow-md">
           <CardContent className="pt-5 space-y-4">
             <h2 className="text-base font-semibold flex items-center gap-2">
@@ -184,13 +180,11 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        {/* Pendencies Overview */}
         <PendenciesOverview
           pendencies={currentCase.pendencies}
           caseId={currentCase.id}
         />
 
-        {/* Pending terms alerts — full width if present */}
         {hasPendingTerms && (
           <div className="lg:col-span-2 space-y-3">
             {pendingTerms.map((term) => (
@@ -212,13 +206,11 @@ export default function DashboardPage() {
           </div>
         )}
 
-        {/* Seizure Info */}
         <SeizureInfo
           reason={currentCase.seizureReason}
           seizureLocation={currentCase.seizureLocation}
         />
 
-        {/* Vehicle Location */}
         <Card className="border-0 shadow-md">
           <CardContent className="pt-5">
             <h2 className="text-base font-semibold mb-4">{t('dashboard.vehicleLocation')}</h2>
@@ -226,13 +218,6 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
 
-        {/* Current status — full width */}
-        <div className="lg:col-span-2">
-          <StatusCard
-            status={currentCase.status}
-            timeRemainingMinutes={currentCase.timeRemainingMinutes}
-          />
-        </div>
       </div>
     </div>
   );

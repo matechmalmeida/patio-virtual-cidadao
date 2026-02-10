@@ -52,15 +52,12 @@ export function OnboardingTutorial({ isOpen, onComplete }: OnboardingTutorialPro
 
   return (
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center">
-      {/* Overlay */}
       <div
         className="absolute inset-0 bg-black/60 backdrop-blur-sm animate-in fade-in-0 duration-300"
         onClick={onComplete}
       />
 
-      {/* Card */}
       <div className="relative z-10 w-full max-w-md mx-4 mb-0 sm:mb-0 bg-card rounded-t-2xl sm:rounded-2xl shadow-2xl border animate-in slide-in-from-bottom-8 duration-500 overflow-hidden">
-        {/* Skip button */}
         <button
           onClick={onComplete}
           className="absolute top-4 right-4 z-10 p-1.5 rounded-full hover:bg-muted transition-colors text-muted-foreground"
@@ -69,12 +66,9 @@ export function OnboardingTutorial({ isOpen, onComplete }: OnboardingTutorialPro
           <X className="h-4 w-4" />
         </button>
 
-        {/* Progress bar */}
         <Progress value={progress} className="h-1 rounded-none" />
 
-        {/* Content */}
         <div className="px-6 pt-8 pb-6 text-center">
-          {/* Icon */}
           <div
             className={cn(
               'h-20 w-20 rounded-2xl mx-auto flex items-center justify-center mb-6 transition-all duration-500',
@@ -84,7 +78,6 @@ export function OnboardingTutorial({ isOpen, onComplete }: OnboardingTutorialPro
             <Icon className="h-10 w-10" />
           </div>
 
-          {/* Text */}
           <h2 className="text-xl font-bold tracking-tight mb-2">
             {t(`onboarding.steps.${currentStep}.title`)}
           </h2>
@@ -93,7 +86,6 @@ export function OnboardingTutorial({ isOpen, onComplete }: OnboardingTutorialPro
           </p>
         </div>
 
-        {/* Dots */}
         <div className="flex justify-center gap-2 pb-5">
           {Array.from({ length: totalSteps }).map((_, i) => (
             <button
@@ -110,7 +102,6 @@ export function OnboardingTutorial({ isOpen, onComplete }: OnboardingTutorialPro
           ))}
         </div>
 
-        {/* Actions */}
         <div className="px-6 pb-6 flex gap-3">
           {currentStep > 0 ? (
             <Button

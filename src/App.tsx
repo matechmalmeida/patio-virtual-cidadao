@@ -19,7 +19,7 @@ const ResetPasswordPage = lazy(() => import('./modules/auth/pages/ResetPasswordP
 const MagicLinkRequestPage = lazy(() => import('./modules/auth/pages/MagicLinkRequestPage'));
 const MagicLinkVerifyPage = lazy(() => import('./modules/auth/pages/MagicLinkVerifyPage'));
 const TotpChallengePage = lazy(() => import('./modules/auth/pages/TotpChallengePage'));
-const DashboardPage = lazy(() => import('./pages/DashboardPage'));
+const DashboardPage = lazy(() => import('./modules/dashboard/pages/DashboardPage'));
 const TimelinePage = lazy(() => import('./pages/TimelinePage'));
 const ProcessListPage = lazy(() => import('./modules/process/pages/ProcessListPage'));
 const ProcessDetailPage = lazy(() => import('./modules/process/pages/ProcessDetailPage'));
