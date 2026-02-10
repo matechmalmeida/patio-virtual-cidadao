@@ -81,7 +81,7 @@ export default function TicketPage() {
 
           <div className="mt-6">
             <Button
-              onClick={() => navigate('/suporte')}
+              onClick={() => navigate('/app/suporte')}
               className="h-11 font-semibold"
             >
               {t('ticket.backToSupport')}

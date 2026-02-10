@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useAuth } from '@/modules/auth';
+import { useCases } from '@/modules/process';
 import { DocumentCard } from '../components/DocumentCard';
 import { AlertBanner } from '@/components/AlertBanner';
 import { Button } from '@/components/ui/button';
@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 export default function DocumentListPage() {
-  const { currentCase } = useAuth();
+  const { currentCase } = useCases();
   const navigate = useNavigate();
   const { t } = useTranslation();
 

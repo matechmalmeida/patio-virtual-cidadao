@@ -1,4 +1,4 @@
-import { useAuth } from '@/modules/auth';
+import { useCases } from '@/modules/process';
 import { VehicleCard } from '@/components/VehicleCard';
 import { SeizureInfo } from '@/components/SeizureInfo';
 import { LocationMap } from '@/components/LocationMap';
@@ -19,7 +19,7 @@ import {
 
 export default function ProcessDetailPage() {
   const { id } = useParams<{ id: string }>();
-  const { activeCases } = useAuth();
+  const { activeCases } = useCases();
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -152,7 +152,7 @@ export default function ProcessDetailPage() {
         </button>
 
         <button
-          onClick={() => navigate('/gps')}
+          onClick={() => navigate('/app/gps')}
           className="flex items-center justify-between w-full p-4 rounded-xl bg-card border hover:bg-muted/50 transition-colors text-left"
         >
           <div className="flex items-center gap-3">
@@ -164,7 +164,7 @@ export default function ProcessDetailPage() {
 
         {caseData.appointment && (
           <button
-            onClick={() => navigate('/agendamento/confirmacao')}
+            onClick={() => navigate('/app/agendamento/confirmacao')}
             className="flex items-center justify-between w-full p-4 rounded-xl bg-card border hover:bg-muted/50 transition-colors text-left"
           >
             <div className="flex items-center gap-3">

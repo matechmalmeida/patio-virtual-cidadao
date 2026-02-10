@@ -27,9 +27,7 @@ export interface TotpSetupData {
 export type SessionAction =
   | { type: 'LOGIN_SUCCESS'; payload: VerifiedSession }
   | { type: 'TOTP_PENDING'; payload: { tempToken: string; email: string } }
-  | { type: 'LOGOUT' }
-  | { type: 'SELECT_CASE'; payload: string }
-  | { type: 'UPDATE_CASE'; payload: { id: string; data: Partial<CaseData> } };
+  | { type: 'LOGOUT' };
 
 export interface SessionState {
   isAuthenticated: boolean;
@@ -38,7 +36,5 @@ export interface SessionState {
   totpPending: boolean;
   totpTempToken: string | null;
   totpEmail: string | null;
-  activeCases: CaseData[];
-  selectedCaseId: string | null;
   expiresAt: number | null;
 }

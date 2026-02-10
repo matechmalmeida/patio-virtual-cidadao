@@ -2,13 +2,11 @@ import {
   createContext,
   useContext,
   useEffect,
-  useMemo,
   useReducer,
   useCallback,
   type ReactNode,
   type Dispatch,
 } from 'react';
-import type { CaseData } from '@/types/case';
 import { configureHttpClient } from '@/services/http/http-client';
 import type { AuthUser, SessionAction } from '../types/auth';
 import {
@@ -21,11 +19,6 @@ import {
 export interface AuthContextType {
   isAuthenticated: boolean;
   user: AuthUser | null;
-  currentCase: CaseData | null;
-  activeCases: CaseData[];
-  selectedCaseId: string | null;
-  selectCase: (id: string) => void;
-  updateCase: (id: string, data: Partial<CaseData>) => void;
   logout: () => void;
 }
 
@@ -51,21 +44,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
   }, [state.sessionToken]);
 
-  const currentCase = useMemo(
-    () => state.activeCases.find((item) => item.id === state.selectedCaseId) ?? null,
-    [state.activeCases, state.selectedCaseId]
-  );
-
   const logout = useCallback(() => {
     dispatch({ type: 'LOGOUT' });
-  }, []);
-
-  const selectCase = useCallback((id: string) => {
-    dispatch({ type: 'SELECT_CASE', payload: id });
-  }, []);
-
-  const updateCase = useCallback((id: string, data: Partial<CaseData>) => {
-    dispatch({ type: 'UPDATE_CASE', payload: { id, data } });
   }, []);
 
   return (
@@ -74,11 +54,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         value={{
           isAuthenticated: state.isAuthenticated,
           user: state.user,
-          currentCase,
-          activeCases: state.activeCases,
-          selectedCaseId: state.selectedCaseId,
-          selectCase,
-          updateCase,
           logout,
         }}
       >

@@ -1,4 +1,4 @@
-import { useAuth } from '@/modules/auth';
+import { useCases } from '@/modules/process';
 import { VehicleCard } from '@/components/VehicleCard';
 import { StatusBadge } from '@/components/StatusBadge';
 import { Card, CardContent } from '@/components/ui/card';
@@ -9,7 +9,7 @@ import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
 export default function ProcessListPage() {
-  const { activeCases } = useAuth();
+  const { activeCases } = useCases();
   const navigate = useNavigate();
   const { t } = useTranslation();
 

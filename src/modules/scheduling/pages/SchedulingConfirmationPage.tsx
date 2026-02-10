@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '@/modules/auth';
+import { useCases } from '@/modules/process';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { AlertBanner } from '@/components/AlertBanner';
@@ -16,7 +16,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 
 export default function SchedulingConfirmationPage() {
-  const { currentCase } = useAuth();
+  const { currentCase } = useCases();
   const navigate = useNavigate();
   const { t } = useTranslation();
 

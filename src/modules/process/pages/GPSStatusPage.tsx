@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useAuth } from '@/modules/auth';
+import { useCases } from '@/modules/process';
 import { LocationMap } from '@/components/LocationMap';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -83,7 +83,7 @@ function getTimeAgo(isoString: string, t: (key: string, options?: Record<string,
 
 export default function GPSStatusPage() {
   const navigate = useNavigate();
-  const { currentCase } = useAuth();
+  const { currentCase } = useCases();
   const { t } = useTranslation();
   const [gpsData, setGpsData] = useState<GPSDeviceData | null>(null);
   const [error, setError] = useState('');

@@ -4,7 +4,8 @@ import { Toaster as Sonner } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
-import { AuthProvider } from '@/modules/auth';
+import { AuthProvider, RequireAuth } from '@/modules/auth';
+import { CaseProvider } from '@/modules/process';
 import { BrandProvider } from '@/contexts/BrandContext';
 import { AppLayout } from '@/modules/app';
 import { AppErrorBoundary } from '@/components/error/AppErrorBoundary';
@@ -91,6 +92,7 @@ const App = () => (
           <Toaster />
           <Sonner />
           <AuthProvider>
+          <CaseProvider>
             <BrowserRouter>
               <Suspense fallback={<LoadingFallback />}>
                 <Routes>
@@ -106,6 +108,7 @@ const App = () => (
                   <Route path="/instalar" element={routeElement(<InstallPage />)} />
 
                   {/* Protected routes */}
+                  <Route element={<RequireAuth />}>
                   <Route element={routeElement(<AppLayout />)}>
                     <Route path="/app/dashboard" element={routeElement(<DashboardPage />)} />
                     <Route path="/app/process" element={routeElement(<ProcessListPage />)} />
@@ -129,12 +132,12 @@ const App = () => (
                     <Route path="/app/documentos" element={routeElement(<DocumentListPage />)} />
                     <Route path="/app/documentos/:termId" element={routeElement(<DocumentSigningPage />)} />
                     <Route path="/app/notifications" element={routeElement(<NotificationsPage />)} />
-                    <Route path="/agendamento" element={routeElement(<SchedulingPage />)} />
+                    <Route path="/app/agendamento" element={routeElement(<SchedulingPage />)} />
                     <Route
-                      path="/agendamento/confirmacao"
+                      path="/app/agendamento/confirmacao"
                       element={routeElement(<SchedulingConfirmationPage />)}
                     />
-                    <Route path="/historico" element={routeElement(<HistoryPage />)} />
+                    <Route path="/app/historico" element={routeElement(<HistoryPage />)} />
                     <Route path="/app/profile" element={routeElement(<ProfilePage />)} />
                     <Route path="/app/profile/dados" element={routeElement(<PersonalDataPage />)} />
                     <Route path="/app/profile/endereco" element={routeElement(<AddressPage />)} />
@@ -142,13 +145,14 @@ const App = () => (
                       path="/app/profile/preferencias"
                       element={routeElement(<PreferencesPage />)}
                     />
-                    <Route path="/suporte" element={routeElement(<SupportPage />)} />
-                    <Route path="/suporte/chamado" element={routeElement(<TicketPage />)} />
-                    <Route path="/gps" element={routeElement(<GPSStatusPage />)} />
+                    <Route path="/app/suporte" element={routeElement(<SupportPage />)} />
+                    <Route path="/app/suporte/chamado" element={routeElement(<TicketPage />)} />
+                    <Route path="/app/gps" element={routeElement(<GPSStatusPage />)} />
                     <Route
                       path="/app/notifications/settings"
                       element={routeElement(<NotificationSettingsPage />)}
                     />
+                  </Route>
                   </Route>
 
                   {/* Catch-all */}
@@ -156,6 +160,7 @@ const App = () => (
                 </Routes>
               </Suspense>
             </BrowserRouter>
+          </CaseProvider>
           </AuthProvider>
         </TooltipProvider>
       </BrandProvider>

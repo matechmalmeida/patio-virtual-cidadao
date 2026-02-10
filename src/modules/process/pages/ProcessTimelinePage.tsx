@@ -1,4 +1,4 @@
-import { useAuth } from '@/modules/auth';
+import { useCases } from '@/modules/process';
 import { TimelineItem } from '../components/TimelineItem';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function ProcessTimelinePage() {
   const { id } = useParams<{ id: string }>();
-  const { activeCases } = useAuth();
+  const { activeCases } = useCases();
   const navigate = useNavigate();
   const { t } = useTranslation();
 

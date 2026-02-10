@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useAuth } from '@/modules/auth';
+import { useCases } from '@/modules/process';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { AlertBanner } from '@/components/AlertBanner';
@@ -24,7 +24,7 @@ type PaymentMethod = 'pix' | 'boleto' | null;
 export default function PaymentPage() {
   const { id, pendencyId } = useParams<{ id: string; pendencyId: string }>();
   const navigate = useNavigate();
-  const { activeCases, updateCase } = useAuth();
+  const { activeCases, updateCase } = useCases();
   const { toast } = useToast();
   const { t } = useTranslation();
 

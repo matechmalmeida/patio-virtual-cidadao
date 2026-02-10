@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react';
-import { useAuth } from '@/modules/auth';
+import { useCases } from '@/modules/process';
 import {
   markAsRead,
   markAllAsRead,
@@ -13,7 +13,7 @@ import type { Notification } from '../types/notification';
 type Filter = 'todos' | 'importantes' | 'pendentes';
 
 export function useNotifications() {
-  const { currentCase, updateCase } = useAuth();
+  const { currentCase, updateCase } = useCases();
 
   const notifications: Notification[] = currentCase?.notifications ?? [];
 

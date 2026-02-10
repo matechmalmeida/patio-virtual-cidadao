@@ -11,30 +11,19 @@ export const initialSessionState: SessionState = {
   totpPending: false,
   totpTempToken: null,
   totpEmail: null,
-  activeCases: [],
-  selectedCaseId: null,
   expiresAt: null,
 };
 
 export function sessionReducer(state: SessionState, action: SessionAction): SessionState {
   switch (action.type) {
-    case 'LOGIN_SUCCESS': {
-      const cases = action.payload.activeCases;
-      const preferredCaseId =
-        state.selectedCaseId && cases.some((item) => item.id === state.selectedCaseId)
-          ? state.selectedCaseId
-          : (cases[0]?.id ?? null);
-
+    case 'LOGIN_SUCCESS':
       return {
         ...initialSessionState,
         isAuthenticated: true,
         user: action.payload.user,
         sessionToken: action.payload.token,
-        activeCases: cases,
-        selectedCaseId: preferredCaseId,
         expiresAt: Date.now() + SESSION_DURATION_MS,
       };
-    }
 
     case 'TOTP_PENDING':
       return {
@@ -47,20 +36,6 @@ export function sessionReducer(state: SessionState, action: SessionAction): Sess
     case 'LOGOUT':
       return initialSessionState;
 
-    case 'SELECT_CASE':
-      return {
-        ...state,
-        selectedCaseId: action.payload,
-      };
-
-    case 'UPDATE_CASE':
-      return {
-        ...state,
-        activeCases: state.activeCases.map((item) =>
-          item.id === action.payload.id ? { ...item, ...action.payload.data } : item
-        ),
-      };
-
     default:
       return state;
   }
@@ -72,13 +47,10 @@ function isValidSessionShape(value: unknown): value is SessionState {
   }
 
   const candidate = value as Partial<SessionState>;
-  return (
-    typeof candidate.isAuthenticated === 'boolean' &&
-    Array.isArray(candidate.activeCases)
-  );
+  return typeof candidate.isAuthenticated === 'boolean';
 }
 
-function getStorage(): Storage {
+export function getStorage(): Storage {
   if (typeof window === 'undefined') {
     return window.sessionStorage;
   }

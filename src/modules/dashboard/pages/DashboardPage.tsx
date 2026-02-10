@@ -1,4 +1,4 @@
-import { useAuth } from '@/modules/auth';
+import { useCases } from '@/modules/process';
 import { useNotifications } from '@/modules/notification';
 import { VehicleCard } from '@/components/VehicleCard';
 import { SeizureInfo } from '@/components/SeizureInfo';
@@ -26,7 +26,7 @@ import {
 } from 'lucide-react';
 
 export default function DashboardPage() {
-  const { currentCase, activeCases, selectCase } = useAuth();
+  const { currentCase, activeCases, selectCase } = useCases();
   const { unreadCount } = useNotifications();
   const { t } = useTranslation();
   const { isOpen: showOnboarding, complete: completeOnboarding } = useOnboarding();
@@ -148,7 +148,7 @@ export default function DashboardPage() {
                   {t('dashboard.allClear')}
                 </p>
                 <Button asChild className="w-full h-11 font-semibold">
-                  <Link to="/agendamento">
+                  <Link to="/app/agendamento">
                     <CalendarDays className="h-4 w-4" />
                     {t('dashboard.scheduleRemoval')}
                   </Link>

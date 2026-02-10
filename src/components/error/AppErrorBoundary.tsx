@@ -1,4 +1,5 @@
 import { Component, type ErrorInfo, type ReactNode } from 'react';
+import { logger } from '@/lib/logger';
 
 interface AppErrorBoundaryProps {
   fallback: ReactNode;
@@ -19,7 +20,7 @@ export class AppErrorBoundary extends Component<AppErrorBoundaryProps, AppErrorB
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
-    console.error('Unhandled render error:', error, errorInfo);
+    logger.error('Unhandled render error', { componentStack: errorInfo.componentStack ?? '' }, error);
   }
 
   reset = () => {

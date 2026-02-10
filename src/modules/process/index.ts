@@ -4,3 +4,4 @@ export { default as ProcessTimelinePage } from './pages/ProcessTimelinePage';
 export { default as GPSStatusPage } from './pages/GPSStatusPage';
 export { default as HistoryPage } from './pages/HistoryPage';
 export { TimelineItem } from './components/TimelineItem';
+export { CaseProvider, useCases, useCaseDispatch } from './contexts/CaseContext';

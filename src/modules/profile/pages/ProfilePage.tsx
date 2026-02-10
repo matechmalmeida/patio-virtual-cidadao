@@ -56,7 +56,7 @@ export default function ProfilePage() {
           icon={HelpCircle}
           label={t('profile.support')}
           description={t('profile.supportDesc')}
-          onClick={() => navigate('/suporte')}
+          onClick={() => navigate('/app/suporte')}
         />
         <ProfileMenuCard
           icon={LogOut}

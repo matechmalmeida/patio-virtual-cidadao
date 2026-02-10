@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
-import { useAuth } from '@/modules/auth';
+import { useCases } from '@/modules/process';
 import { AlertBanner } from '@/components/AlertBanner';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -19,13 +19,13 @@ import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import type { ScheduleLocation, ScheduleSlot } from '@/types/case';
-import { createAppointment } from '@/services/case.service';
+import { createAppointment } from '../services/case.service';
 import { getScheduleLocations, getScheduleSlots } from '../services/schedule.service';
 import { getApiErrorMessage } from '@/services/http/api-error';
 import { queryKeys } from '@/lib/query-keys';
 
 export default function SchedulingPage() {
-  const { currentCase, updateCase } = useAuth();
+  const { currentCase, updateCase } = useCases();
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -72,7 +72,7 @@ export default function SchedulingPage() {
     try {
       const result = await createAppointment(currentCase, selectedLocation, slot);
       updateCase(currentCase.id, result);
-      navigate('/agendamento/confirmacao');
+      navigate('/app/agendamento/confirmacao');
     } catch (err) {
       setError(getApiErrorMessage(err, t('scheduling.confirmError')));
     }

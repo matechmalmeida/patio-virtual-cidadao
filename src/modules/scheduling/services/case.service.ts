@@ -1,5 +1,5 @@
-import { ApiError } from './http/api-error';
-import { executeMockRequest } from './http/mock-adapter';
+import { ApiError } from '@/services/http/api-error';
+import { executeMockRequest } from '@/services/http/mock-adapter';
 import type { Appointment, CaseData, ScheduleLocation, ScheduleSlot } from '@/types/case';
 
 function ensureCase(caseData: CaseData | null): asserts caseData is CaseData {

@@ -74,7 +74,7 @@ export default function SupportPage() {
       {/* Quick actions */}
       <div className="space-y-2">
         <Link
-          to="/suporte/chamado"
+          to="/app/suporte/chamado"
           className="flex items-center justify-between p-4 rounded-xl bg-card border hover:bg-muted/50 transition-colors"
         >
           <div className="flex items-center gap-3">
@@ -88,7 +88,7 @@ export default function SupportPage() {
         </Link>
 
         <Link
-          to="/historico"
+          to="/app/historico"
           className="flex items-center justify-between p-4 rounded-xl bg-card border hover:bg-muted/50 transition-colors"
         >
           <div className="flex items-center gap-3">

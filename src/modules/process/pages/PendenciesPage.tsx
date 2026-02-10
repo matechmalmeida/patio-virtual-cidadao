@@ -1,4 +1,4 @@
-import { useAuth } from '@/modules/auth';
+import { useCases } from '@/modules/process';
 import { PendencyCard } from '../components/PendencyCard';
 import { AlertBanner } from '@/components/AlertBanner';
 import { Button } from '@/components/ui/button';
@@ -8,7 +8,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function PendenciesPage() {
   const { id } = useParams<{ id: string }>();
-  const { activeCases } = useAuth();
+  const { activeCases } = useCases();
   const navigate = useNavigate();
   const { t } = useTranslation();
 

@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '@/modules/auth';
+import { useCases } from '@/modules/process';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { AlertBanner } from '@/components/AlertBanner';
@@ -12,7 +12,7 @@ import { getApiErrorMessage } from '@/services/http/api-error';
 export default function UploadPage() {
   const { t } = useTranslation();
   const { id, pendencyId } = useParams<{ id: string; pendencyId: string }>();
-  const { activeCases, updateCase } = useAuth();
+  const { activeCases, updateCase } = useCases();
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
 

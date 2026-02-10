@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
-import { getLegalContent } from '@/services/legal.service';
+import { getLegalContent } from '../services/legal.service';
 import { queryKeys } from '@/lib/query-keys';
 import type { LegalPageContent } from '@/types/legal';
 

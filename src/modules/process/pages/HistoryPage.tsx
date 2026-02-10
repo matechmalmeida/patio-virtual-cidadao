@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/modules/auth';
+import { useCases } from '@/modules/process';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { ArrowLeft, CheckCircle2, Car, ChevronRight, AlertTriangle } from 'lucide-react';
@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next';
 
 export default function HistoryPage() {
   const navigate = useNavigate();
-  const { activeCases } = useAuth();
+  const { activeCases } = useCases();
   const { t } = useTranslation();
   const [historicalCases, setHistoricalCases] = useState<HistoricalCase[]>([]);
   const [error, setError] = useState('');

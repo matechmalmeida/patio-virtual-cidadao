@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { AlertCircle } from 'lucide-react';
 import { getApiErrorMessage } from '@/services/http/api-error';
+import { useCaseDispatch } from '@/modules/process';
 import { verifyMagicLink } from '../services/auth.service';
 import { useAuthDispatch } from '../contexts/AuthContext';
 import { AuthLayout } from '../components/AuthLayout';
@@ -14,6 +15,7 @@ export default function MagicLinkVerifyPage() {
   const [error, setError] = useState('');
   const [verifying, setVerifying] = useState(true);
   const dispatch = useAuthDispatch();
+  const caseDispatch = useCaseDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -30,6 +32,7 @@ export default function MagicLinkVerifyPage() {
       .then((session) => {
         if (cancelled) return;
         dispatch({ type: 'LOGIN_SUCCESS', payload: session });
+        caseDispatch({ type: 'SET_CASES', payload: session.activeCases });
         navigate('/app/dashboard', { replace: true });
       })
       .catch((err) => {

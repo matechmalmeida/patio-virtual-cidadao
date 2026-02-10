@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useAuth } from '@/modules/auth';
+import { useCases } from '@/modules/process';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -21,7 +21,7 @@ export default function DocumentSigningPage() {
   const { t } = useTranslation();
   const { termId } = useParams<{ termId: string }>();
   const navigate = useNavigate();
-  const { currentCase, updateCase } = useAuth();
+  const { currentCase, updateCase } = useCases();
   const { toast } = useToast();
 
   const scrollRef = useRef<HTMLDivElement>(null);

@@ -10,6 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { getApiErrorMessage } from '@/services/http/api-error';
+import { useCaseDispatch } from '@/modules/process';
 import { login } from '../services/auth.service';
 import { useAuthDispatch } from '../contexts/AuthContext';
 import { setRememberMe, getRememberMe } from '../store/session-store';
@@ -28,6 +29,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [remember, setRemember] = useState(getRememberMe);
   const dispatch = useAuthDispatch();
+  const caseDispatch = useCaseDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -58,6 +60,7 @@ export default function LoginPage() {
 
       if (result.session) {
         dispatch({ type: 'LOGIN_SUCCESS', payload: result.session });
+        caseDispatch({ type: 'SET_CASES', payload: result.session.activeCases });
         navigate('/app/dashboard', { replace: true });
       }
     } catch (err) {

@@ -1,4 +1,4 @@
-import { useAuth } from '@/modules/auth';
+import { useCases } from '@/modules/process';
 import { usePushNotifications } from '../hooks/usePushNotifications';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -18,7 +18,7 @@ import { useToast } from '@/hooks/use-toast';
 
 export default function NotificationSettingsPage() {
   const navigate = useNavigate();
-  const { currentCase } = useAuth();
+  const { currentCase } = useCases();
   const { toast } = useToast();
   const { t } = useTranslation();
   const {

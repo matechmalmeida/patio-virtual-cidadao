@@ -1,6 +1,5 @@
 import { useState, useCallback } from 'react';
-import { Outlet, Navigate } from 'react-router-dom';
-import { useAuth } from '@/modules/auth';
+import { Outlet } from 'react-router-dom';
 import { AppHeader } from './AppHeader';
 import { BottomNav } from './BottomNav';
 import { AppSidebar } from './AppSidebar';
@@ -9,7 +8,6 @@ import { useIsDesktop } from '../hooks/useIsDesktop';
 const SIDEBAR_STORAGE_KEY = 'pv-sidebar-collapsed';
 
 export function AppLayout() {
-  const { isAuthenticated } = useAuth();
   const isDesktop = useIsDesktop();
   const [collapsed, setCollapsed] = useState(() => {
     const stored = localStorage.getItem(SIDEBAR_STORAGE_KEY);
@@ -23,10 +21,6 @@ export function AppLayout() {
       return next;
     });
   }, []);
-
-  if (!isAuthenticated) {
-    return <Navigate to="/acesso" replace />;
-  }
 
   if (isDesktop) {
     return (
