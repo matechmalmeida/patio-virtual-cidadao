@@ -10,15 +10,14 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Mail, Lock, Eye, EyeOff } from 'lucide-react';
 import { getApiErrorMessage } from '@/services/http/api-error';
-import { useCaseDispatch } from '@/modules/process';
-import { login } from '../services/auth.service';
-import { useAuthDispatch } from '../contexts/AuthContext';
+import { useAuth } from '../contexts/AuthContext';
+import { useFingerprint } from '../contexts/FingerprintContext';
 import { setRememberMe, getRememberMe } from '../store/session-store';
 import { AuthLayout } from '../components/AuthLayout';
 
 const loginSchema = z.object({
   email: z.string().min(1).email(),
-  password: z.string().min(6),
+  password: z.string().min(1),
 });
 
 type LoginForm = z.infer<typeof loginSchema>;
@@ -28,8 +27,8 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [remember, setRemember] = useState(getRememberMe);
-  const dispatch = useAuthDispatch();
-  const caseDispatch = useCaseDispatch();
+  const { login } = useAuth();
+  const { fingerprint } = useFingerprint();
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -47,20 +46,15 @@ export default function LoginPage() {
     setRememberMe(remember);
 
     try {
-      const result = await login(data.email, data.password);
+      const result = await login({
+        username: data.email,
+        password: data.password,
+        fingerprint: fingerprint || undefined,
+      });
 
-      if (result.requiresTotp && result.tempToken) {
-        dispatch({
-          type: 'TOTP_PENDING',
-          payload: { tempToken: result.tempToken, email: data.email },
-        });
-        navigate('/acesso/2fa', { state: { tempToken: result.tempToken } });
-        return;
-      }
-
-      if (result.session) {
-        dispatch({ type: 'LOGIN_SUCCESS', payload: result.session });
-        caseDispatch({ type: 'SET_CASES', payload: result.session.activeCases });
+      if (result.requiresVerification) {
+        navigate('/acesso/verificar', { replace: true });
+      } else {
         navigate('/app/dashboard', { replace: true });
       }
     } catch (err) {

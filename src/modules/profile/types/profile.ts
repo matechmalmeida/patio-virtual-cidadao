@@ -1,36 +1,29 @@
-export interface UserProfile {
+export type DeviceType = 'desktop' | 'mobile' | 'tablet' | 'unknown';
+
+export interface SessionDevice {
   id: string;
   name: string;
-  email: string;
-  phone: string;
-  cpf: string;
-  avatarUrl: string | null;
-  totpEnabled: boolean;
-}
-
-export interface UserAddress {
-  cep: string;
-  street: string;
-  number: string;
-  complement: string;
-  neighborhood: string;
-  city: string;
-  state: string;
+  type: DeviceType;
+  browser?: string;
+  browserVersion?: string;
+  os?: string;
+  osVersion?: string;
+  isTrusted?: boolean;
 }
 
 export interface UserPreferences {
   language: 'pt' | 'en' | 'es';
   theme: 'light' | 'dark';
-  pushNotifications: boolean;
+  pushEnabled: boolean;
+  pushTypes: {
+    statusChange: boolean;
+    docsAnalyzed: boolean;
+    deadline: boolean;
+    movementAlert: boolean;
+  };
 }
 
-export interface UpdateProfilePayload {
-  name: string;
-  phone: string;
-  cpf: string;
-}
-
-export interface UpdateAddressPayload {
+export interface UserAddress {
   cep: string;
   street: string;
   number: string;

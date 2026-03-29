@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Lock, Eye, EyeOff, CheckCircle } from 'lucide-react';
 import { getApiErrorMessage } from '@/services/http/api-error';
-import { resetPassword } from '../services/auth.service';
+import { authService } from '../services/auth.service';
 import { AuthLayout } from '../components/AuthLayout';
 import { PasswordStrengthBar } from '../components/PasswordStrengthBar';
 
@@ -57,7 +57,7 @@ export default function ResetPasswordPage() {
     setError('');
     setLoading(true);
     try {
-      await resetPassword(token, data.password);
+      await authService.resetPassword({ token, newPassword: data.password });
       setDone(true);
     } catch (err) {
       setError(getApiErrorMessage(err, t('auth.resetPassword.errors.generic')));

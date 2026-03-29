@@ -7,32 +7,42 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useTheme } from '@/hooks/useTheme';
-import { useAuth, TotpSetupDialog } from '@/modules/auth';
-import { getPreferences, updatePreferences } from '../services/profile.service';
+import { TotpSetupDialog, ReauthDialog } from '@/modules/auth';
+import { profileService } from '../services/profile.service';
 import type { UserPreferences } from '../types/profile';
 
 export default function PreferencesPage() {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
-  const { user } = useAuth();
   const [prefs, setPrefs] = useState<UserPreferences | null>(null);
+  const [reauthOpen, setReauthOpen] = useState(false);
+  const [reauthToken, setReauthToken] = useState<string | null>(null);
 
   useEffect(() => {
-    getPreferences().then(setPrefs);
+    profileService.getPreferences().then(setPrefs);
   }, []);
 
   const handleLanguageChange = async (lang: string) => {
     await i18n.changeLanguage(lang);
-    await updatePreferences({ language: lang as UserPreferences['language'] });
+    await profileService.updatePreferences({ language: lang as UserPreferences['language'] });
     setPrefs((prev) => (prev ? { ...prev, language: lang as UserPreferences['language'] } : prev));
   };
 
   const handleThemeToggle = async () => {
     toggleTheme();
     const next = theme === 'dark' ? 'light' : 'dark';
-    await updatePreferences({ theme: next });
+    await profileService.updatePreferences({ theme: next });
     setPrefs((prev) => (prev ? { ...prev, theme: next } : prev));
+  };
+
+  const handleTotpClick = () => {
+    if (reauthToken) return;
+    setReauthOpen(true);
+  };
+
+  const handleReauthSuccess = (token: string) => {
+    setReauthToken(token);
   };
 
   if (!prefs) {
@@ -116,15 +126,26 @@ export default function PreferencesPage() {
                 {t('profile.preferences.twoFactor')}
               </p>
               <p className="text-xs text-muted-foreground">
-                {user?.totpEnabled
-                  ? t('auth.totp.setup.successDesc')
-                  : t('auth.totp.setup.title')}
+                {t('auth.totp.setup.title')}
               </p>
             </div>
-            <TotpSetupDialog />
+            {reauthToken ? (
+              <TotpSetupDialog reauthToken={reauthToken} />
+            ) : (
+              <Button variant="outline" className="w-full gap-2" onClick={handleTotpClick}>
+                <Shield className="h-4 w-4" />
+                {t('profile.preferences.twoFactor')}
+              </Button>
+            )}
           </div>
         </div>
       </div>
+
+      <ReauthDialog
+        open={reauthOpen}
+        onOpenChange={setReauthOpen}
+        onSuccess={handleReauthSuccess}
+      />
     </div>
   );
 }

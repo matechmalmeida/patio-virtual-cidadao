@@ -1,10 +1,11 @@
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Camera, X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { uploadAvatar, removeAvatar } from '../services/profile.service';
+import { AvatarCropperDialog } from '@/modules/auth/components/AvatarCropperDialog';
+import { getHttpClient } from '@/services/http/http-client';
 
 const MAX_SIZE = 5 * 1024 * 1024;
 
@@ -17,19 +18,45 @@ function getInitials(name: string): string {
     .join('');
 }
 
+function resolveAvatarUrl(url: string | null): string | undefined {
+  if (!url) return undefined;
+  if (url.startsWith('http')) return url;
+  if (url.startsWith('/')) {
+    try {
+      const baseUrl = getHttpClient()?.baseUrl ?? '';
+      const origin = new URL(baseUrl).origin;
+      return `${origin}${url}`;
+    } catch {
+      return url;
+    }
+  }
+  return url;
+}
+
 interface ProfileHeaderProps {
   name: string;
   email: string;
   avatarUrl: string | null;
-  onAvatarChange: (url: string | null) => void;
+  onUpload: (file: File) => void;
+  onDelete: () => void;
+  isUploading?: boolean;
 }
 
-export function ProfileHeader({ name, email, avatarUrl, onAvatarChange }: ProfileHeaderProps) {
+export function ProfileHeader({
+  name,
+  email,
+  avatarUrl,
+  onUpload,
+  onDelete,
+  isUploading = false,
+}: ProfileHeaderProps) {
   const { t } = useTranslation();
   const { toast } = useToast();
   const inputRef = useRef<HTMLInputElement>(null);
+  const [cropperOpen, setCropperOpen] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
-  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
@@ -38,75 +65,95 @@ export function ProfileHeader({ name, email, avatarUrl, onAvatarChange }: Profil
       return;
     }
 
-    if (!file.type.startsWith('image/')) {
+    const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    if (!validTypes.includes(file.type)) {
       toast({ title: t('profile.avatarError'), variant: 'destructive' });
       return;
     }
 
-    try {
-      const { avatarUrl: url } = await uploadAvatar(file);
-      onAvatarChange(url);
-      toast({ title: t('profile.avatarUpdated') });
-    } catch {
-      toast({ title: t('profile.avatarError'), variant: 'destructive' });
-    }
+    const url = URL.createObjectURL(file);
+    setPreviewUrl(url);
+    setCropperOpen(true);
 
     if (inputRef.current) inputRef.current.value = '';
   };
 
-  const handleRemove = async () => {
-    try {
-      await removeAvatar();
-      onAvatarChange(null);
-      toast({ title: t('profile.avatarRemoved') });
-    } catch {
-      toast({ title: t('profile.avatarError'), variant: 'destructive' });
+  const handleCropComplete = (blob: Blob) => {
+    const file = new File([blob], 'avatar.png', { type: 'image/png' });
+    onUpload(file);
+    setCropperOpen(false);
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl);
+      setPreviewUrl(null);
     }
   };
 
+  const handleCropperClose = (open: boolean) => {
+    if (!open && previewUrl) {
+      URL.revokeObjectURL(previewUrl);
+      setPreviewUrl(null);
+    }
+    setCropperOpen(open);
+  };
+
   const initials = getInitials(name || '?');
+  const resolvedUrl = resolveAvatarUrl(avatarUrl);
 
   return (
-    <div className="flex flex-col items-center gap-3 py-6">
-      <div className="relative">
-        <Avatar className="h-20 w-20">
-          {avatarUrl && <AvatarImage src={avatarUrl} alt={name} />}
-          <AvatarFallback className="text-lg">{initials}</AvatarFallback>
-        </Avatar>
+    <>
+      <div className="flex flex-col items-center gap-3 py-6">
+        <div className="relative">
+          <Avatar className="h-20 w-20">
+            {resolvedUrl && <AvatarImage src={resolvedUrl} alt={name} />}
+            <AvatarFallback className="text-lg">{initials}</AvatarFallback>
+          </Avatar>
 
-        <Button
-          size="icon"
-          variant="secondary"
-          className="absolute -bottom-1 -right-1 h-8 w-8 rounded-full shadow-md"
-          onClick={() => inputRef.current?.click()}
-        >
-          <Camera className="h-4 w-4" />
-        </Button>
-
-        {avatarUrl && (
           <Button
             size="icon"
-            variant="destructive"
-            className="absolute -top-1 -right-1 h-6 w-6 rounded-full shadow-md"
-            onClick={handleRemove}
+            variant="secondary"
+            className="absolute -bottom-1 -right-1 h-8 w-8 rounded-full shadow-md"
+            onClick={() => inputRef.current?.click()}
+            disabled={isUploading}
           >
-            <X className="h-3 w-3" />
+            <Camera className="h-4 w-4" />
           </Button>
-        )}
+
+          {avatarUrl && (
+            <Button
+              size="icon"
+              variant="destructive"
+              className="absolute -top-1 -right-1 h-6 w-6 rounded-full shadow-md"
+              onClick={onDelete}
+              disabled={isUploading}
+            >
+              <X className="h-3 w-3" />
+            </Button>
+          )}
+        </div>
+
+        <input
+          ref={inputRef}
+          type="file"
+          accept="image/jpeg,image/png,image/webp"
+          className="hidden"
+          onChange={handleFileChange}
+        />
+
+        <div className="text-center">
+          <p className="text-lg font-semibold">{name}</p>
+          <p className="text-sm text-muted-foreground">{email}</p>
+        </div>
       </div>
 
-      <input
-        ref={inputRef}
-        type="file"
-        accept="image/*"
-        className="hidden"
-        onChange={handleFileChange}
-      />
-
-      <div className="text-center">
-        <p className="text-lg font-semibold">{name}</p>
-        <p className="text-sm text-muted-foreground">{email}</p>
-      </div>
-    </div>
+      {previewUrl && (
+        <AvatarCropperDialog
+          open={cropperOpen}
+          onOpenChange={handleCropperClose}
+          imageSrc={previewUrl}
+          onCropComplete={handleCropComplete}
+          isUploading={isUploading}
+        />
+      )}
+    </>
   );
 }

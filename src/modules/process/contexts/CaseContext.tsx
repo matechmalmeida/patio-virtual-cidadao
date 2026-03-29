@@ -30,7 +30,7 @@ const CaseContext = createContext<CaseContextType | null>(null);
 const CaseDispatchContext = createContext<Dispatch<CaseAction> | null>(null);
 
 export function CaseProvider({ children }: { children: ReactNode }) {
-  const { isAuthenticated } = useAuth();
+  const { state: authState } = useAuth();
   const [state, dispatch] = useReducer(
     caseReducer,
     initialCaseState,
@@ -42,10 +42,10 @@ export function CaseProvider({ children }: { children: ReactNode }) {
   }, [state]);
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!authState.isAuthenticated) {
       dispatch({ type: 'CLEAR' });
     }
-  }, [isAuthenticated]);
+  }, [authState.isAuthenticated]);
 
   const currentCase = useMemo(
     () => state.activeCases.find((c) => c.id === state.selectedCaseId) ?? null,

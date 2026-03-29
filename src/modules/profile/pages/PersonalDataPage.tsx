@@ -1,81 +1,56 @@
-import { useEffect, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, User, Mail, Phone, CreditCard, Calendar, Camera, Loader2, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from '@/components/ui/input-otp';
 import { useToast } from '@/hooks/use-toast';
-import { getProfile, updateProfile } from '../services/profile.service';
+import { ReauthDialog } from '@/modules/auth/components/ReauthDialog';
+import { AvatarCropperDialog } from '@/modules/auth/components/AvatarCropperDialog';
+import { getHttpClient } from '@/services/http/http-client';
+import { useProfile, useUploadAvatar, useDeleteAvatar } from '../hooks/useProfile';
+import { useProfileBasicInfo } from '../hooks/useProfileBasicInfo';
+import { EditableField } from '../components/EditableField';
+import { formatPhone, formatCpf } from '../lib/formatters';
 
-function maskPhone(value: string): string {
-  const digits = value.replace(/\D/g, '').slice(0, 11);
-  if (digits.length <= 2) return digits;
-  if (digits.length <= 7) return `(${digits.slice(0, 2)}) ${digits.slice(2)}`;
-  return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
+const MAX_SIZE = 5 * 1024 * 1024;
+
+function getInitials(name: string): string {
+  return name
+    .split(' ')
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0].toUpperCase())
+    .join('');
 }
 
-function maskCpf(value: string): string {
-  const digits = value.replace(/\D/g, '').slice(0, 11);
-  if (digits.length <= 3) return digits;
-  if (digits.length <= 6) return `${digits.slice(0, 3)}.${digits.slice(3)}`;
-  if (digits.length <= 9)
-    return `${digits.slice(0, 3)}.${digits.slice(3, 6)}.${digits.slice(6)}`;
-  return `${digits.slice(0, 3)}.${digits.slice(3, 6)}.${digits.slice(6, 9)}-${digits.slice(9)}`;
+function resolveAvatarUrl(url: string | null): string | undefined {
+  if (!url) return undefined;
+  if (url.startsWith('http')) return url;
+  if (url.startsWith('/')) {
+    try {
+      const baseUrl = getHttpClient()?.baseUrl ?? '';
+      const origin = new URL(baseUrl).origin;
+      return `${origin}${url}`;
+    } catch {
+      return url;
+    }
+  }
+  return url;
 }
-
-const schema = z.object({
-  name: z.string().min(2),
-  email: z.string().email(),
-  phone: z.string().min(14),
-  cpf: z.string().min(14),
-});
-
-type FormData = z.infer<typeof schema>;
 
 export default function PersonalDataPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { toast } = useToast();
-  const [loading, setLoading] = useState(true);
+  const { data: profile, isLoading } = useProfile();
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    watch,
-    formState: { errors, isSubmitting },
-  } = useForm<FormData>({
-    resolver: zodResolver(schema),
-  });
-
-  useEffect(() => {
-    getProfile().then((p) => {
-      setValue('name', p.name);
-      setValue('email', p.email);
-      setValue('phone', p.phone);
-      setValue('cpf', p.cpf);
-      setLoading(false);
-    });
-  }, [setValue]);
-
-  const phoneValue = watch('phone');
-  const cpfValue = watch('cpf');
-
-  const onSubmit = async (data: FormData) => {
-    try {
-      await updateProfile({ name: data.name, phone: data.phone, cpf: data.cpf });
-      toast({ title: t('profile.personal.saveSuccess') });
-      navigate('/app/profile');
-    } catch {
-      toast({ title: t('profile.personal.saveError'), variant: 'destructive' });
-    }
-  };
-
-  if (loading) {
+  if (isLoading || !profile) {
     return (
       <div className="flex items-center justify-center py-20">
         <div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-t-transparent" />
@@ -84,63 +59,292 @@ export default function PersonalDataPage() {
   }
 
   return (
+    <PersonalDataForm
+      profile={profile}
+      onBack={() => navigate('/app/profile')}
+      t={t}
+    />
+  );
+}
+
+function PersonalDataForm({
+  profile,
+  onBack,
+  t,
+}: {
+  profile: {
+    name: string;
+    email: string;
+    phone: string | null;
+    cpf?: string;
+    birthDate?: string;
+    avatarUrl: string | null;
+  };
+  onBack: () => void;
+  t: (key: string) => string;
+}) {
+  const { toast } = useToast();
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [cropperOpen, setCropperOpen] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+
+  const uploadAvatarMutation = useUploadAvatar();
+  const deleteAvatarMutation = useDeleteAvatar();
+
+  const basicInfo = useProfileBasicInfo({
+    full_name: profile.name,
+    email: profile.email,
+    phone: profile.phone || '',
+    cpf: profile.cpf || '',
+    birth_date: profile.birthDate || '',
+  });
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > MAX_SIZE) {
+      toast({ title: 'Arquivo muito grande. Maximo 5MB.', variant: 'destructive' });
+      return;
+    }
+
+    const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    if (!validTypes.includes(file.type)) {
+      toast({ title: 'Formato invalido. Use JPG, PNG ou WebP.', variant: 'destructive' });
+      return;
+    }
+
+    const url = URL.createObjectURL(file);
+    setPreviewUrl(url);
+    setCropperOpen(true);
+    if (inputRef.current) inputRef.current.value = '';
+  };
+
+  const handleCropComplete = (blob: Blob) => {
+    const file = new File([blob], 'avatar.png', { type: 'image/png' });
+    uploadAvatarMutation.mutate(file);
+    setCropperOpen(false);
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl);
+      setPreviewUrl(null);
+    }
+  };
+
+  const handleCropperClose = (open: boolean) => {
+    if (!open && previewUrl) {
+      URL.revokeObjectURL(previewUrl);
+      setPreviewUrl(null);
+    }
+    setCropperOpen(open);
+  };
+
+  const initials = getInitials(profile.name || '?');
+  const resolvedUrl = resolveAvatarUrl(profile.avatarUrl);
+  const isUploading = uploadAvatarMutation.isPending;
+
+  return (
     <div className="px-4 py-5 space-y-5">
       <Button
         variant="ghost"
         size="sm"
-        onClick={() => navigate('/app/profile')}
+        onClick={onBack}
         className="-ml-2"
       >
         <ArrowLeft className="h-4 w-4 mr-1" />
         {t('common.back')}
       </Button>
 
-      <h1 className="text-xl font-bold">{t('profile.personal.title')}</h1>
+      <Card>
+        <CardHeader>
+          <CardTitle>{t('profile.personal.title')}</CardTitle>
+          <CardDescription>Atualize suas informacoes de perfil</CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-6">
+          <div className="flex items-center gap-4">
+            <div className="relative">
+              <Avatar className="h-16 w-16">
+                {resolvedUrl && <AvatarImage src={resolvedUrl} alt={profile.name} />}
+                <AvatarFallback className="text-lg">{initials}</AvatarFallback>
+              </Avatar>
+              {profile.avatarUrl && (
+                <Button
+                  size="icon"
+                  variant="destructive"
+                  className="absolute -top-1 -right-1 h-5 w-5 rounded-full"
+                  onClick={() => deleteAvatarMutation.mutate()}
+                  disabled={isUploading || deleteAvatarMutation.isPending}
+                >
+                  <X className="h-3 w-3" />
+                </Button>
+              )}
+            </div>
+            <div>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => inputRef.current?.click()}
+                disabled={isUploading}
+              >
+                <Camera className="h-4 w-4 mr-2" />
+                {isUploading ? 'Enviando...' : 'Adicionar foto'}
+              </Button>
+              <p className="text-xs text-muted-foreground mt-1">JPG, PNG ou WebP. Maximo 5MB.</p>
+            </div>
+          </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="name">{t('profile.personal.name')}</Label>
-          <Input id="name" {...register('name')} />
-          {errors.name && (
-            <p className="text-xs text-destructive">{t('profile.personal.errors.nameRequired')}</p>
-          )}
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="email">{t('auth.login.email')}</Label>
-          <Input id="email" {...register('email')} disabled className="bg-muted" />
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="phone">{t('profile.personal.phone')}</Label>
-          <Input
-            id="phone"
-            {...register('phone')}
-            value={phoneValue || ''}
-            onChange={(e) => setValue('phone', maskPhone(e.target.value), { shouldValidate: true })}
+          <input
+            ref={inputRef}
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            className="hidden"
+            onChange={handleFileChange}
           />
-          {errors.phone && (
-            <p className="text-xs text-destructive">{t('profile.personal.errors.phoneInvalid')}</p>
-          )}
-        </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="cpf">{t('profile.personal.cpf')}</Label>
-          <Input
-            id="cpf"
-            {...register('cpf')}
-            value={cpfValue || ''}
-            onChange={(e) => setValue('cpf', maskCpf(e.target.value), { shouldValidate: true })}
+          <hr className="border-border" />
+
+          <EditableField
+            label="Nome completo"
+            icon={<User className="h-4 w-4" />}
+            value={basicInfo.profileForm.getValues('full_name')}
+            editingValue={basicInfo.name.value}
+            isEditing={basicInfo.name.editing}
+            isPending={basicInfo.name.isPending}
+            placeholder="Seu nome completo"
+            onStartEdit={basicInfo.name.onStartEdit}
+            onCancelEdit={basicInfo.name.onCancelEdit}
+            onSave={basicInfo.name.onSave}
+            onValueChange={basicInfo.name.setValue}
           />
-          {errors.cpf && (
-            <p className="text-xs text-destructive">{t('profile.personal.errors.cpfInvalid')}</p>
-          )}
-        </div>
 
-        <Button type="submit" className="w-full" disabled={isSubmitting}>
-          {isSubmitting ? t('common.loading') : t('common.save')}
-        </Button>
-      </form>
+          <EditableField
+            label="CPF"
+            icon={<CreditCard className="h-4 w-4" />}
+            value={basicInfo.profileForm.getValues('cpf') || ''}
+            displayValue={formatCpf(basicInfo.profileForm.getValues('cpf') || '')}
+            editingValue={basicInfo.cpf.value}
+            isEditing={basicInfo.cpf.editing}
+            isPending={basicInfo.cpf.isPending}
+            placeholder="000.000.000-00"
+            sensitive
+            onStartEdit={basicInfo.cpf.onStartEdit}
+            onCancelEdit={basicInfo.cpf.onCancelEdit}
+            onSave={basicInfo.cpf.onSave}
+            onValueChange={(v) => basicInfo.cpf.setValue(formatCpf(v))}
+          />
+
+          <EditableField
+            label="Data de Nascimento"
+            icon={<Calendar className="h-4 w-4" />}
+            value={basicInfo.profileForm.getValues('birth_date') || ''}
+            editingValue={basicInfo.birthDate.value}
+            isEditing={basicInfo.birthDate.editing}
+            isPending={basicInfo.birthDate.isPending}
+            type="date"
+            placeholder="dd/mm/aaaa"
+            onStartEdit={basicInfo.birthDate.onStartEdit}
+            onCancelEdit={basicInfo.birthDate.onCancelEdit}
+            onSave={basicInfo.birthDate.onSave}
+            onValueChange={basicInfo.birthDate.setValue}
+          />
+
+          {basicInfo.emailVerification.isPending ? (
+            <div className="space-y-3">
+              <p className="text-sm text-muted-foreground">
+                Codigo enviado para {basicInfo.emailVerification.maskedEmail}
+              </p>
+              <div className="flex justify-center">
+                <InputOTP
+                  maxLength={6}
+                  value={basicInfo.emailVerification.code}
+                  onChange={(value) => {
+                    basicInfo.emailVerification.setCode(value);
+                    if (value.length === 6) {
+                      basicInfo.emailVerification.onConfirm(value);
+                    }
+                  }}
+                  disabled={basicInfo.emailVerification.isConfirming}
+                >
+                  <InputOTPGroup>
+                    <InputOTPSlot index={0} />
+                    <InputOTPSlot index={1} />
+                    <InputOTPSlot index={2} />
+                    <InputOTPSlot index={3} />
+                    <InputOTPSlot index={4} />
+                    <InputOTPSlot index={5} />
+                  </InputOTPGroup>
+                </InputOTP>
+              </div>
+              {basicInfo.emailVerification.isConfirming && (
+                <div className="flex items-center justify-center gap-2 text-sm text-muted-foreground">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <span>Verificando...</span>
+                </div>
+              )}
+              <div className="flex justify-center">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={basicInfo.emailVerification.onCancel}
+                >
+                  Cancelar
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <EditableField
+              label="E-mail"
+              icon={<Mail className="h-4 w-4" />}
+              value={basicInfo.profileForm.getValues('email')}
+              editingValue={basicInfo.email.value}
+              isEditing={basicInfo.email.editing}
+              isPending={basicInfo.email.isPending}
+              placeholder="seu@email.com"
+              sensitive
+              onStartEdit={basicInfo.email.onStartEdit}
+              onCancelEdit={basicInfo.email.onCancelEdit}
+              onSave={basicInfo.email.onSave}
+              onValueChange={basicInfo.email.setValue}
+            />
+          )}
+
+          <EditableField
+            label="Telefone"
+            icon={<Phone className="h-4 w-4" />}
+            value={basicInfo.profileForm.getValues('phone') || ''}
+            displayValue={formatPhone(basicInfo.profileForm.getValues('phone') || '')}
+            editingValue={basicInfo.phone.value}
+            isEditing={basicInfo.phone.editing}
+            isPending={basicInfo.phone.isPending}
+            placeholder="(00) 00000-0000"
+            sensitive
+            onStartEdit={basicInfo.phone.onStartEdit}
+            onCancelEdit={basicInfo.phone.onCancelEdit}
+            onSave={basicInfo.phone.onSave}
+            onValueChange={(v) => basicInfo.phone.setValue(formatPhone(v))}
+          />
+
+          <p className="text-xs text-destructive">
+            ** Requer verificacao por codigo enviado ao e-mail
+          </p>
+        </CardContent>
+      </Card>
+
+      {previewUrl && (
+        <AvatarCropperDialog
+          open={cropperOpen}
+          onOpenChange={handleCropperClose}
+          imageSrc={previewUrl}
+          onCropComplete={handleCropComplete}
+          isUploading={isUploading}
+        />
+      )}
+
+      <ReauthDialog
+        open={basicInfo.reauthDialogOpen}
+        onOpenChange={basicInfo.setReauthDialogOpen}
+        onSuccess={basicInfo.handleReauthSuccess}
+        title={basicInfo.getReauthTitle()}
+      />
     </div>
   );
 }

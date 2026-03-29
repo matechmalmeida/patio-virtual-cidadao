@@ -1,18 +1,22 @@
 import { ApiError, toApiError } from './api-error';
 import { requestWithPolicy, type RequestPolicy } from './client';
+import { getFingerprint } from '@/modules/auth/store/fingerprint-store';
 
 export interface HttpClientConfig {
   baseUrl: string;
-  getToken: () => string | null;
   onUnauthorized: () => void;
   onForbidden?: () => void;
 }
 
 export interface HttpRequestOptions extends RequestPolicy {
   headers?: Record<string, string>;
+  skipCsrf?: boolean;
+  skipAuthRefresh?: boolean;
 }
 
 let globalConfig: HttpClientConfig | null = null;
+let isRefreshing = false;
+let refreshPromise: Promise<boolean> | null = null;
 
 export function configureHttpClient(config: HttpClientConfig): void {
   globalConfig = config;
@@ -22,40 +26,68 @@ export function getHttpClient(): HttpClientConfig | null {
   return globalConfig;
 }
 
-function buildHeaders(options?: HttpRequestOptions): Record<string, string> {
+let storedCsrfToken: string | null = null;
+
+export function getCsrfToken(): string | null {
+  const match = document.cookie
+    .split('; ')
+    .find((row) => row.startsWith('csrf_token='));
+  if (match) {
+    return decodeURIComponent(match.split('=')[1]);
+  }
+  return storedCsrfToken;
+}
+
+export function setCsrfToken(token: string | null): void {
+  storedCsrfToken = token;
+}
+
+function buildHeaders(method: string, options?: HttpRequestOptions): Record<string, string> {
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
     ...options?.headers,
   };
 
-  if (globalConfig) {
-    const token = globalConfig.getToken();
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`;
+  const needsCsrf = !options?.skipCsrf && !['GET', 'HEAD', 'OPTIONS'].includes(method.toUpperCase());
+  if (needsCsrf) {
+    const csrf = getCsrfToken();
+    if (csrf) {
+      headers['x-csrf-token'] = csrf;
     }
   }
 
   return headers;
 }
 
+function extractMessage(body: unknown, fallback: string): string {
+  if (body && typeof body === 'object' && 'message' in body) {
+    const msg = (body as { message: unknown }).message;
+    if (typeof msg === 'string') return msg;
+  }
+  return fallback;
+}
+
 function handleResponseError(status: number, body: unknown): never {
   if (status === 401) {
-    globalConfig?.onUnauthorized();
+    const message = extractMessage(body, 'Credenciais invalidas.');
     throw new ApiError({
       code: 'UNAUTHORIZED',
       status: 401,
-      message: 'Unauthorized',
-      userMessage: 'Sessao expirada. Faca login novamente.',
+      message,
+      userMessage: message,
+      details: body,
     });
   }
 
   if (status === 403) {
     globalConfig?.onForbidden?.();
+    const message = extractMessage(body, 'Voce nao tem permissao para esta acao.');
     throw new ApiError({
       code: 'FORBIDDEN',
       status: 403,
-      message: 'Forbidden',
-      userMessage: 'Voce nao tem permissao para esta acao.',
+      message,
+      userMessage: message,
+      details: body,
     });
   }
 
@@ -69,14 +101,23 @@ function handleResponseError(status: number, body: unknown): never {
   }
 
   if (status === 400) {
-    const detail = body && typeof body === 'object' && 'message' in body
-      ? (body as { message: string }).message
-      : 'Dados invalidos.';
+    const detail = extractMessage(body, 'Dados invalidos.');
     throw new ApiError({
       code: 'VALIDATION',
       status: 400,
       message: detail,
       userMessage: detail,
+      details: body,
+    });
+  }
+
+  if (status === 429) {
+    const message = extractMessage(body, 'Muitas tentativas. Aguarde e tente novamente.');
+    throw new ApiError({
+      code: 'VALIDATION',
+      status: 429,
+      message,
+      userMessage: message,
       details: body,
     });
   }
@@ -99,6 +140,33 @@ function handleResponseError(status: number, body: unknown): never {
   });
 }
 
+export async function tryRefresh(): Promise<boolean> {
+  if (isRefreshing && refreshPromise) {
+    return refreshPromise;
+  }
+
+  isRefreshing = true;
+  refreshPromise = (async () => {
+    try {
+      const baseUrl = globalConfig?.baseUrl ?? '';
+      const response = await fetch(`${baseUrl}/v1/auth/refresh`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify(getFingerprint() ? { fingerprint: getFingerprint() } : {}),
+      });
+      return response.ok;
+    } catch {
+      return false;
+    } finally {
+      isRefreshing = false;
+      refreshPromise = null;
+    }
+  })();
+
+  return refreshPromise;
+}
+
 async function request<T>(
   method: string,
   url: string,
@@ -107,7 +175,7 @@ async function request<T>(
 ): Promise<T> {
   const baseUrl = globalConfig?.baseUrl ?? '';
   const fullUrl = `${baseUrl}${url}`;
-  const headers = buildHeaders(options);
+  const headers = buildHeaders(method, options);
 
   return requestWithPolicy(async () => {
     let response: Response;
@@ -116,13 +184,35 @@ async function request<T>(
       response = await fetch(fullUrl, {
         method,
         headers,
+        credentials: 'include',
         body: body ? JSON.stringify(body) : undefined,
       });
     } catch (error) {
       throw toApiError(error);
     }
 
+    if (response.status === 401 && !options?.skipAuthRefresh) {
+      const refreshed = await tryRefresh();
+      if (refreshed) {
+        try {
+          const retryHeaders = buildHeaders(method, options);
+          response = await fetch(fullUrl, {
+            method,
+            headers: retryHeaders,
+            credentials: 'include',
+            body: body ? JSON.stringify(body) : undefined,
+          });
+        } catch (error) {
+          throw toApiError(error);
+        }
+      }
+    }
+
     if (!response.ok) {
+      if (response.status === 401 && !options?.skipAuthRefresh) {
+        globalConfig?.onUnauthorized();
+      }
+
       let responseBody: unknown = null;
       try {
         responseBody = await response.json();

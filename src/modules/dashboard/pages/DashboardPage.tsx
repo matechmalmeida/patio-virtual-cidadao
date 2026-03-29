@@ -1,5 +1,5 @@
 import { useCases } from '@/modules/process';
-import { useNotifications } from '@/modules/notification';
+import { useUnreadCount } from '@/modules/notification';
 import { VehicleCard } from '@/components/VehicleCard';
 import { SeizureInfo } from '@/components/SeizureInfo';
 import { LocationMap } from '@/components/LocationMap';
@@ -27,7 +27,8 @@ import {
 
 export default function DashboardPage() {
   const { currentCase, activeCases, selectCase } = useCases();
-  const { unreadCount } = useNotifications();
+  const { data: unreadData } = useUnreadCount();
+  const unreadCount = unreadData?.count ?? 0;
   const { t } = useTranslation();
   const { isOpen: showOnboarding, complete: completeOnboarding } = useOnboarding();
 

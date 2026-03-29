@@ -1,90 +1,95 @@
-import { executeMockRequest } from '@/services/http/mock-adapter';
+import { authService } from '@/modules/auth/services/auth.service';
+import { httpGet, httpPatch } from '@/services/http/http-client';
+import type { UserAddress, UserPreferences } from '../types/profile';
 import type {
-  UserProfile,
-  UserAddress,
-  UserPreferences,
-  UpdateProfilePayload,
-  UpdateAddressPayload,
-} from '../types/profile';
+  MeResponse,
+  Session,
+  ChangeNameRequest,
+  ChangeNameResponse,
+  InitiateEmailChangeRequest,
+  InitiateEmailChangeResponse,
+  ConfirmEmailChangeRequest,
+  ConfirmEmailChangeResponse,
+  ChangePhoneRequest,
+  ChangePhoneResponse,
+  ChangeCpfRequest,
+  ChangeCpfResponse,
+  ChangeBirthDateRequest,
+  ChangeBirthDateResponse,
+  ChangePasswordRequest,
+  ChangePasswordResponse,
+  UploadAvatarResponse,
+  DeleteAvatarResponse,
+} from '@/modules/auth/types/auth';
 
-const AVATAR_KEY = 'pv-avatar';
+export const profileService = {
+  async getMe(): Promise<MeResponse> {
+    return authService.getMe();
+  },
 
-let mockProfile: UserProfile = {
-  id: 'usr_1',
-  name: 'Joao Silva',
-  email: 'cidadao@email.com',
-  phone: '(11) 99999-8888',
-  cpf: '123.456.789-00',
-  avatarUrl: null,
-  totpEnabled: false,
+  async changeName(data: ChangeNameRequest): Promise<ChangeNameResponse> {
+    return authService.changeName(data);
+  },
+
+  async initiateEmailChange(
+    data: InitiateEmailChangeRequest,
+  ): Promise<InitiateEmailChangeResponse> {
+    return authService.initiateEmailChange(data);
+  },
+
+  async confirmEmailChange(data: ConfirmEmailChangeRequest): Promise<ConfirmEmailChangeResponse> {
+    return authService.confirmEmailChange(data);
+  },
+
+  async changePhone(data: ChangePhoneRequest): Promise<ChangePhoneResponse> {
+    return authService.changePhone(data);
+  },
+
+  async changeCpf(data: ChangeCpfRequest): Promise<ChangeCpfResponse> {
+    return authService.changeCpf(data);
+  },
+
+  async changeBirthDate(data: ChangeBirthDateRequest): Promise<ChangeBirthDateResponse> {
+    return authService.changeBirthDate(data);
+  },
+
+  async changePassword(data: ChangePasswordRequest): Promise<ChangePasswordResponse> {
+    return authService.changePassword(data);
+  },
+
+  async uploadAvatar(file: File): Promise<UploadAvatarResponse> {
+    return authService.uploadAvatar(file);
+  },
+
+  async deleteAvatar(): Promise<DeleteAvatarResponse> {
+    return authService.deleteAvatar();
+  },
+
+  async getSessions(): Promise<Session[]> {
+    return authService.getSessions();
+  },
+
+  async revokeSession(familyId: string): Promise<void> {
+    return authService.revokeSession(familyId);
+  },
+
+  async revokeAllSessions(): Promise<void> {
+    return authService.logoutAll();
+  },
+
+  async getAddress(): Promise<UserAddress> {
+    return httpGet<UserAddress>('/v1/profile/address');
+  },
+
+  async updateAddress(data: Partial<UserAddress>): Promise<UserAddress> {
+    return httpPatch<UserAddress>('/v1/profile/address', data);
+  },
+
+  async getPreferences(): Promise<UserPreferences> {
+    return httpGet<UserPreferences>('/v1/profile/preferences');
+  },
+
+  async updatePreferences(data: Partial<UserPreferences>): Promise<UserPreferences> {
+    return httpPatch<UserPreferences>('/v1/profile/preferences', data);
+  },
 };
-
-let mockAddress: UserAddress = {
-  cep: '01001-000',
-  street: 'Praca da Se',
-  number: '100',
-  complement: 'Apto 42',
-  neighborhood: 'Se',
-  city: 'Sao Paulo',
-  state: 'SP',
-};
-
-let mockPreferences: UserPreferences = {
-  language: 'pt',
-  theme: 'light',
-  pushNotifications: false,
-};
-
-export async function getProfile(): Promise<UserProfile> {
-  return executeMockRequest(() => {
-    const storedAvatar = localStorage.getItem(AVATAR_KEY);
-    return { ...mockProfile, avatarUrl: storedAvatar };
-  });
-}
-
-export async function updateProfile(payload: UpdateProfilePayload): Promise<UserProfile> {
-  return executeMockRequest(() => {
-    mockProfile = { ...mockProfile, ...payload };
-    return { ...mockProfile };
-  });
-}
-
-export async function uploadAvatar(file: File): Promise<{ avatarUrl: string }> {
-  return executeMockRequest(() => {
-    const url = URL.createObjectURL(file);
-    localStorage.setItem(AVATAR_KEY, url);
-    mockProfile = { ...mockProfile, avatarUrl: url };
-    return { avatarUrl: url };
-  });
-}
-
-export async function removeAvatar(): Promise<void> {
-  return executeMockRequest(() => {
-    localStorage.removeItem(AVATAR_KEY);
-    mockProfile = { ...mockProfile, avatarUrl: null };
-  });
-}
-
-export async function getAddress(): Promise<UserAddress> {
-  return executeMockRequest(() => ({ ...mockAddress }));
-}
-
-export async function updateAddress(payload: UpdateAddressPayload): Promise<UserAddress> {
-  return executeMockRequest(() => {
-    mockAddress = { ...mockAddress, ...payload };
-    return { ...mockAddress };
-  });
-}
-
-export async function getPreferences(): Promise<UserPreferences> {
-  return executeMockRequest(() => ({ ...mockPreferences }));
-}
-
-export async function updatePreferences(
-  payload: Partial<UserPreferences>
-): Promise<UserPreferences> {
-  return executeMockRequest(() => {
-    mockPreferences = { ...mockPreferences, ...payload };
-    return { ...mockPreferences };
-  });
-}

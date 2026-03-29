@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Mail, MailCheck } from 'lucide-react';
 import { getApiErrorMessage } from '@/services/http/api-error';
-import { requestPasswordReset } from '../services/auth.service';
+import { authService } from '../services/auth.service';
 import { AuthLayout } from '../components/AuthLayout';
 
 const schema = z.object({
@@ -36,7 +36,7 @@ export default function ForgotPasswordPage() {
     setError('');
     setLoading(true);
     try {
-      await requestPasswordReset(data.email);
+      await authService.forgotPassword({ email: data.email });
       setSent(true);
     } catch (err) {
       setError(getApiErrorMessage(err, t('auth.forgotPassword.backToLogin')));

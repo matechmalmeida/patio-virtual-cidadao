@@ -4,18 +4,22 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { AlertCircle } from 'lucide-react';
 import { getApiErrorMessage } from '@/services/http/api-error';
-import { useCaseDispatch } from '@/modules/process';
-import { verifyMagicLink } from '../services/auth.service';
-import { useAuthDispatch } from '../contexts/AuthContext';
+import { httpGet, httpPost } from '@/services/http/http-client';
 import { AuthLayout } from '../components/AuthLayout';
+
+interface ConfirmResponse {
+  requiresVerification: boolean;
+  pendingToken?: string;
+  expiresIn?: number;
+  maskedEmail?: string;
+  mfaMethod?: string;
+}
 
 export default function MagicLinkVerifyPage() {
   const [searchParams] = useSearchParams();
   const token = searchParams.get('token');
   const [error, setError] = useState('');
   const [verifying, setVerifying] = useState(true);
-  const dispatch = useAuthDispatch();
-  const caseDispatch = useCaseDispatch();
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -28,23 +32,36 @@ export default function MagicLinkVerifyPage() {
 
     let cancelled = false;
 
-    verifyMagicLink(token)
-      .then((session) => {
+    (async () => {
+      try {
+        await httpGet<{ valid: boolean }>(`/v1/auth/magic-link/verify?token=${encodeURIComponent(token)}`, {
+          skipAuthRefresh: true,
+        });
         if (cancelled) return;
-        dispatch({ type: 'LOGIN_SUCCESS', payload: session });
-        caseDispatch({ type: 'SET_CASES', payload: session.activeCases });
-        navigate('/app/dashboard', { replace: true });
-      })
-      .catch((err) => {
+
+        const result = await httpPost<ConfirmResponse>(
+          '/v1/auth/magic-link/confirm',
+          { token },
+          { skipAuthRefresh: true },
+        );
+        if (cancelled) return;
+
+        if (result.requiresVerification) {
+          navigate('/acesso/verificar', { replace: true });
+        } else {
+          navigate('/app/dashboard', { replace: true });
+        }
+      } catch (err) {
         if (cancelled) return;
         setError(getApiErrorMessage(err, t('auth.magicLink.errorDesc')));
         setVerifying(false);
-      });
+      }
+    })();
 
     return () => {
       cancelled = true;
     };
-  }, [token, dispatch, navigate, t]);
+  }, [token, navigate, t]);
 
   if (verifying) {
     return (

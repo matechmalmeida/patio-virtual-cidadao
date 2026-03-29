@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Mail, MailCheck } from 'lucide-react';
 import { getApiErrorMessage } from '@/services/http/api-error';
-import { requestMagicLink } from '../services/auth.service';
+import { httpPost } from '@/services/http/http-client';
 import { AuthLayout } from '../components/AuthLayout';
 
 const schema = z.object({
@@ -36,7 +36,7 @@ export default function MagicLinkRequestPage() {
     setError('');
     setLoading(true);
     try {
-      await requestMagicLink(data.email);
+      await httpPost('/v1/auth/magic-link', { email: data.email }, { skipAuthRefresh: true });
       setSent(true);
     } catch (err) {
       setError(getApiErrorMessage(err, t('auth.magicLink.backToLogin')));

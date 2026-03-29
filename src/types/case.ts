@@ -1,4 +1,13 @@
-import type { Notification } from '@/modules/notification';
+export interface Notification {
+  id: string;
+  title: string;
+  message: string;
+  type: 'info' | 'alert' | 'critical';
+  read: boolean;
+  timestamp: string;
+  actionLink?: string;
+  actionLabel?: string;
+}
 
 export type CaseStatus =
   | 'em_deslocamento'
@@ -62,7 +71,6 @@ export interface TimelineEvent {
   linkLabel?: string;
 }
 
-export type { Notification } from '@/modules/notification';
 
 export interface ScheduleSlot {
   id: string;

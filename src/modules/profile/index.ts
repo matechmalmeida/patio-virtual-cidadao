@@ -1,9 +1,12 @@
 export { ProfileHeader } from './components/ProfileHeader';
 export { ProfileMenuCard } from './components/ProfileMenuCard';
-export type {
-  UserProfile,
-  UserAddress,
-  UserPreferences,
-  UpdateProfilePayload,
-  UpdateAddressPayload,
-} from './types/profile';
+export { EditableField } from './components/EditableField';
+export { PasswordChangeCard } from './components/PasswordChangeCard';
+export { useProfile, useUploadAvatar, useDeleteAvatar } from './hooks/useProfile';
+export { useProfileBasicInfo } from './hooks/useProfileBasicInfo';
+export { useProfileSessions, useRevokeProfileSession, useRevokeAllProfileSessions } from './hooks/useProfileSessions';
+export { useDevices, useCurrentDevice, useRenameDevice, useTrustDevice, useUntrustDevice, useRevokeDevice, useRevokeAllDevices } from './hooks/useDevices';
+export { profileService } from './services/profile.service';
+export { devicesService } from './services/devices.service';
+export type { UserPreferences, DeviceType, SessionDevice } from './types/profile';
+export type { Device, DeviceListResponse, CurrentDeviceResponse } from './types/device';

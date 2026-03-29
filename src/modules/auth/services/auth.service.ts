@@ -1,208 +1,197 @@
-import { ApiError } from '@/services/http/api-error';
-import { executeMockRequest } from '@/services/http/mock-adapter';
-import { mockActiveCases } from '@/data/mockCases';
-import type { CaseData } from '@/types/case';
-import type { AuthUser, LoginResult, VerifiedSession, TotpSetupData } from '../types/auth';
+import { httpGet, httpPost, httpPatch, httpDelete } from '@/services/http/http-client';
+import { uploadFile } from '@/services/http/upload';
+import { getFingerprint } from '../store/fingerprint-store';
+import type {
+  LoginRequest,
+  LoginResponse,
+  VerifyRequest,
+  VerifyResponse,
+  ResendCodeRequest,
+  ResendCodeResponse,
+  MeResponse,
+  ForgotPasswordRequest,
+  ForgotPasswordResponse,
+  ResetPasswordRequest,
+  ResetPasswordResponse,
+  Session,
+  VerifyCurrentPasswordRequest,
+  VerifyCurrentPasswordResponse,
+  CheckPasswordRequest,
+  CheckPasswordResponse,
+  ChangePasswordRequest,
+  ChangePasswordResponse,
+  ChangeNameRequest,
+  ChangeNameResponse,
+  InitiateEmailChangeRequest,
+  InitiateEmailChangeResponse,
+  ConfirmEmailChangeRequest,
+  ConfirmEmailChangeResponse,
+  ChangePhoneRequest,
+  ChangePhoneResponse,
+  ChangeCpfRequest,
+  ChangeCpfResponse,
+  ChangeBirthDateRequest,
+  ChangeBirthDateResponse,
+  UploadAvatarResponse,
+  DeleteAvatarResponse,
+  InitiateReauthResponse,
+  VerifyReauthTotpRequest,
+  ReauthTokenResponse,
+  VerifyReauthEmailRequest,
+  VerifyReauthBackupCodeRequest,
+  ResendReauthCodeRequest,
+  ResendReauthCodeResponse,
+} from '../types/auth';
 
-const mockUsers: AuthUser[] = [
-  { id: 'usr_1', email: 'cidadao@email.com', name: 'Joao Silva', totpEnabled: false },
-  { id: 'usr_2', email: '2fa@email.com', name: 'Maria Santos', totpEnabled: true },
-];
+const BASE_URL = '/v1/auth';
+const PROFILE_URL = '/v1/profile';
+const SECURITY_URL = '/v1/security';
 
-const VALID_PASSWORD = '123456';
-const VALID_TOTP = '000000';
-const MOCK_MAGIC_TOKEN = 'magic_valid_token';
-const MOCK_RESET_TOKEN = 'reset_valid_token';
+export const authService = {
+  async fetchCsrfToken(): Promise<string> {
+    const response = await httpGet<{ csrfToken: string }>(`${BASE_URL}/csrf-token`, {
+      skipAuthRefresh: true,
+    });
+    return response.csrfToken;
+  },
 
-function cloneCases(): CaseData[] {
-  return JSON.parse(JSON.stringify(mockActiveCases)) as CaseData[];
-}
+  async login(data: LoginRequest): Promise<LoginResponse> {
+    return httpPost<LoginResponse>(`${BASE_URL}/login`, data, { skipAuthRefresh: true });
+  },
 
-function generateToken(): string {
-  if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
-    return crypto.randomUUID();
-  }
-  return `session_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
-}
+  async verify(data: VerifyRequest): Promise<VerifyResponse> {
+    return httpPost<VerifyResponse>(`${BASE_URL}/verify`, data, { skipAuthRefresh: true });
+  },
 
-function findUser(email: string): AuthUser | undefined {
-  return mockUsers.find((u) => u.email === email.toLowerCase().trim());
-}
+  async resendCode(data: ResendCodeRequest): Promise<ResendCodeResponse> {
+    return httpPost<ResendCodeResponse>(`${BASE_URL}/resend-code`, data, {
+      skipAuthRefresh: true,
+    });
+  },
 
-export async function login(email: string, password: string): Promise<LoginResult> {
-  return executeMockRequest(() => {
-    const normalizedEmail = email.toLowerCase().trim();
+  async getMe(): Promise<MeResponse> {
+    return httpGet<MeResponse>(`${BASE_URL}/me`);
+  },
 
-    if (!normalizedEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)) {
-      throw new ApiError({
-        code: 'VALIDATION',
-        status: 400,
-        message: 'Invalid email format',
-        userMessage: 'Formato de email invalido.',
-      });
-    }
+  async refresh(): Promise<void> {
+    const fingerprint = getFingerprint();
+    const body = fingerprint ? { fingerprint } : undefined;
+    return httpPost(`${BASE_URL}/refresh`, body, { skipAuthRefresh: true });
+  },
 
-    if (password !== VALID_PASSWORD) {
-      throw new ApiError({
-        code: 'UNAUTHORIZED',
-        status: 401,
-        message: 'Invalid credentials',
-        userMessage: 'Email ou senha incorretos.',
-      });
-    }
+  async logout(): Promise<void> {
+    return httpPost(`${BASE_URL}/logout`, undefined, { skipAuthRefresh: true });
+  },
 
-    const user = findUser(normalizedEmail) ?? {
-      id: `usr_${Date.now()}`,
-      email: normalizedEmail,
-      name: normalizedEmail.split('@')[0],
-      totpEnabled: false,
-    };
+  async logoutAll(): Promise<void> {
+    return httpPost(`${BASE_URL}/logout-all`, undefined, { skipAuthRefresh: true });
+  },
 
-    if (user.totpEnabled) {
-      return {
-        requiresTotp: true,
-        tempToken: `totp_${user.id}_${Date.now()}`,
-        session: null,
-      };
-    }
+  async forgotPassword(data: ForgotPasswordRequest): Promise<ForgotPasswordResponse> {
+    return httpPost<ForgotPasswordResponse>(`${BASE_URL}/forgot-password`, data, {
+      skipAuthRefresh: true,
+    });
+  },
 
-    return {
-      requiresTotp: false,
-      tempToken: null,
-      session: {
-        token: generateToken(),
-        user,
-        activeCases: cloneCases(),
-      },
-    };
-  });
-}
+  async resetPassword(data: ResetPasswordRequest): Promise<ResetPasswordResponse> {
+    return httpPost<ResetPasswordResponse>(`${BASE_URL}/reset-password`, data, {
+      skipAuthRefresh: true,
+    });
+  },
 
-export async function verifyTotp(tempToken: string, code: string): Promise<VerifiedSession> {
-  return executeMockRequest(() => {
-    if (!tempToken) {
-      throw new ApiError({
-        code: 'UNAUTHORIZED',
-        status: 401,
-        message: 'Missing temp token',
-        userMessage: 'Sessao expirada. Faca login novamente.',
-      });
-    }
+  async verifyCurrentPassword(
+    data: VerifyCurrentPasswordRequest,
+  ): Promise<VerifyCurrentPasswordResponse> {
+    return httpPost<VerifyCurrentPasswordResponse>(`${BASE_URL}/verify-password`, data);
+  },
 
-    if (code !== VALID_TOTP) {
-      throw new ApiError({
-        code: 'VALIDATION',
-        status: 400,
-        message: 'Invalid TOTP code',
-        userMessage: 'Codigo incorreto.',
-      });
-    }
+  async checkPassword(data: CheckPasswordRequest): Promise<CheckPasswordResponse> {
+    return httpPost<CheckPasswordResponse>(`${SECURITY_URL}/check-password`, data);
+  },
 
-    const user = mockUsers.find((u) => u.totpEnabled) ?? mockUsers[0];
+  async changePassword(data: ChangePasswordRequest): Promise<ChangePasswordResponse> {
+    const { reauthToken, ...body } = data;
+    return httpPost<ChangePasswordResponse>(`${PROFILE_URL}/change-password`, body, {
+      headers: reauthToken ? { 'X-Reauth-Token': reauthToken } : undefined,
+    });
+  },
 
-    return {
-      token: generateToken(),
-      user,
-      activeCases: cloneCases(),
-    };
-  });
-}
+  async changeName(data: ChangeNameRequest): Promise<ChangeNameResponse> {
+    return httpPatch<ChangeNameResponse>(`${PROFILE_URL}/name`, data);
+  },
 
-export async function requestPasswordReset(email: string): Promise<{ message: string }> {
-  return executeMockRequest(() => {
-    return { message: 'Password reset email sent' };
-  });
-}
+  async initiateEmailChange(
+    data: InitiateEmailChangeRequest,
+  ): Promise<InitiateEmailChangeResponse> {
+    const { reauthToken, newEmail } = data;
+    return httpPost<InitiateEmailChangeResponse>(
+      `${PROFILE_URL}/email/initiate`,
+      { newEmail },
+      { headers: { 'X-Reauth-Token': reauthToken } },
+    );
+  },
 
-export async function resetPassword(token: string, password: string): Promise<{ message: string }> {
-  return executeMockRequest(() => {
-    if (token !== MOCK_RESET_TOKEN && !token.startsWith('reset_')) {
-      throw new ApiError({
-        code: 'VALIDATION',
-        status: 400,
-        message: 'Invalid or expired reset token',
-        userMessage: 'Link expirado ou invalido.',
-      });
-    }
+  async confirmEmailChange(data: ConfirmEmailChangeRequest): Promise<ConfirmEmailChangeResponse> {
+    return httpPost<ConfirmEmailChangeResponse>(`${PROFILE_URL}/email/confirm`, data);
+  },
 
-    if (password.length < 8) {
-      throw new ApiError({
-        code: 'VALIDATION',
-        status: 400,
-        message: 'Password too weak',
-        userMessage: 'A senha deve ter no minimo 8 caracteres.',
-      });
-    }
+  async changePhone(data: ChangePhoneRequest): Promise<ChangePhoneResponse> {
+    const { reauthToken, newPhone } = data;
+    return httpPatch<ChangePhoneResponse>(
+      `${PROFILE_URL}/phone`,
+      { newPhone },
+      { headers: { 'X-Reauth-Token': reauthToken } },
+    );
+  },
 
-    return { message: 'Password reset successful' };
-  });
-}
+  async changeCpf(data: ChangeCpfRequest): Promise<ChangeCpfResponse> {
+    const { reauthToken, ...body } = data;
+    return httpPatch<ChangeCpfResponse>(`${PROFILE_URL}/cpf`, body, {
+      headers: { 'X-Reauth-Token': reauthToken },
+    });
+  },
 
-export async function requestMagicLink(email: string): Promise<{ message: string }> {
-  return executeMockRequest(() => {
-    return { message: 'Magic link sent' };
-  });
-}
+  async changeBirthDate(data: ChangeBirthDateRequest): Promise<ChangeBirthDateResponse> {
+    return httpPatch<ChangeBirthDateResponse>(`${PROFILE_URL}/birth-date`, data);
+  },
 
-export async function verifyMagicLink(token: string): Promise<VerifiedSession> {
-  return executeMockRequest(() => {
-    if (token !== MOCK_MAGIC_TOKEN && !token.startsWith('magic_')) {
-      throw new ApiError({
-        code: 'VALIDATION',
-        status: 400,
-        message: 'Invalid or expired magic link token',
-        userMessage: 'Link invalido ou expirado.',
-      });
-    }
+  async uploadAvatar(file: File): Promise<UploadAvatarResponse> {
+    return uploadFile<UploadAvatarResponse>({
+      endpoint: `${PROFILE_URL}/avatar`,
+      fieldName: 'avatar',
+      file,
+    });
+  },
 
-    return {
-      token: generateToken(),
-      user: mockUsers[0],
-      activeCases: cloneCases(),
-    };
-  });
-}
+  async deleteAvatar(): Promise<DeleteAvatarResponse> {
+    return httpDelete<DeleteAvatarResponse>(`${PROFILE_URL}/avatar`);
+  },
 
-export async function setupTotp(sessionToken: string): Promise<TotpSetupData> {
-  return executeMockRequest(() => {
-    const secret = 'JBSWY3DPEHPK3PXP';
-    return {
-      secret,
-      qrCodeUrl: `otpauth://totp/PatioVirtual:cidadao@email.com?secret=${secret}&issuer=PatioVirtual`,
-    };
-  });
-}
+  async getSessions(): Promise<Session[]> {
+    return httpGet<Session[]>(`${BASE_URL}/sessions`);
+  },
 
-export async function confirmTotpSetup(
-  sessionToken: string,
-  code: string
-): Promise<{ message: string }> {
-  return executeMockRequest(() => {
-    if (code !== VALID_TOTP) {
-      throw new ApiError({
-        code: 'VALIDATION',
-        status: 400,
-        message: 'Invalid TOTP code',
-        userMessage: 'Codigo incorreto.',
-      });
-    }
-    return { message: 'TOTP enabled' };
-  });
-}
+  async revokeSession(familyId: string): Promise<void> {
+    return httpDelete(`${BASE_URL}/sessions/${familyId}`);
+  },
 
-export async function disableTotp(
-  sessionToken: string,
-  code: string
-): Promise<{ message: string }> {
-  return executeMockRequest(() => {
-    if (code !== VALID_TOTP) {
-      throw new ApiError({
-        code: 'VALIDATION',
-        status: 400,
-        message: 'Invalid TOTP code',
-        userMessage: 'Codigo incorreto.',
-      });
-    }
-    return { message: 'TOTP disabled' };
-  });
-}
+  async initiateReauth(): Promise<InitiateReauthResponse> {
+    return httpPost<InitiateReauthResponse>(`${BASE_URL}/reauth/initiate`);
+  },
+
+  async verifyReauthTotp(data: VerifyReauthTotpRequest): Promise<ReauthTokenResponse> {
+    return httpPost<ReauthTokenResponse>(`${BASE_URL}/reauth/verify-totp`, data);
+  },
+
+  async verifyReauthEmail(data: VerifyReauthEmailRequest): Promise<ReauthTokenResponse> {
+    return httpPost<ReauthTokenResponse>(`${BASE_URL}/reauth/verify-email`, data);
+  },
+
+  async verifyReauthBackupCode(data: VerifyReauthBackupCodeRequest): Promise<ReauthTokenResponse> {
+    return httpPost<ReauthTokenResponse>(`${BASE_URL}/reauth/verify-backup`, data);
+  },
+
+  async resendReauthCode(data: ResendReauthCodeRequest): Promise<ResendReauthCodeResponse> {
+    return httpPost<ResendReauthCodeResponse>(`${BASE_URL}/reauth/resend`, data);
+  },
+};

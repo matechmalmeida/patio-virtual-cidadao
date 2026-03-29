@@ -16,7 +16,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { getAddress, updateAddress } from '../services/profile.service';
+import { profileService } from '../services/profile.service';
 
 const UF_LIST = [
   'AC','AL','AP','AM','BA','CE','DF','ES','GO','MA','MT','MS','MG','PA',
@@ -59,7 +59,7 @@ export default function AddressPage() {
   });
 
   useEffect(() => {
-    getAddress().then((a) => {
+    profileService.getAddress().then((a) => {
       setValue('cep', a.cep);
       setValue('street', a.street);
       setValue('number', a.number);
@@ -76,7 +76,7 @@ export default function AddressPage() {
 
   const onSubmit = async (data: FormData) => {
     try {
-      await updateAddress(data);
+      await profileService.updateAddress(data);
       toast({ title: t('profile.address.saveSuccess') });
       navigate('/app/profile');
     } catch {

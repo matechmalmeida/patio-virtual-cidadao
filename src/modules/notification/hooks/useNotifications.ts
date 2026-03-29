@@ -1,86 +1,149 @@
-import { useCallback, useMemo } from 'react';
-import { useCases } from '@/modules/process';
-import {
-  markAsRead,
-  markAllAsRead,
-  deleteNotification,
-  markBatchAsRead,
-  deleteBatch,
-} from '../services/notification.service';
-import { getApiErrorMessage } from '@/services/http/api-error';
-import type { Notification } from '../types/notification';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useToast } from '@/hooks/use-toast';
+import { ApiError } from '@/services/http/api-error';
+import { notificationsService } from '../services/notification.service';
+import type { NotificationsListParams } from '../types/notification';
 
-type Filter = 'todos' | 'importantes' | 'pendentes';
+export const NOTIFICATIONS_QUERY_KEY = 'notifications';
+export const UNREAD_COUNT_QUERY_KEY = 'notifications-unread-count';
+export const PENDING_ACK_QUERY_KEY = 'notifications-pending-acknowledgments';
 
-export function useNotifications() {
-  const { currentCase, updateCase } = useCases();
+export function useNotifications(params: NotificationsListParams = {}) {
+  return useQuery({
+    queryKey: [NOTIFICATIONS_QUERY_KEY, params],
+    queryFn: () => notificationsService.list(params),
+    staleTime: 60000,
+  });
+}
 
-  const notifications: Notification[] = currentCase?.notifications ?? [];
+export function useUnreadCount() {
+  return useQuery({
+    queryKey: [UNREAD_COUNT_QUERY_KEY],
+    queryFn: () => notificationsService.getUnreadCount(),
+    staleTime: 0,
+    refetchOnWindowFocus: true,
+    refetchOnMount: true,
+  });
+}
 
-  const unreadCount = useMemo(
-    () => notifications.filter((n) => !n.read).length,
-    [notifications]
-  );
+export function usePendingAcknowledgments() {
+  return useQuery({
+    queryKey: [PENDING_ACK_QUERY_KEY],
+    queryFn: () => notificationsService.getPendingAcknowledgments(),
+    staleTime: 60000,
+  });
+}
 
-  const handleMarkAsRead = useCallback(
-    async (notificationId: string) => {
-      if (!currentCase) return;
-      const updated = await markAsRead(currentCase, notificationId);
-      updateCase(currentCase.id, { notifications: updated });
+export function useMarkAsRead() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: (id: string) => notificationsService.markAsRead(id),
+    onMutate: async () => {
+      queryClient.setQueryData([UNREAD_COUNT_QUERY_KEY], (old: { count: number } | undefined) => {
+        const currentCount = old?.count || 0;
+        return { count: Math.max(0, currentCount - 1) };
+      });
     },
-    [currentCase, updateCase]
-  );
-
-  const handleMarkAllAsRead = useCallback(async () => {
-    if (!currentCase) return;
-    const updated = await markAllAsRead(currentCase);
-    updateCase(currentCase.id, { notifications: updated });
-  }, [currentCase, updateCase]);
-
-  const handleDeleteNotification = useCallback(
-    async (notificationId: string) => {
-      if (!currentCase) return;
-      const updated = await deleteNotification(currentCase, notificationId);
-      updateCase(currentCase.id, { notifications: updated });
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [NOTIFICATIONS_QUERY_KEY] });
+      queryClient.invalidateQueries({ queryKey: [UNREAD_COUNT_QUERY_KEY] });
+      queryClient.invalidateQueries({ queryKey: [PENDING_ACK_QUERY_KEY] });
     },
-    [currentCase, updateCase]
-  );
-
-  const handleMarkBatchAsRead = useCallback(
-    async (ids: string[]) => {
-      if (!currentCase) return;
-      const updated = await markBatchAsRead(currentCase, ids);
-      updateCase(currentCase.id, { notifications: updated });
+    onError: (error: Error) => {
+      queryClient.invalidateQueries({ queryKey: [UNREAD_COUNT_QUERY_KEY] });
+      toast({
+        variant: 'destructive',
+        title: 'Erro ao marcar como lida',
+        description: error instanceof ApiError ? error.userMessage : 'Tente novamente.',
+      });
     },
-    [currentCase, updateCase]
-  );
+  });
+}
 
-  const handleDeleteBatch = useCallback(
-    async (ids: string[]) => {
-      if (!currentCase) return;
-      const updated = await deleteBatch(currentCase, ids);
-      updateCase(currentCase.id, { notifications: updated });
+export function useMarkAllAsRead() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: () => notificationsService.markAllAsRead(),
+    onMutate: async () => {
+      queryClient.setQueryData([UNREAD_COUNT_QUERY_KEY], { count: 0 });
     },
-    [currentCase, updateCase]
-  );
-
-  const getFiltered = useCallback(
-    (filter: Filter): Notification[] => {
-      if (filter === 'importantes') return notifications.filter((n) => n.type === 'critical' || n.type === 'alert');
-      if (filter === 'pendentes') return notifications.filter((n) => !n.read);
-      return notifications;
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [NOTIFICATIONS_QUERY_KEY] });
+      queryClient.invalidateQueries({ queryKey: [UNREAD_COUNT_QUERY_KEY] });
     },
-    [notifications]
-  );
+    onError: (error: Error) => {
+      queryClient.invalidateQueries({ queryKey: [UNREAD_COUNT_QUERY_KEY] });
+      toast({
+        variant: 'destructive',
+        title: 'Erro ao marcar todas como lidas',
+        description: error instanceof ApiError ? error.userMessage : 'Tente novamente.',
+      });
+    },
+  });
+}
 
-  return {
-    notifications,
-    unreadCount,
-    markAsRead: handleMarkAsRead,
-    markAllAsRead: handleMarkAllAsRead,
-    deleteNotification: handleDeleteNotification,
-    markBatchAsRead: handleMarkBatchAsRead,
-    deleteBatch: handleDeleteBatch,
-    getFiltered,
-  };
+export function useAcknowledgeNotification() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: (id: string) => notificationsService.acknowledge(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [NOTIFICATIONS_QUERY_KEY] });
+      queryClient.invalidateQueries({ queryKey: [UNREAD_COUNT_QUERY_KEY] });
+      queryClient.invalidateQueries({ queryKey: [PENDING_ACK_QUERY_KEY] });
+    },
+    onError: (error: Error) => {
+      toast({
+        variant: 'destructive',
+        title: 'Erro ao confirmar notificacao',
+        description: error instanceof ApiError ? error.userMessage : 'Tente novamente.',
+      });
+    },
+  });
+}
+
+export function useDeleteNotification() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: (id: string) => notificationsService.delete(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [NOTIFICATIONS_QUERY_KEY] });
+      queryClient.invalidateQueries({ queryKey: [UNREAD_COUNT_QUERY_KEY] });
+      queryClient.invalidateQueries({ queryKey: [PENDING_ACK_QUERY_KEY] });
+    },
+    onError: (error: Error) => {
+      toast({
+        variant: 'destructive',
+        title: 'Erro ao excluir notificacao',
+        description: error instanceof ApiError ? error.userMessage : 'Tente novamente.',
+      });
+    },
+  });
+}
+
+export function useDeleteAllRead() {
+  const queryClient = useQueryClient();
+  const { toast } = useToast();
+
+  return useMutation({
+    mutationFn: () => notificationsService.deleteAllRead(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [NOTIFICATIONS_QUERY_KEY] });
+      queryClient.invalidateQueries({ queryKey: [UNREAD_COUNT_QUERY_KEY] });
+    },
+    onError: (error: Error) => {
+      toast({
+        variant: 'destructive',
+        title: 'Erro ao excluir notificacoes',
+        description: error instanceof ApiError ? error.userMessage : 'Tente novamente.',
+      });
+    },
+  });
 }

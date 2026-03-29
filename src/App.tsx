@@ -4,7 +4,8 @@ import { Toaster as Sonner } from '@/components/ui/sonner';
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
-import { AuthProvider, RequireAuth } from '@/modules/auth';
+import { AuthProvider, RequireAuth, FingerprintProvider } from '@/modules/auth';
+import { NotificationsSocketProvider } from '@/modules/notification';
 import { CaseProvider } from '@/modules/process';
 import { BrandProvider } from '@/contexts/BrandContext';
 import { AppLayout } from '@/modules/app';
@@ -19,7 +20,7 @@ const ForgotPasswordPage = lazy(() => import('./modules/auth/pages/ForgotPasswor
 const ResetPasswordPage = lazy(() => import('./modules/auth/pages/ResetPasswordPage'));
 const MagicLinkRequestPage = lazy(() => import('./modules/auth/pages/MagicLinkRequestPage'));
 const MagicLinkVerifyPage = lazy(() => import('./modules/auth/pages/MagicLinkVerifyPage'));
-const TotpChallengePage = lazy(() => import('./modules/auth/pages/TotpChallengePage'));
+const VerifyPage = lazy(() => import('./modules/auth/pages/VerifyPage'));
 const DashboardPage = lazy(() => import('./modules/dashboard/pages/DashboardPage'));
 const ProcessListPage = lazy(() => import('./modules/process/pages/ProcessListPage'));
 const ProcessDetailPage = lazy(() => import('./modules/process/pages/ProcessDetailPage'));
@@ -42,6 +43,9 @@ const ProfilePage = lazy(() => import('./modules/profile/pages/ProfilePage'));
 const PersonalDataPage = lazy(() => import('./modules/profile/pages/PersonalDataPage'));
 const AddressPage = lazy(() => import('./modules/profile/pages/AddressPage'));
 const PreferencesPage = lazy(() => import('./modules/profile/pages/PreferencesPage'));
+const SecurityPage = lazy(() => import('./modules/profile/pages/SecurityPage'));
+const SessionsPage = lazy(() => import('./modules/profile/pages/SessionsPage'));
+const DevicesPage = lazy(() => import('./modules/profile/pages/DevicesPage'));
 const NotFound = lazy(() => import('./modules/app/pages/NotFound'));
 
 const queryClient = new QueryClient({
@@ -91,7 +95,9 @@ const App = () => (
         <TooltipProvider>
           <Toaster />
           <Sonner />
+          <FingerprintProvider>
           <AuthProvider>
+          <NotificationsSocketProvider>
           <CaseProvider>
             <BrowserRouter>
               <Suspense fallback={<LoadingFallback />}>
@@ -103,8 +109,8 @@ const App = () => (
                   <Route path="/acesso/esqueci-senha" element={routeElement(<ForgotPasswordPage />)} />
                   <Route path="/acesso/nova-senha" element={routeElement(<ResetPasswordPage />)} />
                   <Route path="/acesso/link-magico" element={routeElement(<MagicLinkRequestPage />)} />
-                  <Route path="/acesso/verificar" element={routeElement(<MagicLinkVerifyPage />)} />
-                  <Route path="/acesso/2fa" element={routeElement(<TotpChallengePage />)} />
+                  <Route path="/acesso/link-magico/verificar" element={routeElement(<MagicLinkVerifyPage />)} />
+                  <Route path="/acesso/verificar" element={routeElement(<VerifyPage />)} />
                   <Route path="/instalar" element={routeElement(<InstallPage />)} />
 
                   {/* Protected routes */}
@@ -145,6 +151,9 @@ const App = () => (
                       path="/app/profile/preferencias"
                       element={routeElement(<PreferencesPage />)}
                     />
+                    <Route path="/app/profile/seguranca" element={routeElement(<SecurityPage />)} />
+                    <Route path="/app/profile/sessoes" element={routeElement(<SessionsPage />)} />
+                    <Route path="/app/profile/dispositivos" element={routeElement(<DevicesPage />)} />
                     <Route path="/app/suporte" element={routeElement(<SupportPage />)} />
                     <Route path="/app/suporte/chamado" element={routeElement(<TicketPage />)} />
                     <Route path="/app/gps" element={routeElement(<GPSStatusPage />)} />
@@ -161,7 +170,9 @@ const App = () => (
               </Suspense>
             </BrowserRouter>
           </CaseProvider>
+          </NotificationsSocketProvider>
           </AuthProvider>
+          </FingerprintProvider>
         </TooltipProvider>
       </BrandProvider>
     </AppErrorBoundary>

@@ -34,7 +34,8 @@ interface AppHeaderProps {
 
 export function AppHeader({ onToggleSidebar }: AppHeaderProps) {
   const { t } = useTranslation();
-  const { user, logout } = useAuth();
+  const { state, logout } = useAuth();
+  const user = state.user;
   const { brand } = useBrand();
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();

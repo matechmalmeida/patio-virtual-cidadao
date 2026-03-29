@@ -1,36 +1,39 @@
-import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { User, MapPin, Settings, HelpCircle, LogOut } from 'lucide-react';
+import { User, MapPin, Settings, LogOut, Shield, MonitorSmartphone, Laptop, HelpCircle } from 'lucide-react';
 import { useAuth } from '@/modules/auth';
 import { ProfileHeader } from '../components/ProfileHeader';
 import { ProfileMenuCard } from '../components/ProfileMenuCard';
-import { getProfile } from '../services/profile.service';
+import { useProfile, useUploadAvatar, useDeleteAvatar } from '../hooks/useProfile';
 
 export default function ProfilePage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { user, logout } = useAuth();
-  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
-
-  useEffect(() => {
-    getProfile().then((p) => setAvatarUrl(p.avatarUrl));
-  }, []);
+  const { state: { user }, logout } = useAuth();
+  const { data: profile } = useProfile();
+  const uploadAvatarMutation = useUploadAvatar();
+  const deleteAvatarMutation = useDeleteAvatar();
 
   const handleLogout = () => {
     logout();
     navigate('/acesso');
   };
 
+  const displayName = profile?.name ?? user?.name ?? '';
+  const displayEmail = profile?.email ?? user?.email ?? '';
+  const displayAvatar = profile?.avatarUrl ?? user?.avatarUrl ?? null;
+
   return (
     <div className="px-4 py-5 space-y-4">
       <h1 className="text-xl font-bold">{t('profile.title')}</h1>
 
       <ProfileHeader
-        name={user?.name ?? ''}
-        email={user?.email ?? ''}
-        avatarUrl={avatarUrl}
-        onAvatarChange={setAvatarUrl}
+        name={displayName}
+        email={displayEmail}
+        avatarUrl={displayAvatar}
+        onUpload={(file) => uploadAvatarMutation.mutate(file)}
+        onDelete={() => deleteAvatarMutation.mutate()}
+        isUploading={uploadAvatarMutation.isPending}
       />
 
       <div className="space-y-2">
@@ -51,6 +54,24 @@ export default function ProfilePage() {
           label={t('profile.preferencesMenu')}
           description={t('profile.preferencesMenuDesc')}
           onClick={() => navigate('/app/profile/preferencias')}
+        />
+        <ProfileMenuCard
+          icon={MonitorSmartphone}
+          label="Sessoes"
+          description="Gerencie suas sessoes conectadas"
+          onClick={() => navigate('/app/profile/sessoes')}
+        />
+        <ProfileMenuCard
+          icon={Shield}
+          label="Seguranca"
+          description="Altere sua senha de acesso"
+          onClick={() => navigate('/app/profile/seguranca')}
+        />
+        <ProfileMenuCard
+          icon={Laptop}
+          label="Dispositivos"
+          description="Gerencie seus dispositivos conectados"
+          onClick={() => navigate('/app/profile/dispositivos')}
         />
         <ProfileMenuCard
           icon={HelpCircle}
