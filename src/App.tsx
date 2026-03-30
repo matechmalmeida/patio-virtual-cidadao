@@ -46,6 +46,9 @@ const PreferencesPage = lazy(() => import('./modules/profile/pages/PreferencesPa
 const SecurityPage = lazy(() => import('./modules/profile/pages/SecurityPage'));
 const SessionsPage = lazy(() => import('./modules/profile/pages/SessionsPage'));
 const DevicesPage = lazy(() => import('./modules/profile/pages/DevicesPage'));
+const SeizureTermPage = lazy(() => import('./modules/seizure/pages/SeizureTermPage'));
+const SeizureAddressPage = lazy(() => import('./modules/seizure/pages/SeizureAddressPage'));
+const SeizureStatusPage = lazy(() => import('./modules/seizure/pages/SeizureStatusPage'));
 const NotFound = lazy(() => import('./modules/app/pages/NotFound'));
 
 const queryClient = new QueryClient({
@@ -157,6 +160,18 @@ const App = () => (
                     <Route path="/app/suporte" element={routeElement(<SupportPage />)} />
                     <Route path="/app/suporte/chamado" element={routeElement(<TicketPage />)} />
                     <Route path="/app/gps" element={routeElement(<GPSStatusPage />)} />
+                    <Route
+                      path="/app/apreensao/:seizureId/termo"
+                      element={routeElement(<SeizureTermPage />)}
+                    />
+                    <Route
+                      path="/app/apreensao/:seizureId/endereco"
+                      element={routeElement(<SeizureAddressPage />)}
+                    />
+                    <Route
+                      path="/app/apreensao/:seizureId/status"
+                      element={routeElement(<SeizureStatusPage />)}
+                    />
                     <Route
                       path="/app/notifications/settings"
                       element={routeElement(<NotificationSettingsPage />)}
