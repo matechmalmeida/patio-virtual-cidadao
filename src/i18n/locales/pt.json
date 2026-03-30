@@ -7,6 +7,7 @@
   "nav": {
     "process": "Processo",
     "pendencies": "Pendências",
+    "seizures": "Apreensões",
     "documents": "Documentos",
     "processes": "Processos",
     "alerts": "Avisos",
@@ -104,6 +105,34 @@
       "errors": {
         "invalidCredentials": "Email ou senha incorretos.",
         "generic": "Nao foi possivel realizar o login."
+      }
+    },
+    "verify": {
+      "title": "Verificacao de seguranca",
+      "subtitleEmail": "Enviamos um codigo para {{email}}. Insira-o abaixo.",
+      "subtitleTotp": "Insira o codigo do seu aplicativo autenticador.",
+      "subtitleBackup": "Use um codigo de recuperacao.",
+      "codePlaceholder": "000000",
+      "submit": "Verificar",
+      "verifying": "Verificando codigo...",
+      "resendCode": "Reenviar codigo",
+      "resending": "Reenviando...",
+      "resent": "Codigo reenviado com sucesso.",
+      "resendIn": "Reenviar em {{time}}",
+      "codeValid": "Valido por {{time}}",
+      "codeExpiring": "Expira em {{time}}",
+      "codeExpired": "Codigo expirado. Solicite um novo.",
+      "trustDevice": "Confiar neste dispositivo",
+      "useBackupCode": "Usar codigo de recuperacao",
+      "backToTotp": "Voltar para autenticador",
+      "backToEmail": "Voltar para e-mail",
+      "backToLogin": "Voltar ao login",
+      "lastAttempt": "Ultima tentativa antes do bloqueio.",
+      "attemptsRemaining": "Restam {{count}} tentativas.",
+      "attemptsExceeded": "Limite de tentativas excedido. Volte ao login e tente novamente.",
+      "errors": {
+        "generic": "Codigo invalido ou expirado.",
+        "resendFail": "Nao foi possivel reenviar o codigo."
       }
     },
     "forgotPassword": {

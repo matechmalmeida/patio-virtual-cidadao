@@ -4,9 +4,17 @@ import { toast } from 'sonner';
 
 const SEIZURE_KEYS = {
   all: ['seizure'] as const,
+  list: (page: number) => [...SEIZURE_KEYS.all, 'list', page] as const,
   term: (seizureId: string) => [...SEIZURE_KEYS.all, 'term', seizureId] as const,
   geofence: (seizureId: string) => [...SEIZURE_KEYS.all, 'geofence', seizureId] as const,
 };
+
+export function useMySeizures(page = 1) {
+  return useQuery({
+    queryKey: SEIZURE_KEYS.list(page),
+    queryFn: () => seizureService.listMySeizures(page),
+  });
+}
 
 export function useSeizureTerm(seizureId: string) {
   return useQuery({

@@ -1,17 +1,22 @@
-import { executeMockRequest } from '@/services/http/mock-adapter';
+import { httpGet } from '@/services/http/http-client';
 import { mockLocations, mockSlots } from '@/data/mockSchedule';
 import type { ScheduleLocation, ScheduleSlot } from '@/types/case';
 
 export async function getScheduleLocations(): Promise<ScheduleLocation[]> {
-  return executeMockRequest(
-    () => JSON.parse(JSON.stringify(mockLocations)) as ScheduleLocation[],
-    { delayMs: 250 }
-  );
+  try {
+    return await httpGet<ScheduleLocation[]>('/public/schedule-locations');
+  } catch {
+    return JSON.parse(JSON.stringify(mockLocations)) as ScheduleLocation[];
+  }
 }
 
-export async function getScheduleSlots(): Promise<ScheduleSlot[]> {
-  return executeMockRequest(
-    () => JSON.parse(JSON.stringify(mockSlots)) as ScheduleSlot[],
-    { delayMs: 250 }
-  );
+export async function getScheduleSlots(locationId?: string): Promise<ScheduleSlot[]> {
+  try {
+    if (locationId) {
+      return await httpGet<ScheduleSlot[]>(`/public/schedule-locations/${locationId}/slots`);
+    }
+    return JSON.parse(JSON.stringify(mockSlots)) as ScheduleSlot[];
+  } catch {
+    return JSON.parse(JSON.stringify(mockSlots)) as ScheduleSlot[];
+  }
 }

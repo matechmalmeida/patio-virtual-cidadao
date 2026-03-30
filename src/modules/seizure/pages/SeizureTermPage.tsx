@@ -13,7 +13,7 @@ export default function SeizureTermPage() {
   const [accepted, setAccepted] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const { data, isLoading } = useSeizureTerm(seizureId!);
+  const { data, isLoading, isError, error } = useSeizureTerm(seizureId!);
   const signMutation = useSignTerm();
 
   const handleScroll = useCallback(() => {
@@ -27,7 +27,7 @@ export default function SeizureTermPage() {
   const handleSign = async () => {
     if (!seizureId) return;
     await signMutation.mutateAsync({ seizureId, accepted: true });
-    navigate(`/app/apreensao/${seizureId}/endereco`);
+    navigate(`/app/apreensao/${seizureId}/status`);
   };
 
   if (isLoading) {
@@ -35,6 +35,24 @@ export default function SeizureTermPage() {
       <div className="px-4 py-5 space-y-4">
         <Skeleton className="h-8 w-48" />
         <Skeleton className="h-64 w-full" />
+      </div>
+    );
+  }
+
+  if (isError) {
+    const message = (error as any)?.response?.data?.message || 'Nao foi possivel carregar o termo.';
+    return (
+      <div className="px-4 py-5 space-y-4">
+        <Button variant="ghost" size="sm" onClick={() => navigate(-1)} className="-ml-2">
+          <ArrowLeft className="h-4 w-4 mr-1" />
+          Voltar
+        </Button>
+        <div className="text-center py-12 space-y-3">
+          <p className="text-sm text-muted-foreground">{message}</p>
+          <Button variant="outline" onClick={() => navigate('/app/apreensoes')}>
+            Ver minhas apreensoes
+          </Button>
+        </div>
       </div>
     );
   }
@@ -75,10 +93,9 @@ export default function SeizureTermPage() {
       <div
         ref={scrollRef}
         onScroll={handleScroll}
-        className="flex-1 overflow-y-auto border rounded-lg p-4 bg-muted/30 max-h-[50vh] text-sm leading-relaxed whitespace-pre-line"
-      >
-        {data.term.content}
-      </div>
+        className="flex-1 overflow-y-auto border rounded-lg p-4 bg-muted/30 max-h-[50vh] text-sm leading-relaxed prose prose-sm max-w-none"
+        dangerouslySetInnerHTML={{ __html: data.term.content }}
+      />
 
       {!hasScrolled && (
         <div className="flex items-center justify-center gap-1 text-xs text-muted-foreground animate-bounce">
