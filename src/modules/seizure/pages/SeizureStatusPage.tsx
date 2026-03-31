@@ -1,9 +1,10 @@
 import { useParams, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useGeofenceStatus } from '../hooks/useSeizure';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ArrowLeft, CheckCircle2, Circle, AlertTriangle, Clock, MapPin } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, Circle, AlertTriangle, Clock, MapPin, RotateCcw } from 'lucide-react';
 
 const STATUS_STEPS = [
   { slug: 'rascunho', label: 'Rascunho', icon: Circle },
@@ -38,6 +39,7 @@ function getStepState(stepSlug: string, currentSlug: string): 'completed' | 'cur
 export default function SeizureStatusPage() {
   const { seizureId } = useParams<{ seizureId: string }>();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const { data, isLoading } = useGeofenceStatus(seizureId!);
 
@@ -176,6 +178,16 @@ export default function SeizureStatusPage() {
           })}
         </div>
       </div>
+
+      {currentSlug === 'custodia-virtual' && (
+        <Button
+          onClick={() => navigate(`/app/translado-retorno/novo?seizureId=${seizureId}`)}
+          className="w-full h-12 font-semibold"
+        >
+          <RotateCcw className="h-4 w-4" />
+          {t('returnTransfer.requestRemoval')}
+        </Button>
+      )}
     </div>
   );
 }
