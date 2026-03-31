@@ -18,7 +18,6 @@ const LegalPage = lazy(() => import('./modules/site/pages/LegalPage'));
 const LoginPage = lazy(() => import('./modules/auth/pages/LoginPage'));
 const ForgotPasswordPage = lazy(() => import('./modules/auth/pages/ForgotPasswordPage'));
 const ResetPasswordPage = lazy(() => import('./modules/auth/pages/ResetPasswordPage'));
-const MagicLinkRequestPage = lazy(() => import('./modules/auth/pages/MagicLinkRequestPage'));
 const MagicLinkVerifyPage = lazy(() => import('./modules/auth/pages/MagicLinkVerifyPage'));
 const VerifyPage = lazy(() => import('./modules/auth/pages/VerifyPage'));
 const DashboardPage = lazy(() => import('./modules/dashboard/pages/DashboardPage'));
@@ -50,6 +49,9 @@ const SeizureListPage = lazy(() => import('./modules/seizure/pages/SeizureListPa
 const SeizureTermPage = lazy(() => import('./modules/seizure/pages/SeizureTermPage'));
 const SeizureAddressPage = lazy(() => import('./modules/seizure/pages/SeizureAddressPage'));
 const SeizureStatusPage = lazy(() => import('./modules/seizure/pages/SeizureStatusPage'));
+const ReturnTransferListPage = lazy(() => import('./modules/return-transfer/pages/ReturnTransferListPage'));
+const ReturnTransferWizardPage = lazy(() => import('./modules/return-transfer/pages/ReturnTransferWizardPage'));
+const ReturnTransferDetailPage = lazy(() => import('./modules/return-transfer/pages/ReturnTransferDetailPage'));
 const NotFound = lazy(() => import('./modules/app/pages/NotFound'));
 
 const queryClient = new QueryClient({
@@ -112,7 +114,6 @@ const App = () => (
                   <Route path="/acesso" element={routeElement(<LoginPage />)} />
                   <Route path="/acesso/esqueci-senha" element={routeElement(<ForgotPasswordPage />)} />
                   <Route path="/acesso/nova-senha" element={routeElement(<ResetPasswordPage />)} />
-                  <Route path="/acesso/link-magico" element={routeElement(<MagicLinkRequestPage />)} />
                   <Route path="/acesso/link-magico/verificar" element={routeElement(<MagicLinkVerifyPage />)} />
                   <Route path="/acesso/verificar" element={routeElement(<VerifyPage />)} />
                   <Route path="/instalar" element={routeElement(<InstallPage />)} />
@@ -173,6 +174,12 @@ const App = () => (
                     <Route
                       path="/app/apreensao/:seizureId/status"
                       element={routeElement(<SeizureStatusPage />)}
+                    />
+                    <Route path="/app/translado-retorno" element={routeElement(<ReturnTransferListPage />)} />
+                    <Route path="/app/translado-retorno/novo" element={routeElement(<ReturnTransferWizardPage />)} />
+                    <Route
+                      path="/app/translado-retorno/:requestId"
+                      element={routeElement(<ReturnTransferDetailPage />)}
                     />
                     <Route
                       path="/app/notifications/settings"

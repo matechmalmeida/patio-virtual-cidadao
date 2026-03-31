@@ -292,6 +292,42 @@ export interface RegenerateBackupCodesResponse {
   backupCodes: string[];
 }
 
+export interface MagicLinkRequest {
+  email: string;
+  callbackUrl: string;
+  fingerprint?: string;
+}
+
+export interface MagicLinkResponse {
+  message: string;
+}
+
+export interface VerifyMagicLinkRequest {
+  token: string;
+}
+
+export interface VerifyMagicLinkResponse {
+  valid: boolean;
+  email?: string;
+}
+
+export interface ConfirmMagicLinkRequest {
+  token: string;
+  fingerprint?: string;
+}
+
+export interface ConfirmMagicLinkResponse {
+  requiresVerification: true;
+  mfaMethod: 'totp';
+  pendingToken: string;
+  expiresIn: number;
+  user: {
+    id: string;
+    email: string;
+    name: string;
+  };
+}
+
 export interface AuthState {
   isAuthenticated: boolean;
   isLoading: boolean;

@@ -41,6 +41,12 @@ import type {
   VerifyReauthBackupCodeRequest,
   ResendReauthCodeRequest,
   ResendReauthCodeResponse,
+  MagicLinkRequest,
+  MagicLinkResponse,
+  VerifyMagicLinkRequest,
+  VerifyMagicLinkResponse,
+  ConfirmMagicLinkRequest,
+  ConfirmMagicLinkResponse,
 } from '../types/auth';
 
 const BASE_URL = '/v1/auth';
@@ -193,5 +199,22 @@ export const authService = {
 
   async resendReauthCode(data: ResendReauthCodeRequest): Promise<ResendReauthCodeResponse> {
     return httpPost<ResendReauthCodeResponse>(`${BASE_URL}/reauth/resend`, data);
+  },
+
+  async requestMagicLink(data: MagicLinkRequest): Promise<MagicLinkResponse> {
+    return httpPost<MagicLinkResponse>(`${BASE_URL}/magic-link`, data, { skipAuthRefresh: true });
+  },
+
+  async verifyMagicLink(data: VerifyMagicLinkRequest): Promise<VerifyMagicLinkResponse> {
+    return httpGet<VerifyMagicLinkResponse>(
+      `${BASE_URL}/magic-link/verify?token=${encodeURIComponent(data.token)}`,
+      { skipAuthRefresh: true },
+    );
+  },
+
+  async confirmMagicLink(data: ConfirmMagicLinkRequest): Promise<ConfirmMagicLinkResponse> {
+    return httpPost<ConfirmMagicLinkResponse>(`${BASE_URL}/magic-link/confirm`, data, {
+      skipAuthRefresh: true,
+    });
   },
 };

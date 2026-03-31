@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 import { useBrand } from '@/contexts/BrandContext';
-import { Car, ArrowLeft, ShieldCheck, Lock, Sun, Moon } from 'lucide-react';
+import { ArrowLeft, ShieldCheck, Lock, Sun, Moon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { Button } from '@/components/ui/button';
@@ -21,7 +21,9 @@ export function AuthLayout({ children }: AuthLayoutProps) {
   return (
     <div className="min-h-screen flex flex-col lg:flex-row">
       <aside className="hidden lg:flex lg:w-[45%] xl:w-[42%] bg-[hsl(220,30%,12%)] text-white flex-col justify-between p-10">
-        <div>
+        <div />
+
+        <div className="space-y-6">
           <Link
             to="/"
             className="inline-flex items-center gap-2 text-sm text-white/70 hover:text-white transition-colors"
@@ -29,24 +31,18 @@ export function AuthLayout({ children }: AuthLayoutProps) {
             <ArrowLeft className="h-4 w-4" />
             {t('auth.layout.backToSite')}
           </Link>
-        </div>
 
-        <div className="space-y-6">
           <div className="flex items-center gap-3">
-            <div className="h-12 w-12 rounded-xl bg-primary flex items-center justify-center overflow-hidden">
-              {brand?.logoUrl ? (
-                <img src={brand.logoUrl} alt={appName} className="h-12 w-12 object-contain" />
-              ) : (
-                <Car className="h-6 w-6 text-primary-foreground" />
-              )}
-            </div>
+            <img src={brand?.logoUrl || '/favicon.svg'} alt={appName} className="h-12 w-12 rounded-xl" />
             <span className="text-xl font-bold">{appName}</span>
           </div>
 
           <div>
             <h1 className="text-3xl xl:text-4xl font-bold leading-tight">
               {t('auth.layout.headline')}{' '}
-              <span className="text-primary">{t('auth.layout.headlineHighlight')}</span>
+              <span className="text-primary">{t('auth.layout.headlineHighlight1')}</span>
+              {' e '}
+              <span className="text-primary">{t('auth.layout.headlineHighlight2')}</span>
             </h1>
             <p className="mt-4 text-white/60 text-base leading-relaxed">
               {t('auth.layout.headlineDesc')}
@@ -73,13 +69,7 @@ export function AuthLayout({ children }: AuthLayoutProps) {
       <main className="flex-1 flex flex-col bg-background">
         <div className="flex items-center justify-between p-4 lg:justify-end">
           <div className="flex items-center gap-3 lg:hidden">
-            <div className="h-10 w-10 rounded-xl bg-primary flex items-center justify-center overflow-hidden">
-              {brand?.logoUrl ? (
-                <img src={brand.logoUrl} alt={appName} className="h-10 w-10 object-contain" />
-              ) : (
-                <Car className="h-5 w-5 text-primary-foreground" />
-              )}
-            </div>
+            <img src={brand?.logoUrl || '/favicon.svg'} alt={appName} className="h-10 w-10 rounded-xl" />
             <div>
               <p className="text-sm font-bold leading-tight">{appName}</p>
               <p className="text-xs text-muted-foreground">{t('app.subtitle')}</p>

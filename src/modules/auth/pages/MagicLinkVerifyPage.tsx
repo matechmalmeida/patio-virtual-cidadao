@@ -1,74 +1,126 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSearchParams, useNavigate, Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import { Shield, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { AlertCircle } from 'lucide-react';
-import { getApiErrorMessage } from '@/services/http/api-error';
-import { httpGet, httpPost } from '@/services/http/http-client';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { useVerifyMagicLink, useConfirmMagicLink } from '../hooks/useMagicLink';
+import { ApiError } from '@/services/http/api-error';
 import { AuthLayout } from '../components/AuthLayout';
 
-interface ConfirmResponse {
-  requiresVerification: boolean;
-  pendingToken?: string;
-  expiresIn?: number;
-  maskedEmail?: string;
-  mfaMethod?: string;
-}
+type PageState =
+  | 'loading'
+  | 'verifying'
+  | 'valid'
+  | 'invalid'
+  | 'expired'
+  | 'no-totp';
 
 export default function MagicLinkVerifyPage() {
   const [searchParams] = useSearchParams();
   const token = searchParams.get('token');
-  const [error, setError] = useState('');
-  const [verifying, setVerifying] = useState(true);
+  if (token) {
+    window.history.replaceState({}, '', '/acesso/link-magico/verificar');
+  }
   const navigate = useNavigate();
-  const { t } = useTranslation();
+
+  const [pageState, setPageState] = useState<PageState>('loading');
+  const hasVerified = useRef(false);
+  const hasConfirmed = useRef(false);
+
+  const { mutate: verifyMutate } = useVerifyMagicLink();
+  const { mutate: confirmMutate } = useConfirmMagicLink();
 
   useEffect(() => {
     if (!token) {
-      setError(t('auth.magicLink.errorDesc'));
-      setVerifying(false);
+      setPageState('invalid');
       return;
     }
 
-    let cancelled = false;
+    if (hasVerified.current) return;
+    hasVerified.current = true;
+    setPageState('verifying');
 
-    (async () => {
-      try {
-        await httpGet<{ valid: boolean }>(`/v1/auth/magic-link/verify?token=${encodeURIComponent(token)}`, {
-          skipAuthRefresh: true,
-        });
-        if (cancelled) return;
+    verifyMutate(
+      { token },
+      {
+        onSuccess: (response) => {
+          setPageState(response.valid ? 'valid' : 'invalid');
+        },
+        onError: () => {
+          setPageState('invalid');
+        },
+      },
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token]);
 
-        const result = await httpPost<ConfirmResponse>(
-          '/v1/auth/magic-link/confirm',
-          { token },
-          { skipAuthRefresh: true },
-        );
-        if (cancelled) return;
+  useEffect(() => {
+    if (pageState !== 'valid' || !token || hasConfirmed.current) return;
 
-        if (result.requiresVerification) {
-          navigate('/acesso/verificar', { replace: true });
-        } else {
-          navigate('/app/dashboard', { replace: true });
-        }
-      } catch (err) {
-        if (cancelled) return;
-        setError(getApiErrorMessage(err, t('auth.magicLink.errorDesc')));
-        setVerifying(false);
-      }
-    })();
+    hasConfirmed.current = true;
+    setPageState('loading');
 
-    return () => {
-      cancelled = true;
-    };
-  }, [token, navigate, t]);
+    confirmMutate(
+      { token },
+      {
+        onSuccess: (response) => {
+          navigate('/acesso/verificar', {
+            state: {
+              pendingToken: response.pendingToken,
+              expiresAt: Date.now() + response.expiresIn * 1000,
+              mfaMethod: 'totp',
+            },
+            replace: true,
+          });
+        },
+        onError: (error: Error) => {
+          hasConfirmed.current = false;
 
-  if (verifying) {
+          if (error instanceof ApiError && error.status) {
+            if (error.status === 401) {
+              setPageState('expired');
+            } else if (error.status === 403) {
+              setPageState('no-totp');
+            } else {
+              setPageState('invalid');
+            }
+          } else {
+            setPageState('invalid');
+          }
+        },
+      },
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [pageState, token]);
+
+  if (pageState === 'loading' || pageState === 'verifying') {
     return (
       <AuthLayout>
         <div className="text-center space-y-4 py-8">
           <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent mx-auto" />
-          <p className="text-sm text-muted-foreground">{t('auth.magicLink.verifying')}</p>
+          <p className="text-sm text-muted-foreground">Verificando link...</p>
+        </div>
+      </AuthLayout>
+    );
+  }
+
+  if (pageState === 'no-totp') {
+    return (
+      <AuthLayout>
+        <div className="text-center space-y-4">
+          <Shield className="h-12 w-12 text-amber-500 mx-auto" />
+          <h2 className="text-lg font-semibold">TOTP Necessário</h2>
+          <Alert className="border-amber-200 bg-amber-50 dark:border-amber-900 dark:bg-amber-950 text-left">
+            <AlertDescription className="text-sm text-amber-800 dark:text-amber-200">
+              O login por link mágico requer autenticação de dois fatores (TOTP) habilitada.
+              Habilite o TOTP nas configurações de segurança da sua conta ou faça login com senha.
+            </AlertDescription>
+          </Alert>
+          <Link to="/acesso" className="block">
+            <Button className="w-full h-12 text-base font-semibold">
+              Fazer login com senha
+            </Button>
+          </Link>
         </div>
       </AuthLayout>
     );
@@ -78,11 +130,28 @@ export default function MagicLinkVerifyPage() {
     <AuthLayout>
       <div className="text-center space-y-4">
         <AlertCircle className="h-12 w-12 text-destructive mx-auto" />
-        <h2 className="text-lg font-semibold">{t('auth.magicLink.errorTitle')}</h2>
-        <p className="text-sm text-muted-foreground">{error}</p>
-        <Button asChild className="w-full">
-          <Link to="/acesso/link-magico">{t('auth.magicLink.requestNew')}</Link>
+        <h2 className="text-lg font-semibold">Link Inválido</h2>
+        <Alert variant="destructive" className="text-left">
+          <AlertTitle>Este link de acesso:</AlertTitle>
+          <AlertDescription>
+            <ul className="list-disc list-inside space-y-1 mt-2">
+              <li>Já foi usado</li>
+              <li>Expirou (válido por 10 minutos)</li>
+              <li>É inválido</li>
+            </ul>
+          </AlertDescription>
+        </Alert>
+        <Button
+          className="w-full h-12 text-base font-semibold"
+          onClick={() => navigate('/acesso', { state: { openMagicLink: true } })}
+        >
+          Solicitar novo link
         </Button>
+        <Link to="/acesso" className="block">
+          <Button variant="outline" className="w-full h-12 text-base">
+            Fazer login normal
+          </Button>
+        </Link>
       </div>
     </AuthLayout>
   );

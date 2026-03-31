@@ -22,12 +22,12 @@ export default defineConfig(({ mode }) => ({
     mode === "development" && componentTagger(),
     VitePWA({
       registerType: "autoUpdate",
-      includeAssets: ["favicon.ico", "robots.txt", "pwa-192x192.png", "pwa-512x512.png"],
+      includeAssets: ["favicon.ico", "favicon.svg", "robots.txt", "pwa-192x192.png", "pwa-512x512.png"],
       manifest: {
-        name: "Portal do Cidadão - Remoção Veicular",
-        short_name: "Remoção Veicular",
+        name: "Pátio Virtual - Portal do Cidadão",
+        short_name: "Portal Cidadão",
         description: "Acompanhe o processo de remoção do seu veículo, resolva pendências e agende a retirada.",
-        theme_color: "#2563eb",
+        theme_color: "#E35721",
         background_color: "#f0f4f8",
         display: "standalone",
         orientation: "portrait",
