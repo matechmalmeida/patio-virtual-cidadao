@@ -48,13 +48,28 @@ export function useSignTerm() {
       refusalReason?: string;
     }) => seizureService.signTerm(seizureId, termTemplateId, accepted, refusalReason),
     onSuccess: (_, { seizureId }) => {
-      queryClient.invalidateQueries({ queryKey: SEIZURE_KEYS.terms(seizureId) });
-      queryClient.invalidateQueries({ queryKey: SEIZURE_KEYS.geofence(seizureId) });
+      queryClient.invalidateQueries({ queryKey: SEIZURE_KEYS.all });
       queryClient.invalidateQueries({ queryKey: ['citizen-terms'] });
       toast.success('Termo assinado com sucesso');
     },
     onError: () => {
       toast.error('Erro ao assinar o termo');
+    },
+  });
+}
+
+export function useCancelSeizure() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ seizureId, reason }: { seizureId: string; reason: string }) =>
+      seizureService.cancelSeizure(seizureId, reason),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: SEIZURE_KEYS.all });
+      toast.success('Apreensao cancelada');
+    },
+    onError: () => {
+      toast.error('Erro ao cancelar a apreensao');
     },
   });
 }

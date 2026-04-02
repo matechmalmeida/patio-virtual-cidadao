@@ -1,9 +1,21 @@
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useSeizureDetail, useGeofenceStatus } from '../hooks/useSeizure';
+import { useSeizureDetail, useGeofenceStatus, useCancelSeizure } from '../hooks/useSeizure';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
+import { Textarea } from '@/components/ui/textarea';
 import { AlertBanner } from '@/components/AlertBanner';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { seizureStatusConfig, type SeizureStatus } from '@/data/seizureStatusConfig';
 import { getApiErrorMessage } from '@/services/http/api-error';
 import { format } from 'date-fns';
@@ -22,6 +34,7 @@ import {
   ListChecks,
   FileText,
   XCircle,
+  Ban,
 } from 'lucide-react';
 import type {
   SeizureDetailVehicle,
@@ -291,9 +304,12 @@ function TimelineSection({ currentSlug, statusHistory }: { currentSlug: string; 
 export default function SeizureStatusPage() {
   const { seizureId } = useParams<{ seizureId: string }>();
   const navigate = useNavigate();
+  const [cancelOpen, setCancelOpen] = useState(false);
+  const [cancelReason, setCancelReason] = useState('');
 
   const { data, isLoading, isError, error } = useSeizureDetail(seizureId!);
   const { data: geofenceData } = useGeofenceStatus(seizureId!);
+  const cancelMutation = useCancelSeizure();
 
   const currentSlug = data?.status?.slug ?? geofenceData?.status ?? '';
   const statusCfg = seizureStatusConfig[currentSlug as SeizureStatus];
@@ -354,14 +370,25 @@ export default function SeizureStatusPage() {
                     </p>
                   </div>
                 </div>
-                <Button
-                  onClick={() => navigate(`/app/apreensao/${seizureId}/termo`)}
-                  className="w-full"
-                  size="sm"
-                >
-                  <FileText className="h-4 w-4" />
-                  Assinar documentos
-                </Button>
+                <div className="flex gap-2">
+                  <Button
+                    onClick={() => navigate(`/app/apreensao/${seizureId}/termo`)}
+                    className="flex-1"
+                    size="sm"
+                  >
+                    <FileText className="h-4 w-4" />
+                    Assinar documentos
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="text-red-600 border-red-300 hover:bg-red-50"
+                    onClick={() => setCancelOpen(true)}
+                  >
+                    <Ban className="h-4 w-4" />
+                    Cancelar
+                  </Button>
+                </div>
               </div>
             )}
 
@@ -436,6 +463,42 @@ export default function SeizureStatusPage() {
           </>
         )}
       </div>
+
+      <AlertDialog open={cancelOpen} onOpenChange={setCancelOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Cancelar apreensao</AlertDialogTitle>
+            <AlertDialogDescription>
+              Essa acao nao pode ser desfeita. Informe o motivo do cancelamento.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <Textarea
+            placeholder="Motivo do cancelamento"
+            value={cancelReason}
+            onChange={(e) => setCancelReason(e.target.value)}
+            rows={3}
+          />
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => { setCancelReason(''); }}>
+              Voltar
+            </AlertDialogCancel>
+            <AlertDialogAction
+              disabled={!cancelReason.trim() || cancelMutation.isPending}
+              className="bg-red-600 hover:bg-red-700"
+              onClick={async () => {
+                await cancelMutation.mutateAsync({
+                  seizureId: seizureId!,
+                  reason: cancelReason.trim(),
+                });
+                setCancelReason('');
+                setCancelOpen(false);
+              }}
+            >
+              {cancelMutation.isPending ? 'Cancelando...' : 'Confirmar cancelamento'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

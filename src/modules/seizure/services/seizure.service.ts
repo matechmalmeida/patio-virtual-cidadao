@@ -33,6 +33,12 @@ export async function signTerm(
   });
 }
 
+// === CANCEL ===
+
+export async function cancelSeizure(seizureId: string, reason: string): Promise<void> {
+  return httpPost(`/v1/seizures/citizen/${seizureId}/cancel`, { reason });
+}
+
 // === GEOFENCE ===
 
 export async function getGeofenceStatus(seizureId: string): Promise<GeofenceStatus> {
