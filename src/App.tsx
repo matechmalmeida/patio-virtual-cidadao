@@ -20,6 +20,7 @@ const ForgotPasswordPage = lazy(() => import('./modules/auth/pages/ForgotPasswor
 const ResetPasswordPage = lazy(() => import('./modules/auth/pages/ResetPasswordPage'));
 const MagicLinkVerifyPage = lazy(() => import('./modules/auth/pages/MagicLinkVerifyPage'));
 const VerifyPage = lazy(() => import('./modules/auth/pages/VerifyPage'));
+const ChangePasswordRequiredPage = lazy(() => import('./modules/auth/pages/ChangePasswordRequiredPage'));
 const DashboardPage = lazy(() => import('./modules/dashboard/pages/DashboardPage'));
 const ProcessListPage = lazy(() => import('./modules/process/pages/ProcessListPage'));
 const ProcessDetailPage = lazy(() => import('./modules/process/pages/ProcessDetailPage'));
@@ -116,6 +117,7 @@ const App = () => (
                   <Route path="/acesso/nova-senha" element={routeElement(<ResetPasswordPage />)} />
                   <Route path="/acesso/link-magico/verificar" element={routeElement(<MagicLinkVerifyPage />)} />
                   <Route path="/acesso/verificar" element={routeElement(<VerifyPage />)} />
+                  <Route path="/acesso/alterar-senha" element={routeElement(<ChangePasswordRequiredPage />)} />
                   <Route path="/instalar" element={routeElement(<InstallPage />)} />
 
                   {/* Protected routes */}

@@ -206,6 +206,12 @@
     }
   },
   "dashboard": {
+    "title": "Minhas Apreensões",
+    "loadError": "Não foi possível carregar as apreensões.",
+    "empty": "Nenhuma apreensão encontrada.",
+    "pageInfo": "Página {{page}} de {{total}}",
+    "prev": "Página anterior",
+    "next": "Próxima página",
     "activeRemovals": "Suas remoções ativas",
     "howToResolve": "Como resolver",
     "pendenciesCount_one": "{{count}} pendência",
@@ -614,9 +620,17 @@
     "selectedCount_one": "{{count}} selecionado",
     "selectedCount_other": "{{count}} selecionados"
   },
+  "seizureList": {
+    "title": "Minhas Apreensões",
+    "loadError": "Não foi possível carregar as apreensões.",
+    "empty": "Nenhuma apreensão encontrada.",
+    "pageInfo": "Página {{page}} de {{total}}",
+    "prev": "Página anterior",
+    "next": "Próxima página"
+  },
   "seizure": {
-    "reason": "Motivo da apreensao",
-    "location": "Local da apreensao:"
+    "reason": "Motivo da apreensão",
+    "location": "Local da apreensão:"
   },
   "vehicleCard": {
     "code": "Codigo:"

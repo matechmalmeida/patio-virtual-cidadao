@@ -16,6 +16,14 @@ export function useMySeizures(page = 1) {
   });
 }
 
+export function useSeizureDetail(seizureId: string) {
+  return useQuery({
+    queryKey: [...SEIZURE_KEYS.all, 'detail', seizureId] as const,
+    queryFn: () => seizureService.getSeizureById(seizureId),
+    enabled: !!seizureId,
+  });
+}
+
 export function useSeizureTerm(seizureId: string) {
   return useQuery({
     queryKey: SEIZURE_KEYS.term(seizureId),

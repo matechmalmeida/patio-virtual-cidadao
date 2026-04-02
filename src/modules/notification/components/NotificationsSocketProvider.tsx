@@ -8,7 +8,6 @@ import {
   UNREAD_COUNT_QUERY_KEY,
   PENDING_ACK_QUERY_KEY,
 } from '../hooks/useNotifications';
-import { notificationTypeLabels } from '../types/notification';
 import type {
   NotificationNewPayload,
   NotificationReadPayload,
@@ -35,20 +34,13 @@ export function NotificationsSocketProvider({ children }: { children: ReactNode 
         queryClient.invalidateQueries({ queryKey: [PENDING_ACK_QUERY_KEY] });
       }
 
-      const shouldShowToast =
-        data.priority === 'critical' ||
-        data.priority === 'high' ||
-        data.requiresAcknowledgment ||
-        data.type === 'announcement';
+      const isCritical = data.priority === 'critical' || data.priority === 'high';
 
-      if (shouldShowToast) {
-        const typeLabel = notificationTypeLabels[data.type] || data.type;
-        toast({
-          title: data.title,
-          description: `${typeLabel}: ${data.content.substring(0, 100)}${data.content.length > 100 ? '...' : ''}`,
-          variant: data.priority === 'critical' || data.priority === 'high' ? 'destructive' : 'default',
-        });
-      }
+      toast({
+        title: data.title,
+        description: data.content.substring(0, 120) + (data.content.length > 120 ? '...' : ''),
+        variant: isCritical ? 'destructive' : 'default',
+      });
     },
     [queryClient, toast],
   );

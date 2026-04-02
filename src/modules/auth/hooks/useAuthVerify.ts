@@ -138,9 +138,13 @@ export function useAuthVerify() {
 
   useEffect(() => {
     if (state.isAuthenticated) {
-      navigate('/app/dashboard', { replace: true });
+      if (state.user?.requirePasswordChange) {
+        navigate('/acesso/alterar-senha', { replace: true });
+      } else {
+        navigate('/app/dashboard', { replace: true });
+      }
     }
-  }, [state.isAuthenticated, navigate]);
+  }, [state.isAuthenticated, state.user, navigate]);
 
   useEffect(() => {
     if (!state.isLoading && !pendingToken && !state.isAuthenticated) {

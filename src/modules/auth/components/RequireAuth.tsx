@@ -16,5 +16,9 @@ export function RequireAuth() {
     return <Navigate to="/acesso" replace />;
   }
 
+  if (state.user?.requirePasswordChange) {
+    return <Navigate to="/acesso/alterar-senha" replace />;
+  }
+
   return <Outlet />;
 }

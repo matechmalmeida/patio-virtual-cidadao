@@ -1,225 +1,87 @@
-import { useCases } from '@/modules/process';
-import { useUnreadCount } from '@/modules/notification';
-import { VehicleCard } from '@/components/VehicleCard';
-import { SeizureInfo } from '@/components/SeizureInfo';
-import { LocationMap } from '@/components/LocationMap';
-
-import { AlertBanner } from '@/components/AlertBanner';
-import { OnboardingTutorial } from '../components/OnboardingTutorial';
-import { ProcessStepper } from '../components/ProcessStepper';
-import { SummaryStatCard } from '../components/SummaryStatCard';
-import { PendenciesOverview } from '../components/PendenciesOverview';
-import { useOnboarding } from '../hooks/useOnboarding';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  FileText,
-  CalendarDays,
-  Clock,
-  ChevronRight,
-  Bell,
-  Car,
-  ScrollText,
-  ClipboardList,
-} from 'lucide-react';
+import { useMySeizures } from '@/modules/seizure/hooks/useSeizure';
+import { SeizureCard } from '@/modules/seizure/components/SeizureCard';
+import { Button } from '@/components/ui/button';
+import { Skeleton } from '@/components/ui/skeleton';
+import { AlertBanner } from '@/components/AlertBanner';
+import { PullToRefresh } from '@/components/PullToRefresh';
+import { RefreshCw, ChevronLeft, ChevronRight, ClipboardList } from 'lucide-react';
+import { getApiErrorMessage } from '@/services/http/api-error';
 
 export default function DashboardPage() {
-  const { currentCase, activeCases, selectCase } = useCases();
-  const { data: unreadData } = useUnreadCount();
-  const unreadCount = unreadData?.count ?? 0;
   const { t } = useTranslation();
-  const { isOpen: showOnboarding, complete: completeOnboarding } = useOnboarding();
+  const [page, setPage] = useState(1);
 
-  if (!currentCase) return null;
-
-  const pendingCount = currentCase.pendencies.filter(
-    (p) => p.status === 'pendente' || p.status === 'reprovado'
-  ).length;
-
-  const approvedCount = currentCase.pendencies.filter(
-    (p) => p.status === 'aprovado'
-  ).length;
-
-  const pendingTerms = currentCase.terms?.filter((t) => t.status === 'pendente') ?? [];
-  const hasPendingTerms = pendingTerms.length > 0;
-  const pendingTermCount = pendingTerms.length;
-
-  const showPendenciesAction = ['pendencias_regularizar', 'custodia_domiciliar'].includes(
-    currentCase.status
-  );
-  const showScheduleAction = currentCase.status === 'apto_retirada';
-  const showWaitingMessage = currentCase.status === 'aguardando_validacao';
-
-  const hasMultipleCases = activeCases.length > 1;
+  const { data, isLoading, isFetching, isError, error, refetch } = useMySeizures(page);
 
   return (
-    <div className="px-4 py-5">
-      <OnboardingTutorial isOpen={showOnboarding} onComplete={completeOnboarding} />
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <div className="lg:col-span-2">
-          {hasMultipleCases ? (
-            <div className="space-y-2">
-              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider flex items-center gap-1.5">
-                <Car className="h-3.5 w-3.5" />
-                {t('dashboard.activeRemovals')} ({activeCases.length})
-              </p>
-              <div className="space-y-2">
-                {activeCases.map((c) => (
-                  <VehicleCard
-                    key={c.id}
-                    caseData={c}
-                    isSelected={c.id === currentCase.id}
-                    onClick={() => selectCase(c.id)}
-                    compact
-                  />
-                ))}
-              </div>
-            </div>
-          ) : (
-            <VehicleCard caseData={currentCase} isSelected />
-          )}
+    <PullToRefresh onRefresh={() => refetch()}>
+      <div className="px-4 py-5 space-y-4">
+        <div className="flex items-center justify-between">
+          <h1 className="text-xl font-bold">{t('dashboard.title')}</h1>
+          <Button variant="ghost" size="icon" onClick={() => refetch()} disabled={isFetching} className="hidden lg:inline-flex">
+            <RefreshCw className={`h-4 w-4 ${isFetching ? 'animate-spin' : ''}`} />
+          </Button>
         </div>
 
-        <div className="lg:col-span-2">
-          <ProcessStepper status={currentCase.status} />
-        </div>
-
-        <div className="lg:col-span-2 grid grid-cols-3 gap-3">
-          <SummaryStatCard
-            value={`${approvedCount}/${currentCase.pendencies.length}`}
-            label={t('dashboard.pendenciesResolved')}
-            icon={ClipboardList}
-            variant={pendingCount > 0 ? 'warning' : 'success'}
-            to={`/app/process/${currentCase.id}/pendencias`}
-          />
-          <SummaryStatCard
-            value={pendingTermCount}
-            label={t('dashboard.documentsToSignShort')}
-            icon={FileText}
-            variant={pendingTermCount > 0 ? 'info' : 'muted'}
-            to="/app/documentos"
-          />
-          <SummaryStatCard
-            value={unreadCount}
-            label={t('dashboard.unreadNotifications')}
-            icon={Bell}
-            variant={unreadCount > 0 ? 'warning' : 'muted'}
-            to="/app/notifications"
-          />
-        </div>
-
-        <Card className="border-0 shadow-md">
-          <CardContent className="pt-5 space-y-4">
-            <h2 className="text-base font-semibold flex items-center gap-2">
-              <Clock className="h-4 w-4 text-primary" />
-              {t('dashboard.howToResolve')}
-            </h2>
-
-            {showPendenciesAction && (
-              <div className="space-y-2">
-                <p className="text-sm text-muted-foreground">
-                  {t('dashboard.pendenciesToResolve', {
-                    count: pendingCount,
-                    label: t('dashboard.pendenciesCount', { count: pendingCount }),
-                  }).replace(/<\/?strong>/g, '')}
-                </p>
-                <Button asChild className="w-full h-11 font-semibold">
-                  <Link to={`/app/process/${currentCase.id}/pendencias`}>
-                    <FileText className="h-4 w-4" />
-                    {t('dashboard.viewPendencies')}
-                  </Link>
-                </Button>
-                {pendingTermCount > 0 && (
-                  <Button asChild variant="outline" className="w-full h-11 font-semibold">
-                    <Link to="/app/documentos">
-                      <ScrollText className="h-4 w-4" />
-                      {t('dashboard.viewDocuments')}
-                    </Link>
-                  </Button>
-                )}
-              </div>
-            )}
-
-            {showScheduleAction && (
-              <div className="space-y-2">
-                <p className="text-sm text-muted-foreground">
-                  {t('dashboard.allClear')}
-                </p>
-                <Button asChild className="w-full h-11 font-semibold">
-                  <Link to="/app/agendamento">
-                    <CalendarDays className="h-4 w-4" />
-                    {t('dashboard.scheduleRemoval')}
-                  </Link>
-                </Button>
-              </div>
-            )}
-
-            {showWaitingMessage && (
-              <AlertBanner variant="info">
-                {t('dashboard.waitingValidation')}
-              </AlertBanner>
-            )}
-
-            {currentCase.status === 'aguardando_retirada' && currentCase.appointment && (
-              <AlertBanner variant="success" title={t('dashboard.appointmentConfirmed')}>
-                {t('dashboard.appointmentDetails', {
-                  location: currentCase.appointment.location.name,
-                  date: currentCase.appointment.date,
-                  time: currentCase.appointment.time,
-                }).replace(/<\/?strong>/g, '')}
-              </AlertBanner>
-            )}
-
-            {currentCase.status === 'finalizado' && (
-              <AlertBanner variant="success" title={t('dashboard.vehicleReleased')}>
-                {t('dashboard.vehicleReleasedText')}
-              </AlertBanner>
-            )}
-          </CardContent>
-        </Card>
-
-        <PendenciesOverview
-          pendencies={currentCase.pendencies}
-          caseId={currentCase.id}
-        />
-
-        {hasPendingTerms && (
-          <div className="lg:col-span-2 space-y-3">
-            {pendingTerms.map((term) => (
-              <Link key={term.id} to={`/app/documentos/${term.id}`} className="block">
-                <AlertBanner variant="warning" className="cursor-pointer hover:opacity-90 transition-opacity">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <ScrollText className="h-4 w-4" />
-                      <div>
-                        <span className="font-semibold text-sm block">{term.title}</span>
-                        <span className="text-xs opacity-80">{t('dashboard.pendingTerm')}</span>
-                      </div>
-                    </div>
-                    <ChevronRight className="h-4 w-4 flex-shrink-0" />
-                  </div>
-                </AlertBanner>
-              </Link>
+        {isLoading && (
+          <div className="space-y-3">
+            {[1, 2, 3, 4].map((i) => (
+              <Skeleton key={i} className="h-24 w-full rounded-xl" />
             ))}
           </div>
         )}
 
-        <SeizureInfo
-          reason={currentCase.seizureReason}
-          seizureLocation={currentCase.seizureLocation}
-        />
+        {isError && (
+          <AlertBanner variant="error">
+            {getApiErrorMessage(error, t('dashboard.loadError'))}
+          </AlertBanner>
+        )}
 
-        <Card className="border-0 shadow-md">
-          <CardContent className="pt-5">
-            <h2 className="text-base font-semibold mb-4">{t('dashboard.vehicleLocation')}</h2>
-            <LocationMap location={currentCase.vehicleLocation} />
-          </CardContent>
-        </Card>
+        {data && data.data.length === 0 && (
+          <div className="text-center py-12">
+            <ClipboardList className="h-12 w-12 text-muted-foreground/30 mx-auto mb-3" />
+            <p className="text-sm text-muted-foreground">{t('dashboard.empty')}</p>
+          </div>
+        )}
 
+        {data && data.data.length > 0 && (
+          <>
+            <div className="space-y-3">
+              {data.data.map((item) => (
+                <SeizureCard key={item.id} item={item} />
+              ))}
+            </div>
+
+            <div className="flex items-center justify-between pt-2">
+              <Button
+                variant="outline"
+                size="icon"
+                className="h-8 w-8"
+                disabled={page <= 1}
+                onClick={() => setPage((p) => p - 1)}
+                aria-label={t('dashboard.prev')}
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
+              <span className="text-xs text-muted-foreground">
+                {t('dashboard.pageInfo', { page: data.meta.page, total: data.meta.totalPages })}
+              </span>
+              <Button
+                variant="outline"
+                size="icon"
+                className="h-8 w-8"
+                disabled={page >= data.meta.totalPages}
+                onClick={() => setPage((p) => p + 1)}
+                aria-label={t('dashboard.next')}
+              >
+                <ChevronRight className="h-4 w-4" />
+              </Button>
+            </div>
+          </>
+        )}
       </div>
-    </div>
+    </PullToRefresh>
   );
 }

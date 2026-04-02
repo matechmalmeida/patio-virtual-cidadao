@@ -1,11 +1,17 @@
 import { httpGet, httpPost } from '@/services/http/http-client';
-import type { SeizureTermResponse, GeofenceStatus, GeofenceCheckResult, SeizureListResponse } from '../types/seizure';
+import type { SeizureTermResponse, GeofenceStatus, GeofenceCheckResult, SeizureListResponse, SeizureDetailResponse } from '../types/seizure';
 
 // === LIST ===
 
 export async function listMySeizures(page = 1): Promise<SeizureListResponse> {
   const params = new URLSearchParams({ page: String(page), limit: '10' });
   return httpGet<SeizureListResponse>(`/v1/seizures/citizen?${params}`);
+}
+
+// === DETAIL ===
+
+export async function getSeizureById(id: string): Promise<SeizureDetailResponse> {
+  return httpGet<SeizureDetailResponse>(`/v1/seizures/citizen/${id}`);
 }
 
 // === TERMS ===

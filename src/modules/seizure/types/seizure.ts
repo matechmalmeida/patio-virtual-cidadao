@@ -44,6 +44,80 @@ export interface SeizureListItem {
   createdAt: string;
 }
 
+export interface SeizureDetailVehicle {
+  plate: string;
+  brand?: string;
+  model?: string;
+  color?: string;
+  year?: number;
+  modelYear?: number;
+  chassis?: string;
+  renavam?: string;
+  vehicleType?: string;
+}
+
+export interface SeizureDetailDriver {
+  cpf: string;
+  name?: string;
+  birthDate?: string;
+  rg?: string;
+  rgIssuer?: string;
+  cnh?: string;
+  cnhCategory?: string;
+  cnhExpiration?: string;
+  phone?: string;
+  email?: string;
+}
+
+export interface SeizureDetailAddress {
+  street?: string;
+  number?: string;
+  complement?: string;
+  neighborhood?: string;
+  city?: string;
+  state?: string;
+  cep?: string;
+}
+
+export interface SeizureDetailViolation {
+  violationType: {
+    code: string;
+    digit?: string;
+    shortDescription: string;
+    description?: string;
+    category: string;
+    score?: number;
+    amount?: number;
+  };
+}
+
+export interface SeizureDetailGeofence {
+  id: string;
+  centerLatitude: number;
+  centerLongitude: number;
+  radiusMeters: number;
+  address?: string;
+  deadlineAt: string;
+  violatedAt?: string;
+  lastCheckAt?: string;
+}
+
+export interface SeizureDetailResponse {
+  id: string;
+  number: string;
+  towType: string;
+  notes?: string;
+  cancellationReason?: string;
+  deadline?: string;
+  status: { id: string; slug: string; name: string };
+  vehicle: SeizureDetailVehicle;
+  driver?: SeizureDetailDriver;
+  address?: SeizureDetailAddress;
+  violations: SeizureDetailViolation[];
+  geofence?: SeizureDetailGeofence;
+  createdAt: string;
+}
+
 export interface SeizureListResponse {
   data: SeizureListItem[];
   meta: { total: number; page: number; totalPages: number };

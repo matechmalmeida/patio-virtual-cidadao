@@ -17,9 +17,11 @@ const schema = z
   .object({
     password: z
       .string()
-      .min(8)
+      .min(10)
       .regex(/[A-Z]/)
-      .regex(/[0-9]/),
+      .regex(/[a-z]/)
+      .regex(/[0-9]/)
+      .regex(/[^a-zA-Z0-9\s]/),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {

@@ -215,13 +215,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setState((prev) => ({ ...prev, pendingVerification: null }));
   }, []);
 
-  const refreshUserData = useCallback(async () => {
+  const refreshUserData = useCallback(async (): Promise<boolean> => {
     try {
       const meResponse = await authService.getMe();
       const user = createUserFromMe(meResponse);
       setState((prev) => ({ ...prev, user }));
+      return true;
     } catch {
-      // ignore
+      return false;
     }
   }, []);
 

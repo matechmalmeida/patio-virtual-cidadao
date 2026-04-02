@@ -64,6 +64,8 @@ export default function LoginPage() {
 
       if (result.requiresVerification) {
         navigate('/acesso/verificar', { replace: true });
+      } else if (!result.requiresVerification && result.user?.requirePasswordChange) {
+        navigate('/acesso/alterar-senha', { replace: true });
       } else {
         navigate('/app/dashboard', { replace: true });
       }

@@ -37,9 +37,9 @@ export function AppLayout() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="h-[100dvh] flex flex-col bg-background">
       <AppHeader />
-      <main className="pb-20 max-w-2xl mx-auto">
+      <main className="flex-1 flex flex-col min-h-0 pb-14 max-w-2xl mx-auto w-full overflow-y-auto">
         <Outlet />
       </main>
       <BottomNav />
