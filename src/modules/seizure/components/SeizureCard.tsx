@@ -25,13 +25,7 @@ export function SeizureCard({ item }: SeizureCardProps) {
   return (
     <Card
       className="cursor-pointer hover:bg-muted/50 transition-colors"
-      onClick={() =>
-        navigate(
-          item.status.slug === 'aguardando-assinatura'
-            ? `/app/apreensao/${item.id}/termo`
-            : `/app/apreensao/${item.id}/status`,
-        )
-      }
+      onClick={() => navigate(`/app/apreensao/${item.id}/status`)}
     >
       <CardContent className="p-4 space-y-3">
         <div className="flex flex-col items-center gap-1.5">

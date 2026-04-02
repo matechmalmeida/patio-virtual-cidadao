@@ -31,7 +31,6 @@ const PaymentPage = lazy(() => import('./modules/process/pages/PaymentPage'));
 const GPSStatusPage = lazy(() => import('./modules/process/pages/GPSStatusPage'));
 const HistoryPage = lazy(() => import('./modules/process/pages/HistoryPage'));
 const DocumentListPage = lazy(() => import('./modules/document-signing/pages/DocumentListPage'));
-const DocumentSigningPage = lazy(() => import('./modules/document-signing/pages/DocumentSigningPage'));
 const NotificationsPage = lazy(() => import('./modules/notification/pages/NotificationsPage'));
 const NotificationSettingsPage = lazy(() => import('./modules/notification/pages/NotificationSettingsPage'));
 const SchedulingPage = lazy(() => import('./modules/scheduling/pages/SchedulingPage'));
@@ -53,6 +52,8 @@ const SeizureStatusPage = lazy(() => import('./modules/seizure/pages/SeizureStat
 const ReturnTransferListPage = lazy(() => import('./modules/return-transfer/pages/ReturnTransferListPage'));
 const ReturnTransferWizardPage = lazy(() => import('./modules/return-transfer/pages/ReturnTransferWizardPage'));
 const ReturnTransferDetailPage = lazy(() => import('./modules/return-transfer/pages/ReturnTransferDetailPage'));
+const CitizenTermsPage = lazy(() => import('./modules/citizen-terms/pages/CitizenTermsPage'));
+const CitizenTermSigningPage = lazy(() => import('./modules/citizen-terms/pages/CitizenTermSigningPage'));
 const NotFound = lazy(() => import('./modules/app/pages/NotFound'));
 
 const queryClient = new QueryClient({
@@ -143,7 +144,6 @@ const App = () => (
                       element={routeElement(<PaymentPage />)}
                     />
                     <Route path="/app/documentos" element={routeElement(<DocumentListPage />)} />
-                    <Route path="/app/documentos/:termId" element={routeElement(<DocumentSigningPage />)} />
                     <Route path="/app/notifications" element={routeElement(<NotificationsPage />)} />
                     <Route path="/app/agendamento" element={routeElement(<SchedulingPage />)} />
                     <Route
@@ -182,6 +182,11 @@ const App = () => (
                     <Route
                       path="/app/translado-retorno/:requestId"
                       element={routeElement(<ReturnTransferDetailPage />)}
+                    />
+                    <Route path="/app/cidadao/termos" element={routeElement(<CitizenTermsPage />)} />
+                    <Route
+                      path="/app/cidadao/termos/:termId"
+                      element={routeElement(<CitizenTermSigningPage />)}
                     />
                     <Route
                       path="/app/notifications/settings"

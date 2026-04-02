@@ -1,8 +1,7 @@
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCitizenTerms } from '../hooks/useCitizenTerms';
-import { TermViewSheet } from '../components/TermViewSheet';
-import type { CitizenTermItem } from '../services/document.service';
+import type { CitizenTerm } from '../types/citizen-term';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -17,13 +16,9 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
-function TermCard({
-  term,
-  onSelect,
-}: {
-  term: CitizenTermItem;
-  onSelect: (term: CitizenTermItem) => void;
-}) {
+function TermCard({ term }: { term: CitizenTerm }) {
+  const navigate = useNavigate();
+
   return (
     <div className="rounded-xl border bg-card p-4 space-y-3 animate-slide-up">
       <div className="flex items-start justify-between gap-2">
@@ -37,8 +32,7 @@ function TermCard({
           <div className="flex-1 min-w-0">
             <h3 className="text-sm font-semibold">{term.title}</h3>
             <p className="text-xs text-muted-foreground mt-0.5">
-              {term.vehiclePlate}
-              {term.vehicleDescription ? ` - ${term.vehicleDescription}` : ''}
+              Versao {term.version}
             </p>
           </div>
         </div>
@@ -71,7 +65,7 @@ function TermCard({
         size="sm"
         variant={term.signed ? 'outline' : 'default'}
         className="w-full text-xs"
-        onClick={() => onSelect(term)}
+        onClick={() => navigate(`/app/cidadao/termos/${term.id}`)}
       >
         {term.signed ? (
           <>
@@ -89,10 +83,9 @@ function TermCard({
   );
 }
 
-export default function DocumentListPage() {
+export default function CitizenTermsPage() {
   const navigate = useNavigate();
   const { data, isLoading, isError } = useCitizenTerms();
-  const [selectedTerm, setSelectedTerm] = useState<CitizenTermItem | null>(null);
 
   const { pendingTerms, signedTerms } = useMemo(() => {
     const terms = data?.terms ?? [];
@@ -122,7 +115,7 @@ export default function DocumentListPage() {
         </Button>
         <div className="text-center py-12 space-y-3">
           <p className="text-sm text-muted-foreground">
-            Nao foi possivel carregar os documentos.
+            Nao foi possivel carregar os termos.
           </p>
           <Button variant="outline" onClick={() => navigate('/app/dashboard')}>
             Voltar ao inicio
@@ -132,7 +125,7 @@ export default function DocumentListPage() {
     );
   }
 
-  const allSigned = pendingTerms.length === 0 && signedTerms.length > 0;
+  const allSigned = pendingTerms.length === 0;
 
   return (
     <div className="px-4 py-5 space-y-5">
@@ -142,19 +135,17 @@ export default function DocumentListPage() {
       </Button>
 
       <div>
-        <h1 className="text-xl font-bold">Documentos</h1>
+        <h1 className="text-xl font-bold">Termos de Instalacao</h1>
         <p className="text-sm text-muted-foreground mt-1">
-          {pendingTerms.length === 0 && signedTerms.length === 0
-            ? 'Nenhum documento encontrado.'
-            : allSigned
-              ? 'Todos os documentos foram assinados.'
-              : `${pendingTerms.length} documento(s) pendente(s) de assinatura.`}
+          {allSigned
+            ? 'Todos os termos foram assinados.'
+            : `${pendingTerms.length} termo(s) pendente(s) de assinatura.`}
         </p>
       </div>
 
       {allSigned && (
         <AlertBanner variant="success">
-          Todos os documentos foram assinados.
+          Todos os termos foram assinados.
         </AlertBanner>
       )}
 
@@ -179,12 +170,12 @@ export default function DocumentListPage() {
         <TabsContent value="pending" className="mt-4">
           {pendingTerms.length === 0 ? (
             <p className="text-sm text-muted-foreground text-center py-8">
-              Nenhum documento pendente.
+              Nenhum termo pendente.
             </p>
           ) : (
             <div className="space-y-3">
               {pendingTerms.map((term) => (
-                <TermCard key={term.id} term={term} onSelect={setSelectedTerm} />
+                <TermCard key={term.id} term={term} />
               ))}
             </div>
           )}
@@ -193,27 +184,17 @@ export default function DocumentListPage() {
         <TabsContent value="history" className="mt-4">
           {signedTerms.length === 0 ? (
             <p className="text-sm text-muted-foreground text-center py-8">
-              Nenhum documento assinado.
+              Nenhum termo assinado.
             </p>
           ) : (
             <div className="space-y-3">
               {signedTerms.map((term) => (
-                <TermCard key={term.id} term={term} onSelect={setSelectedTerm} />
+                <TermCard key={term.id} term={term} />
               ))}
             </div>
           )}
         </TabsContent>
       </Tabs>
-
-      {selectedTerm && (
-        <TermViewSheet
-          open={!!selectedTerm}
-          onOpenChange={(open) => { if (!open) setSelectedTerm(null); }}
-          seizureId={selectedTerm.seizureId}
-          termTemplateId={selectedTerm.termTemplateId}
-          vehiclePlate={selectedTerm.vehiclePlate}
-        />
-      )}
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { httpGet, httpPost } from '@/services/http/http-client';
-import type { SeizureTermResponse, GeofenceStatus, GeofenceCheckResult, SeizureListResponse, SeizureDetailResponse } from '../types/seizure';
+import type { SeizureTermsResponse, GeofenceStatus, GeofenceCheckResult, SeizureListResponse, SeizureDetailResponse } from '../types/seizure';
 
 // === LIST ===
 
@@ -16,16 +16,18 @@ export async function getSeizureById(id: string): Promise<SeizureDetailResponse>
 
 // === TERMS ===
 
-export async function getTermForSeizure(seizureId: string): Promise<SeizureTermResponse> {
-  return httpGet<SeizureTermResponse>(`/v1/terms/seizure/${seizureId}`);
+export async function getTermsForSeizure(seizureId: string): Promise<SeizureTermsResponse> {
+  return httpGet<SeizureTermsResponse>(`/v1/terms/seizure/${seizureId}`);
 }
 
 export async function signTerm(
   seizureId: string,
+  termTemplateId: string,
   accepted: boolean,
   refusalReason?: string,
-): Promise<SeizureTermResponse> {
-  return httpPost<SeizureTermResponse>(`/v1/terms/seizure/${seizureId}/sign`, {
+): Promise<SeizureTermsResponse> {
+  return httpPost<SeizureTermsResponse>(`/v1/terms/seizure/${seizureId}/sign`, {
+    termTemplateId,
     accepted,
     refusalReason,
   });

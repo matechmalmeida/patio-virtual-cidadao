@@ -5,7 +5,7 @@ import { toast } from 'sonner';
 const SEIZURE_KEYS = {
   all: ['seizure'] as const,
   list: (page: number) => [...SEIZURE_KEYS.all, 'list', page] as const,
-  term: (seizureId: string) => [...SEIZURE_KEYS.all, 'term', seizureId] as const,
+  terms: (seizureId: string) => [...SEIZURE_KEYS.all, 'terms', seizureId] as const,
   geofence: (seizureId: string) => [...SEIZURE_KEYS.all, 'geofence', seizureId] as const,
 };
 
@@ -24,10 +24,10 @@ export function useSeizureDetail(seizureId: string) {
   });
 }
 
-export function useSeizureTerm(seizureId: string) {
+export function useSeizureTerms(seizureId: string) {
   return useQuery({
-    queryKey: SEIZURE_KEYS.term(seizureId),
-    queryFn: () => seizureService.getTermForSeizure(seizureId),
+    queryKey: SEIZURE_KEYS.terms(seizureId),
+    queryFn: () => seizureService.getTermsForSeizure(seizureId),
     enabled: !!seizureId,
   });
 }
@@ -38,16 +38,19 @@ export function useSignTerm() {
   return useMutation({
     mutationFn: ({
       seizureId,
+      termTemplateId,
       accepted,
       refusalReason,
     }: {
       seizureId: string;
+      termTemplateId: string;
       accepted: boolean;
       refusalReason?: string;
-    }) => seizureService.signTerm(seizureId, accepted, refusalReason),
+    }) => seizureService.signTerm(seizureId, termTemplateId, accepted, refusalReason),
     onSuccess: (_, { seizureId }) => {
-      queryClient.invalidateQueries({ queryKey: SEIZURE_KEYS.term(seizureId) });
+      queryClient.invalidateQueries({ queryKey: SEIZURE_KEYS.terms(seizureId) });
       queryClient.invalidateQueries({ queryKey: SEIZURE_KEYS.geofence(seizureId) });
+      queryClient.invalidateQueries({ queryKey: ['citizen-terms'] });
       toast.success('Termo assinado com sucesso');
     },
     onError: () => {
@@ -61,7 +64,7 @@ export function useGeofenceStatus(seizureId: string) {
     queryKey: SEIZURE_KEYS.geofence(seizureId),
     queryFn: () => seizureService.getGeofenceStatus(seizureId),
     enabled: !!seizureId,
-    refetchInterval: 30_000, // Poll every 30s
+    refetchInterval: 30_000,
   });
 }
 

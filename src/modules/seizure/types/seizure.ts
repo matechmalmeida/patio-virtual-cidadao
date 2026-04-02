@@ -1,19 +1,22 @@
-export interface SeizureTermResponse {
-  seizureId: string;
-  seizureStatus: string;
-  term: {
-    id: string;
-    slug: string;
-    title: string;
-    content: string;
-    version: number;
-  };
+export interface SeizureTermItem {
+  id: string;
+  slug: string;
+  title: string;
+  content: string;
+  version: number;
   signed: boolean;
   signedAt: string | null;
   signedBy: { id: string; name: string } | null;
   refused: boolean;
   refusedAt: string | null;
   refusalReason: string | null;
+}
+
+export interface SeizureTermsResponse {
+  seizureId: string;
+  seizureStatus: string;
+  terms: SeizureTermItem[];
+  allSigned: boolean;
 }
 
 export interface GeofenceStatus {
@@ -115,6 +118,7 @@ export interface SeizureDetailResponse {
   address?: SeizureDetailAddress;
   violations: SeizureDetailViolation[];
   geofence?: SeizureDetailGeofence;
+  statusHistory?: string[];
   createdAt: string;
 }
 

@@ -20,6 +20,8 @@ import {
   Clock,
   RotateCcw,
   ListChecks,
+  FileText,
+  XCircle,
 } from 'lucide-react';
 import type {
   SeizureDetailVehicle,
@@ -160,7 +162,7 @@ function ViolationsSection({ violations }: { violations: SeizureDetailViolation[
               {(v.violationType.score != null || v.violationType.amount != null) && (
                 <div className="flex items-center gap-4 text-xs text-muted-foreground">
                   {v.violationType.score != null && <span>Pontos: {v.violationType.score}</span>}
-                  {v.violationType.amount != null && <span>Valor: {fmtCurrency(v.violationType.amount / 100)}</span>}
+                  {v.violationType.amount != null && <span>Valor: {fmtCurrency(v.violationType.amount)}</span>}
                 </div>
               )}
             </div>
@@ -194,73 +196,85 @@ function LocationSection({ address }: { address?: SeizureDetailAddress }) {
 }
 
 const STATUS_STEPS = [
-  { slug: 'aguardando-assinatura', label: 'Aguardando Assinatura', icon: Clock },
-  { slug: 'aguardando-equipamento', label: 'Aguardando Equipamento', icon: Clock },
-  { slug: 'em-deslocamento', label: 'Em Deslocamento', icon: MapPin },
-  { slug: 'custodia-virtual', label: 'Custódia Virtual', icon: CheckCircle2 },
-  { slug: 'aguardando-retirada', label: 'Aguardando Retirada', icon: Clock },
-  { slug: 'finalizado', label: 'Finalizado', icon: CheckCircle2 },
+  { slug: 'aguardando-assinatura', label: 'Aguardando Assinatura' },
+  { slug: 'aguardando-equipamento', label: 'Aguardando Equipamento' },
+  { slug: 'em-deslocamento', label: 'Em Deslocamento' },
+  { slug: 'custodia-virtual', label: 'Custodia Virtual' },
+  { slug: 'custodia-violada', label: 'Custodia Violada' },
+  { slug: 'aguardando-retirada', label: 'Aguardando Retirada' },
+  { slug: 'finalizado', label: 'Finalizado' },
+  { slug: 'cancelado', label: 'Cancelado' },
 ];
 
-const STATUS_ORDER: Record<string, number> = {};
-STATUS_STEPS.forEach((s, i) => { STATUS_ORDER[s.slug] = i; });
+type StepState = 'completed' | 'current' | 'pending' | 'cancelled' | 'skipped';
 
-function getStepState(stepSlug: string, currentSlug: string): 'completed' | 'current' | 'pending' | 'violated' {
-  if (currentSlug === 'custodia-violada' || currentSlug === 'cancelado') {
-    const stepIdx = STATUS_ORDER[stepSlug] ?? -1;
-    const violatedIdx = STATUS_ORDER['custodia-virtual'] ?? 4;
-    if (stepIdx < violatedIdx) return 'completed';
-    if (stepSlug === 'custodia-virtual') return 'violated';
-    return 'pending';
-  }
-
-  const currentIdx = STATUS_ORDER[currentSlug] ?? -1;
-  const stepIdx = STATUS_ORDER[stepSlug] ?? -1;
-
-  if (stepIdx < currentIdx) return 'completed';
-  if (stepIdx === currentIdx) return 'current';
+function getStepState(stepSlug: string, currentSlug: string, passedSlugs: Set<string>, isCancelled: boolean): StepState {
+  if (stepSlug === 'cancelado' && isCancelled) return 'cancelled';
+  if (stepSlug === currentSlug) return 'current';
+  if (passedSlugs.has(stepSlug)) return 'completed';
+  if (isCancelled) return 'skipped';
   return 'pending';
 }
 
-function TimelineSection({ currentSlug }: { currentSlug: string }) {
+function TimelineSection({ currentSlug, statusHistory }: { currentSlug: string; statusHistory?: string[] }) {
+  const passedSlugs = new Set(statusHistory ?? []);
+  const isCancelled = currentSlug === 'cancelado';
+
+  const visibleSteps = isCancelled
+    ? STATUS_STEPS.filter((s) => s.slug !== 'finalizado')
+    : STATUS_STEPS.filter((s) => s.slug !== 'cancelado');
+
+  const steps = visibleSteps.map((step) => ({
+    ...step,
+    state: getStepState(step.slug, currentSlug, passedSlugs, isCancelled),
+  }));
+
   return (
     <Section icon={ListChecks} title="Acompanhamento">
       <div className="space-y-0">
-        {STATUS_STEPS.map((step, i) => {
-          const state = getStepState(step.slug, currentSlug);
+        {steps.map((step, i) => {
+          const nextState = steps[i + 1]?.state;
+          const lineActive =
+            step.state === 'completed' && (nextState === 'completed' || nextState === 'current');
+          const lineCancelled =
+            step.state === 'completed' && nextState === 'cancelled';
 
           return (
             <div key={step.slug} className="flex items-start gap-3 relative">
-              {i < STATUS_STEPS.length - 1 && (
+              {i < steps.length - 1 && (
                 <div
                   className={`absolute left-[11px] top-[24px] w-0.5 h-6 ${
-                    state === 'completed' ? 'bg-green-500' : 'bg-gray-200'
+                    lineActive ? 'bg-green-500' :
+                    lineCancelled ? 'bg-red-300' :
+                    'bg-gray-200'
                   }`}
                 />
               )}
 
               <div className="flex-shrink-0 mt-0.5">
-                {state === 'completed' && (
+                {step.state === 'completed' && (
                   <CheckCircle2 className="h-6 w-6 text-green-500" />
                 )}
-                {state === 'current' && (
-                  <div className="h-6 w-6 rounded-full border-2 border-primary bg-primary/10 flex items-center justify-center animate-pulse">
-                    <div className="h-2 w-2 rounded-full bg-primary" />
-                  </div>
+                {step.state === 'current' && (
+                  <Clock className="h-6 w-6 text-yellow-500" />
                 )}
-                {state === 'pending' && (
+                {step.state === 'pending' && (
                   <Circle className="h-6 w-6 text-gray-300" />
                 )}
-                {state === 'violated' && (
-                  <AlertTriangle className="h-6 w-6 text-red-500" />
+                {step.state === 'skipped' && (
+                  <XCircle className="h-6 w-6 text-gray-300" />
+                )}
+                {step.state === 'cancelled' && (
+                  <XCircle className="h-6 w-6 text-red-500" />
                 )}
               </div>
 
               <div className="pb-6">
                 <p className={`text-sm ${
-                  state === 'current' ? 'font-semibold text-primary' :
-                  state === 'completed' ? 'text-green-700' :
-                  state === 'violated' ? 'text-red-600 font-semibold' :
+                  step.state === 'completed' ? 'text-green-700' :
+                  step.state === 'current' ? 'font-semibold text-yellow-600' :
+                  step.state === 'cancelled' ? 'text-red-600' :
+                  step.state === 'skipped' ? 'text-muted-foreground line-through' :
                   'text-muted-foreground'
                 }`}>
                   {step.label}
@@ -329,6 +343,28 @@ export default function SeizureStatusPage() {
               </Badge>
             </div>
 
+            {currentSlug === 'aguardando-assinatura' && (
+              <div className="border border-primary/30 bg-primary/5 rounded-lg p-4 space-y-3">
+                <div className="flex items-start gap-3">
+                  <FileText className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-semibold text-sm">Documentos pendentes</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      Existem termos que precisam da sua assinatura para prosseguir.
+                    </p>
+                  </div>
+                </div>
+                <Button
+                  onClick={() => navigate(`/app/apreensao/${seizureId}/termo`)}
+                  className="w-full"
+                  size="sm"
+                >
+                  <FileText className="h-4 w-4" />
+                  Assinar documentos
+                </Button>
+              </div>
+            )}
+
             {isViolated && (
               <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-start gap-3">
                 <AlertTriangle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
@@ -373,7 +409,7 @@ export default function SeizureStatusPage() {
               </div>
             )}
 
-            <TimelineSection currentSlug={currentSlug} />
+            <TimelineSection currentSlug={currentSlug} statusHistory={data.statusHistory} />
             <VehicleSection vehicle={data.vehicle} />
             <DriverSection driver={data.driver} />
             <ViolationsSection violations={data.violations} />
