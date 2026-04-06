@@ -1,11 +1,17 @@
-import { httpGet } from './http/http-client';
-import { fetchBrandConfig } from '@/data/mockBrand';
 import type { BrandConfig } from '@/types/brand';
 
 export async function getBrandConfig(): Promise<BrandConfig> {
-  try {
-    return await httpGet<BrandConfig>('/public/brand-configs');
-  } catch {
-    return fetchBrandConfig();
-  }
+  return {
+    tenantId: 'default',
+    appName: 'Patio Virtual',
+    appSubtitle: 'Custodia Virtual de Veiculos',
+    logoUrl: null,
+    pwaIcon192: null,
+    pwaIcon512: null,
+    faviconUrl: null,
+    colors: {},
+    darkColors: {},
+    supportPhone: '',
+    copyright: '',
+  };
 }

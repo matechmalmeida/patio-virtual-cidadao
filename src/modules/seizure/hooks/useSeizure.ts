@@ -66,10 +66,10 @@ export function useCancelSeizure() {
       seizureService.cancelSeizure(seizureId, reason),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: SEIZURE_KEYS.all });
-      toast.success('Apreensao cancelada');
+      toast.success('Apreensão cancelada');
     },
     onError: () => {
-      toast.error('Erro ao cancelar a apreensao');
+      toast.error('Erro ao cancelar a apreensão');
     },
   });
 }

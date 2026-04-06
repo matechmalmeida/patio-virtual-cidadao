@@ -35,6 +35,7 @@ import {
   FileText,
   XCircle,
   Ban,
+  Truck,
 } from 'lucide-react';
 import type {
   SeizureDetailVehicle,
@@ -203,7 +204,7 @@ function LocationSection({ address }: { address?: SeizureDetailAddress }) {
 
   return (
     <Section icon={MapPin} title="Local da Ocorrência">
-      <InfoItem label="Endereco" value={fullAddress || '-'} />
+      <InfoItem label="Endereço" value={fullAddress || '-'} />
     </Section>
   );
 }
@@ -212,34 +213,44 @@ const STATUS_STEPS = [
   { slug: 'aguardando-assinatura', label: 'Aguardando Assinatura' },
   { slug: 'aguardando-equipamento', label: 'Aguardando Equipamento' },
   { slug: 'em-deslocamento', label: 'Em Deslocamento' },
-  { slug: 'custodia-virtual', label: 'Custodia Virtual' },
-  { slug: 'custodia-violada', label: 'Custodia Violada' },
+  { slug: 'custodia-virtual', label: 'Custódia Virtual' },
   { slug: 'aguardando-retirada', label: 'Aguardando Retirada' },
   { slug: 'finalizado', label: 'Finalizado' },
+  { slug: 'custodia-violada', label: 'Custódia Violada' },
   { slug: 'cancelado', label: 'Cancelado' },
 ];
 
 type StepState = 'completed' | 'current' | 'pending' | 'cancelled' | 'skipped';
 
-function getStepState(stepSlug: string, currentSlug: string, passedSlugs: Set<string>, isCancelled: boolean): StepState {
-  if (stepSlug === 'cancelado' && isCancelled) return 'cancelled';
+const TERMINAL_NEGATIVE = ['cancelado', 'custodia-violada'];
+
+function getStepState(stepSlug: string, currentSlug: string, passedSlugs: Set<string>, isNegativeTerminal: boolean): StepState {
+  if (TERMINAL_NEGATIVE.includes(stepSlug) && stepSlug === currentSlug) return 'cancelled';
   if (stepSlug === currentSlug) return 'current';
   if (passedSlugs.has(stepSlug)) return 'completed';
-  if (isCancelled) return 'skipped';
+
+  const stepIndex = STATUS_STEPS.findIndex((s) => s.slug === stepSlug);
+  const currentIndex = STATUS_STEPS.findIndex((s) => s.slug === currentSlug);
+  if (stepIndex >= 0 && currentIndex >= 0 && stepIndex < currentIndex) return 'completed';
+
+  if (isNegativeTerminal) return 'skipped';
   return 'pending';
 }
 
 function TimelineSection({ currentSlug, statusHistory }: { currentSlug: string; statusHistory?: string[] }) {
   const passedSlugs = new Set(statusHistory ?? []);
-  const isCancelled = currentSlug === 'cancelado';
+  const isNegativeTerminal = TERMINAL_NEGATIVE.includes(currentSlug);
 
-  const visibleSteps = isCancelled
-    ? STATUS_STEPS.filter((s) => s.slug !== 'finalizado')
-    : STATUS_STEPS.filter((s) => s.slug !== 'cancelado');
+  const visibleSteps = STATUS_STEPS.filter((s) => {
+    if (s.slug === currentSlug) return true;
+    if (TERMINAL_NEGATIVE.includes(s.slug)) return false;
+    if (isNegativeTerminal && s.slug === 'finalizado') return false;
+    return true;
+  });
 
   const steps = visibleSteps.map((step) => ({
     ...step,
-    state: getStepState(step.slug, currentSlug, passedSlugs, isCancelled),
+    state: getStepState(step.slug, currentSlug, passedSlugs, isNegativeTerminal),
   }));
 
   return (
@@ -449,8 +460,8 @@ export default function SeizureStatusPage() {
               Registrada em {fmtDate(data.createdAt)}
             </div>
 
-            {currentSlug === 'custodia-virtual' && (
-              <div className="pt-2 pb-4">
+            {currentSlug === 'custodia-virtual' && !data.hasPendingWithdrawal && (
+              <div className="pt-2 pb-4 space-y-3">
                 <Button
                   onClick={() => navigate(`/app/translado-retorno/novo?seizureId=${seizureId}`)}
                   className="w-full h-12 font-semibold"
@@ -458,6 +469,23 @@ export default function SeizureStatusPage() {
                   <RotateCcw className="h-4 w-4" />
                   Solicitar retirada
                 </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => navigate(`/app/translado/novo?seizureId=${seizureId}`)}
+                  className="w-full h-12 font-semibold"
+                >
+                  <Truck className="h-4 w-4" />
+                  Solicitar translado
+                </Button>
+              </div>
+            )}
+
+            {currentSlug === 'custodia-virtual' && data.hasPendingWithdrawal && (
+              <div className="pt-2 pb-4">
+                <div className="flex items-center gap-2 p-3 rounded-lg bg-muted border text-sm text-muted-foreground">
+                  <Clock className="h-4 w-4 shrink-0" />
+                  Solicitação de retirada em análise
+                </div>
               </div>
             )}
           </>
@@ -467,9 +495,9 @@ export default function SeizureStatusPage() {
       <AlertDialog open={cancelOpen} onOpenChange={setCancelOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Cancelar apreensao</AlertDialogTitle>
+            <AlertDialogTitle>Cancelar apreensão</AlertDialogTitle>
             <AlertDialogDescription>
-              Essa acao nao pode ser desfeita. Informe o motivo do cancelamento.
+              Essa ação não pode ser desfeita. Informe o motivo do cancelamento.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <Textarea

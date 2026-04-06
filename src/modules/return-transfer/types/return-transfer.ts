@@ -78,3 +78,66 @@ export interface CreateReturnTransferInput {
     notes?: string;
   }[];
 }
+
+export interface WithdrawalAppointment {
+  id: string;
+  seizureId: string;
+  slotId: string;
+  status: string;
+  notes: string | null;
+  rejectionReason: string | null;
+  createdAt: string;
+  updatedAt: string;
+  slot: {
+    id: string;
+    date: string;
+    time: string;
+    location: {
+      name: string;
+      address: string;
+    };
+  };
+}
+
+export interface WithdrawalAppointmentDetail {
+  id: string;
+  seizureId: string;
+  slotId: string;
+  status: string;
+  notes: string | null;
+  rejectionReason: string | null;
+  createdAt: string;
+  updatedAt: string;
+  seizure: {
+    id: string;
+    number: string;
+    vehicle: {
+      plate: string;
+      brand: string | null;
+      model: string | null;
+      color: string | null;
+    };
+  };
+  slot: {
+    id: string;
+    date: string;
+    time: string;
+    location: {
+      id: string;
+      name: string;
+      address: string;
+    };
+  };
+}
+
+export interface WithdrawalAppointmentListResponse {
+  data: WithdrawalAppointmentDetail[];
+  meta: {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+    hasNextPage: boolean;
+    hasPreviousPage: boolean;
+  };
+}

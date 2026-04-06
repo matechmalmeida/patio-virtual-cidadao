@@ -78,6 +78,8 @@ export interface ScheduleSlot {
   time: string;
   available: boolean;
   recommended?: boolean;
+  capacity?: number;
+  availableSpots?: number;
 }
 
 export interface ScheduleLocation {

@@ -21,9 +21,9 @@ export function formatCpf(value: string): string {
 }
 
 export function formatLastActivity(date: string | null | undefined): string {
-  if (!date) return 'indisponivel';
+  if (!date) return 'indisponível';
   const parsed = new Date(date);
-  if (Number.isNaN(parsed.getTime())) return 'indisponivel';
+  if (Number.isNaN(parsed.getTime())) return 'indisponível';
   return formatDistanceToNow(parsed, { addSuffix: true, locale: ptBR });
 }
 

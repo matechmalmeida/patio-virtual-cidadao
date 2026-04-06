@@ -84,10 +84,10 @@
       "headline": "Acompanhe seu processo com",
       "headlineHighlight1": "segurança",
       "headlineHighlight2": "praticidade",
-      "headlineDesc": "Acesse o portal do cidadao para resolver pendencias, acompanhar prazos e regularizar seu veiculo de forma 100% digital.",
+      "headlineDesc": "Acesse o portal do cidadão para resolver pendências, acompanhar prazos e regularizar seu veículo de forma 100% digital.",
       "badgeEncrypted": "Dados criptografados",
       "badgeLgpd": "Conforme a LGPD",
-      "secureConnection": "Conexao segura",
+      "secureConnection": "Conexão segura",
       "dataProtected": "Dados protegidos"
     },
     "login": {
@@ -99,50 +99,50 @@
       "passwordPlaceholder": "Sua senha",
       "submit": "Entrar",
       "forgotPassword": "Esqueceu a senha?",
-      "magicLink": "Entrar com link magico",
+      "magicLink": "Entrar com link mágico",
       "or": "OU",
       "magicLinkButton": "Receber link por email",
       "rememberMe": "Lembrar-me",
       "errors": {
         "invalidCredentials": "Email ou senha incorretos.",
-        "generic": "Nao foi possivel realizar o login."
+        "generic": "Não foi possível realizar o login."
       }
     },
     "verify": {
-      "title": "Verificacao de seguranca",
-      "subtitleEmail": "Enviamos um codigo para {{email}}. Insira-o abaixo.",
-      "subtitleTotp": "Insira o codigo do seu aplicativo autenticador.",
-      "subtitleBackup": "Use um codigo de recuperacao.",
+      "title": "Verificação de segurança",
+      "subtitleEmail": "Enviamos um código para {{email}}. Insira-o abaixo.",
+      "subtitleTotp": "Insira o código do seu aplicativo autenticador.",
+      "subtitleBackup": "Use um código de recuperação.",
       "codePlaceholder": "000000",
       "submit": "Verificar",
-      "verifying": "Verificando codigo...",
-      "resendCode": "Reenviar codigo",
+      "verifying": "Verificando código...",
+      "resendCode": "Reenviar código",
       "resending": "Reenviando...",
-      "resent": "Codigo reenviado com sucesso.",
+      "resent": "Código reenviado com sucesso.",
       "resendIn": "Reenviar em {{time}}",
-      "codeValid": "Valido por {{time}}",
+      "codeValid": "Válido por {{time}}",
       "codeExpiring": "Expira em {{time}}",
-      "codeExpired": "Codigo expirado. Solicite um novo.",
+      "codeExpired": "Código expirado. Solicite um novo.",
       "trustDevice": "Confiar neste dispositivo",
-      "useBackupCode": "Usar codigo de recuperacao",
+      "useBackupCode": "Usar código de recuperação",
       "backToTotp": "Voltar para autenticador",
       "backToEmail": "Voltar para e-mail",
       "backToLogin": "Voltar ao login",
-      "lastAttempt": "Ultima tentativa antes do bloqueio.",
+      "lastAttempt": "Última tentativa antes do bloqueio.",
       "attemptsRemaining": "Restam {{count}} tentativas.",
       "attemptsExceeded": "Limite de tentativas excedido. Volte ao login e tente novamente.",
       "errors": {
-        "generic": "Codigo invalido ou expirado.",
-        "resendFail": "Nao foi possivel reenviar o codigo."
+        "generic": "Código inválido ou expirado.",
+        "resendFail": "Não foi possível reenviar o código."
       }
     },
     "forgotPassword": {
       "title": "Recuperar senha",
-      "subtitle": "Informe seu email para receber o link de recuperacao.",
+      "subtitle": "Informe seu email para receber o link de recuperação.",
       "email": "Email cadastrado",
-      "submit": "Enviar link de recuperacao",
+      "submit": "Enviar link de recuperação",
       "successTitle": "Email enviado!",
-      "successDesc": "Se o email estiver cadastrado, voce recebera um link para redefinir sua senha.",
+      "successDesc": "Se o email estiver cadastrado, você receberá um link para redefinir sua senha.",
       "backToLogin": "Voltar ao login"
     },
     "resetPassword": {
@@ -152,24 +152,24 @@
       "confirmPassword": "Confirmar senha",
       "submit": "Redefinir senha",
       "successTitle": "Senha alterada!",
-      "successDesc": "Sua senha foi redefinida com sucesso. Agora voce pode fazer login.",
+      "successDesc": "Sua senha foi redefinida com sucesso. Agora você pode fazer login.",
       "goToLogin": "Ir para login",
       "strength": {
         "veryWeak": "Muito fraca",
         "weak": "Fraca",
-        "fair": "Razoavel",
+        "fair": "Razoável",
         "strong": "Forte",
         "veryStrong": "Muito forte"
       },
       "errors": {
-        "mismatch": "As senhas nao coincidem.",
-        "weak": "A senha deve ter no minimo 8 caracteres, 1 letra maiuscula e 1 numero.",
-        "invalidToken": "Link expirado ou invalido.",
-        "generic": "Nao foi possivel redefinir a senha."
+        "mismatch": "As senhas não coincidem.",
+        "weak": "A senha deve ter no mínimo 8 caracteres, 1 letra maiúscula e 1 número.",
+        "invalidToken": "Link expirado ou inválido.",
+        "generic": "Não foi possível redefinir a senha."
       }
     },
     "magicLink": {
-      "title": "Login com link magico",
+      "title": "Login com link mágico",
       "subtitle": "Enviaremos um link de acesso direto para seu email.",
       "email": "Email cadastrado",
       "submit": "Enviar link",
@@ -177,30 +177,30 @@
       "successDesc": "Enviamos um link de acesso para seu email. Clique no link para entrar.",
       "backToLogin": "Voltar ao login",
       "verifying": "Verificando...",
-      "errorTitle": "Link invalido",
-      "errorDesc": "Este link expirou ou e invalido. Solicite um novo.",
+      "errorTitle": "Link inválido",
+      "errorDesc": "Este link expirou ou é inválido. Solicite um novo.",
       "requestNew": "Solicitar novo link"
     },
     "totp": {
-      "title": "Verificacao em duas etapas",
-      "subtitle": "Digite o codigo de 6 digitos do seu aplicativo autenticador.",
+      "title": "Verificação em duas etapas",
+      "subtitle": "Digite o código de 6 dígitos do seu aplicativo autenticador.",
       "placeholder": "000000",
       "submit": "Verificar",
       "backToLogin": "Voltar ao login",
       "errors": {
-        "invalid": "Codigo incorreto.",
-        "generic": "Nao foi possivel verificar o codigo."
+        "invalid": "Código incorreto.",
+        "generic": "Não foi possível verificar o código."
       },
       "setup": {
-        "title": "Ativar autenticacao de dois fatores",
+        "title": "Ativar autenticação de dois fatores",
         "scanQR": "Escaneie o QR code com seu aplicativo autenticador (Google Authenticator, Authy, etc.).",
-        "secretLabel": "Chave secreta (se nao conseguir escanear)",
+        "secretLabel": "Chave secreta (se não conseguir escanear)",
         "confirmCode": "Digite o codigo gerado pelo app para confirmar",
         "submit": "Ativar",
         "successTitle": "2FA ativado!",
-        "successDesc": "Sua conta agora esta protegida com autenticacao de dois fatores.",
+        "successDesc": "Sua conta agora está protegida com autenticação de dois fatores.",
         "disableTitle": "Desativar 2FA",
-        "disableDesc": "Digite o codigo do seu app autenticador para desativar.",
+        "disableDesc": "Digite o código do seu app autenticador para desativar.",
         "disableSubmit": "Desativar"
       }
     }
@@ -239,16 +239,16 @@
     "newAlert_other": "{{count}} avisos novos",
     "pendingTerm": "Assinatura pendente — toque para ler e assinar",
     "step_em_deslocamento": "Deslocamento",
-    "step_custodia_domiciliar": "Custodia",
-    "step_pendencias_regularizar": "Pendencias",
-    "step_aguardando_validacao": "Validacao",
+    "step_custodia_domiciliar": "Custódia",
+    "step_pendencias_regularizar": "Pendências",
+    "step_aguardando_validacao": "Validação",
     "step_apto_retirada": "Apto",
     "step_aguardando_retirada": "Retirada",
     "step_finalizado": "Finalizado",
     "processProgress": "Progresso do processo",
-    "pendenciesResolved": "Pendencias",
+    "pendenciesResolved": "Pendências",
     "documentsToSignShort": "Documentos",
-    "unreadNotifications": "Notificacoes",
+    "unreadNotifications": "Notificações",
     "pendenciesOverview": "Suas pendencias",
     "viewAll": "Ver todas",
     "resolved": "resolvidas"
@@ -412,36 +412,36 @@
     "save": "Salvar",
     "copied": "Copiado!",
     "openInMaps": "Abrir no Google Maps",
-    "loadError": "Erro ao carregar conteudo."
+    "loadError": "Erro ao carregar conteúdo."
   },
   "scheduling": {
     "title": "Agendamento",
     "scheduleRemoval": "Agendar retirada",
-    "loading": "Carregando opcoes de agendamento...",
-    "cannotSchedule": "Voce ainda nao pode agendar",
-    "cannotScheduleDesc": "Resolva todas as pendencias antes de agendar a retirada do dispositivo.",
+    "loading": "Carregando opções de agendamento...",
+    "cannotSchedule": "Você ainda não pode agendar",
+    "cannotScheduleDesc": "Resolva todas as pendências antes de agendar a retirada do dispositivo.",
     "whatToResolve": "O que falta resolver:",
-    "goToPendencies": "Ir para pendencias",
-    "chooseLocation": "Escolha o local onde voce vai retirar o dispositivo:",
+    "goToPendencies": "Ir para pendências",
+    "chooseLocation": "Escolha o local onde você vai retirar o dispositivo:",
     "chooseDate": "Escolha a data:",
-    "availableSlots": "Horarios disponiveis:",
-    "noSlots": "Nenhum horario disponivel nesta data.",
+    "availableSlots": "Horários disponíveis:",
+    "noSlots": "Nenhum horário disponível nesta data.",
     "confirm": "Confirmar agendamento",
-    "confirmError": "Nao foi possivel confirmar o agendamento."
+    "confirmError": "Não foi possível confirmar o agendamento."
   },
   "schedulingConfirmation": {
     "title": "Agendamento confirmado!",
-    "subtitle": "Compareca no dia e horario marcados.",
-    "appointmentCode": "Codigo do agendamento",
+    "subtitle": "Compareça no dia e horário marcados.",
+    "appointmentCode": "Código do agendamento",
     "location": "Local",
     "date": "Data",
-    "time": "Horario",
+    "time": "Horário",
     "bringOnDay": "Leve no dia:",
     "bringId": "Documento de identidade (RG ou CNH)",
     "bringProof": "Comprovante do agendamento (esta tela ou o codigo)",
     "viewRoute": "Ver rota no Google Maps",
-    "addToCalendar": "Adicionar ao calendario",
-    "backToHome": "Voltar ao inicio",
+    "addToCalendar": "Adicionar ao calendário",
+    "backToHome": "Voltar ao início",
     "notFound": "Nenhum agendamento encontrado."
   },
   "process": {
@@ -469,55 +469,55 @@
   },
   "timeline": {
     "title": "Timeline do processo",
-    "progress": "{{completed}} de {{total}} etapas concluidas"
+    "progress": "{{completed}} de {{total}} etapas concluídas"
   },
   "history": {
-    "title": "Historico de remocoes",
-    "subtitle": "Remocoes ativas e anteriores vinculadas ao seu cadastro.",
-    "activeRemovals": "Remocoes ativas ({{count}})",
-    "code": "Codigo:",
+    "title": "Histórico de remoções",
+    "subtitle": "Remoções ativas e anteriores vinculadas ao seu cadastro.",
+    "activeRemovals": "Remoções ativas ({{count}})",
+    "code": "Código:",
     "reason": "Motivo:",
     "since": "Desde",
     "previousRemovals": "Remocoes anteriores",
-    "noPrevious": "Nenhuma remocao anterior.",
+    "noPrevious": "Nenhuma remoção anterior.",
     "finished": "Finalizado",
-    "loadError": "Nao foi possivel carregar o historico de casos."
+    "loadError": "Não foi possível carregar o histórico de casos."
   },
   "support": {
     "title": "Ajuda e Suporte",
     "openTicket": "Abrir chamado",
     "openTicketDesc": "Fale com nossa equipe",
-    "caseHistory": "Historico de casos",
+    "caseHistory": "Histórico de casos",
     "caseHistoryDesc": "Ver casos anteriores",
     "logout": "Sair da conta",
-    "logoutDesc": "Encerrar sessao",
+    "logoutDesc": "Encerrar sessão",
     "faq": "Perguntas frequentes",
     "searchPlaceholder": "Buscar pergunta...",
     "results": "Resultados",
     "noResults": "Nenhuma pergunta encontrada.",
-    "loadError": "Nao foi possivel carregar as perguntas frequentes."
+    "loadError": "Não foi possível carregar as perguntas frequentes."
   },
   "ticket": {
     "title": "Abrir chamado",
-    "subtitle": "Descreva o que esta acontecendo. Vamos ajudar o mais rapido possivel.",
+    "subtitle": "Descreva o que está acontecendo. Vamos ajudar o mais rápido possível.",
     "category": "Categoria",
     "categoryPlaceholder": "Selecione a categoria",
     "categories": {
-      "process": "Duvidas sobre o processo",
-      "pendencies": "Problema com pendencias",
+      "process": "Dúvidas sobre o processo",
+      "pendencies": "Problema com pendências",
       "device": "Problema com o dispositivo",
       "scheduling": "Agendamento",
       "payment": "Pagamento",
       "other": "Outro"
     },
     "description": "Descreva o problema",
-    "descriptionPlaceholder": "Conte com detalhes o que esta acontecendo...",
+    "descriptionPlaceholder": "Conte com detalhes o que está acontecendo...",
     "attachment": "Anexo (opcional)",
     "attachFile": "Anexar arquivo",
     "submitting": "Enviando...",
     "submit": "Enviar chamado",
     "success": "Chamado aberto!",
-    "successDesc": "Recebemos sua solicitacao. Nossa equipe vai responder em ate 48 horas uteis.",
+    "successDesc": "Recebemos sua solicitação. Nossa equipe vai responder em até 48 horas úteis.",
     "protocol": "Protocolo:",
     "backToSupport": "Voltar ao suporte"
   },
@@ -526,29 +526,29 @@
     "whatToInclude": "O que deve aparecer no comprovante",
     "includeDate": "Data do pagamento",
     "includeAmount": "Valor pago",
-    "includeName": "Nome do pagador ou placa do veiculo",
-    "includeAuth": "Comprovacao de autenticidade (selo, codigo de barras, etc.)",
+    "includeName": "Nome do pagador ou placa do veículo",
+    "includeAuth": "Comprovação de autenticidade (selo, codigo de barras, etc.)",
     "tapToSelect": "Toque para selecionar",
     "fileTypes": "Foto ou PDF - Max. 10 MB",
     "uploading": "Enviando...",
     "submit": "Enviar comprovante",
     "success": "Comprovante enviado!",
     "successDesc": "Recebemos seu comprovante para <strong>{{name}}</strong>. Nossa equipe vai analisa-lo em ate 48 horas.",
-    "backToPendencies": "Voltar para pendencias",
-    "notFound": "Pendencia nao encontrada.",
-    "uploadError": "Nao foi possivel enviar o comprovante."
+    "backToPendencies": "Voltar para pendências",
+    "notFound": "Pendência não encontrada.",
+    "uploadError": "Não foi possível enviar o comprovante."
   },
   "term": {
     "signSuccess": "Termo assinado com sucesso!",
     "signSuccessDesc": "O {{title}} foi registrado.",
     "signError": "Erro ao assinar termo",
-    "signErrorDesc": "Nao foi possivel assinar o termo agora.",
-    "notFound": "Termo nao encontrado.",
+    "signErrorDesc": "Não foi possível assinar o termo agora.",
+    "notFound": "Termo não encontrado.",
     "backToProcess": "Voltar ao processo",
-    "alreadySigned": "Termo ja assinado",
+    "alreadySigned": "Termo já assinado",
     "signedAt": "Este termo foi assinado em",
     "scrollToRead": "Role para ler todo o documento",
-    "agreeLabel": "Declaro que li integralmente o documento acima e concordo com todos os termos e condicoes estabelecidos.",
+    "agreeLabel": "Declaro que li integralmente o documento acima e concordo com todos os termos e condições estabelecidos.",
     "readFirst": "Leia o documento ate o final para poder aceitar os termos.",
     "signing": "Assinando...",
     "sign": "Assinar termo"
@@ -567,24 +567,24 @@
       "assinado": "Assinado"
     },
     "tabPending": "Pendentes",
-    "tabHistory": "Historico",
+    "tabHistory": "Histórico",
     "emptyPending": "Nenhum documento pendente de assinatura.",
     "emptyHistory": "Nenhum documento assinado ainda."
   },
   "install": {
     "title": "Instalar aplicativo",
-    "appName": "Remocao Veicular",
-    "subtitle": "Instale o portal no seu celular para acompanhar o processo de remocao de forma rapida e pratica.",
-    "quickAccess": "Acesso rapido",
+    "appName": "Remoção Veicular",
+    "subtitle": "Instale o portal no seu celular para acompanhar o processo de remoção de forma rápida e prática.",
+    "quickAccess": "Acesso rápido",
     "quickAccessDesc": "Abra direto da tela inicial, como um app",
     "offline": "Funciona offline",
     "offlineDesc": "Consulte informacoes mesmo sem internet",
-    "notificationsLabel": "Notificacoes",
+    "notificationsLabel": "Notificações",
     "notificationsDesc": "Receba alertas sobre seu processo",
     "fullscreen": "Tela cheia",
-    "fullscreenDesc": "Experiencia imersiva sem barra do navegador",
-    "alreadyInstalled": "Aplicativo ja instalado!",
-    "alreadyInstalledDesc": "Voce ja pode acessar pela tela inicial do seu celular.",
+    "fullscreenDesc": "Experiência imersiva sem barra do navegador",
+    "alreadyInstalled": "Aplicativo já instalado!",
+    "alreadyInstalledDesc": "Você já pode acessar pela tela inicial do seu celular.",
     "installNow": "Instalar agora",
     "iosInstructions": "Como instalar no iPhone/iPad:",
     "iosStep1Tap": "Toque em",
@@ -594,23 +594,23 @@
     "iosStep3Tap": "Toque em",
     "iosStep3Add": "Adicionar",
     "genericInstructions": "Como instalar:",
-    "genericDesc": "Acesse este site pelo navegador do seu celular (Chrome, Edge ou Samsung Internet) para ver o botao de instalacao. No menu do navegador, procure por \"Instalar aplicativo\" ou \"Adicionar a tela inicial\".",
+    "genericDesc": "Acesse este site pelo navegador do seu celular (Chrome, Edge ou Samsung Internet) para ver o botão de instalação. No menu do navegador, procure por \"Instalar aplicativo\" ou \"Adicionar à tela inicial\".",
     "accessPortal": "Acessar o portal pelo navegador"
   },
   "notFound": {
-    "title": "Pagina nao encontrada",
-    "backToHome": "Voltar ao inicio"
+    "title": "Página não encontrada",
+    "backToHome": "Voltar ao início"
   },
   "notificationsPage": {
-    "title": "Notificacoes",
+    "title": "Notificações",
     "filterAll": "Todos",
     "filterImportant": "Importantes",
-    "filterUnread": "Nao lidos",
-    "empty": "Nenhuma notificacao encontrada.",
-    "updateError": "Nao foi possivel atualizar a notificacao.",
+    "filterUnread": "Não lidos",
+    "empty": "Nenhuma notificação encontrada.",
+    "updateError": "Não foi possível atualizar a notificação.",
     "delete": "Excluir",
-    "deleteError": "Nao foi possivel excluir a notificacao.",
-    "batchError": "Nao foi possivel completar a operacao.",
+    "deleteError": "Não foi possível excluir a notificação.",
+    "batchError": "Não foi possível completar a operação.",
     "select": "Selecionar",
     "selectAll": "Selecionar todos",
     "deselectAll": "Desmarcar todos",
@@ -633,17 +633,17 @@
     "location": "Local da apreensão:"
   },
   "vehicleCard": {
-    "code": "Codigo:"
+    "code": "Código:"
   },
   "legal": {
-    "backToHome": "Voltar ao inicio",
-    "lastUpdated": "Ultima atualizacao",
-    "errorNotFound": "Pagina legal nao encontrada.",
+    "backToHome": "Voltar ao início",
+    "lastUpdated": "Última atualização",
+    "errorNotFound": "Página legal não encontrada.",
     "footerLinks": {
       "title": "Legal",
       "termsOfUse": "Termos de Uso",
-      "privacy": "Politica de Privacidade",
-      "cookies": "Politica de Cookies",
+      "privacy": "Política de Privacidade",
+      "cookies": "Política de Cookies",
       "lgpd": "LGPD"
     },
     "termos-de-uso": {
@@ -651,38 +651,38 @@
       "lastUpdated": "01 de fevereiro de 2026",
       "sections": {
         "1": {
-          "title": "Aceitacao dos Termos",
-          "content": "Ao acessar e utilizar o portal Patio Virtual, voce concorda integralmente com estes Termos de Uso. Caso nao concorde com alguma disposicao, solicitamos que nao utilize o servico.\n\nEstes termos regulam o uso da plataforma digital destinada ao acompanhamento do processo de remocao virtual de veiculos."
+          "title": "Aceitação dos Termos",
+          "content": "Ao acessar e utilizar o portal Patio Virtual, voce concorda integralmente com estes Termos de Uso. Caso não concorde com alguma disposição, solicitamos que não utilize o serviço.\n\nEstes termos regulam o uso da plataforma digital destinada ao acompanhamento do processo de remocao virtual de veiculos."
         },
         "2": {
-          "title": "Descricao do Servico",
-          "content": "O Patio Virtual e uma plataforma digital que permite ao cidadao acompanhar o processo de custodia domiciliar do veiculo, resolver pendencias documentais e financeiras, e agendar a retirada do dispositivo de monitoramento.\n\nO servico e oferecido como alternativa a remocao fisica do veiculo para o patio de apreensao, mediante instalacao de dispositivo GPS."
+          "title": "Descrição do Serviço",
+          "content": "O Patio Virtual e uma plataforma digital que permite ao cidadao acompanhar o processo de custódia domiciliar do veículo, resolver pendencias documentais e financeiras, e agendar a retirada do dispositivo de monitoramento.\n\nO servico e oferecido como alternativa a remoção física do veículo para o patio de apreensao, mediante instalacao de dispositivo GPS."
         },
         "3": {
           "title": "Cadastro e Acesso",
           "content": "O acesso ao portal e realizado por meio do codigo do caso fornecido durante a abordagem e do numero de telefone cadastrado. O cidadao e responsavel por manter seus dados de acesso em sigilo.\n\nO codigo de verificacao enviado por SMS e pessoal e intransferivel."
         },
         "4": {
-          "title": "Obrigacoes do Usuario",
+          "title": "Obrigações do Usuário",
           "content": "O usuario compromete-se a manter o veiculo estacionado em sua residencia durante todo o processo de regularizacao. Nao e permitido mover o veiculo ou tentar remover o dispositivo GPS instalado.\n\nO usuario deve fornecer informacoes verdadeiras e manter seus dados atualizados na plataforma."
         },
         "5": {
-          "title": "Limitacao de Responsabilidade",
+          "title": "Limitação de Responsabilidade",
           "content": "O Patio Virtual nao se responsabiliza por interrupcoes temporarias no servico decorrentes de manutencao programada ou falhas tecnicas de terceiros.\n\nA plataforma atua como ferramenta de acompanhamento e nao substitui os procedimentos legais e administrativos do orgao de transito."
         },
         "6": {
-          "title": "Alteracoes nos Termos",
-          "content": "Reservamo-nos o direito de alterar estes Termos de Uso a qualquer momento. As alteracoes serao comunicadas por meio da plataforma e entrarao em vigor na data de sua publicacao.\n\nO uso continuado do servico apos as alteracoes constitui aceitacao dos novos termos."
+          "title": "Alterações nos Termos",
+          "content": "Reservamo-nos o direito de alterar estes Termos de Uso a qualquer momento. As alterações serão comunicadas por meio da plataforma e entrarao em vigor na data de sua publicacao.\n\nO uso continuado do servico apos as alteracoes constitui aceitação dos novos termos."
         }
       }
     },
     "privacidade": {
-      "title": "Politica de Privacidade",
+      "title": "Política de Privacidade",
       "lastUpdated": "01 de fevereiro de 2026",
       "sections": {
         "1": {
           "title": "Dados Coletados",
-          "content": "Coletamos os seguintes dados pessoais: nome completo, CPF, numero de telefone, placa do veiculo, endereco residencial e dados de localizacao do dispositivo GPS.\n\nTambem coletamos dados de uso da plataforma, como paginas acessadas, horarios de acesso e acoes realizadas."
+          "content": "Coletamos os seguintes dados pessoais: nome completo, CPF, numero de telefone, placa do veículo, endereco residencial e dados de localizacao do dispositivo GPS.\n\nTambem coletamos dados de uso da plataforma, como paginas acessadas, horarios de acesso e acoes realizadas."
         },
         "2": {
           "title": "Finalidade do Tratamento",
@@ -703,7 +703,7 @@
       }
     },
     "cookies": {
-      "title": "Politica de Cookies",
+      "title": "Política de Cookies",
       "lastUpdated": "01 de fevereiro de 2026",
       "sections": {
         "1": {
@@ -725,12 +725,12 @@
       }
     },
     "lgpd": {
-      "title": "Protecao de Dados (LGPD)",
+      "title": "Proteção de Dados (LGPD)",
       "lastUpdated": "01 de fevereiro de 2026",
       "sections": {
         "1": {
           "title": "Base Legal",
-          "content": "O tratamento de dados pessoais pelo Patio Virtual esta fundamentado nas bases legais previstas na Lei Geral de Protecao de Dados (Lei 13.709/2018), incluindo o cumprimento de obrigacao legal, a execucao de politicas publicas e o consentimento do titular.\n\nO orgao de transito atua como controlador dos dados, e o Patio Virtual como operador."
+          "content": "O tratamento de dados pessoais pelo Patio Virtual esta fundamentado nas bases legais previstas na Lei Geral de Proteção de Dados (Lei 13.709/2018), incluindo o cumprimento de obrigacao legal, a execucao de politicas publicas e o consentimento do titular.\n\nO orgao de transito atua como controlador dos dados, e o Patio Virtual como operador."
         },
         "2": {
           "title": "Principios do Tratamento",
@@ -742,11 +742,11 @@
         },
         "4": {
           "title": "Encarregado de Dados (DPO)",
-          "content": "O encarregado de dados (Data Protection Officer) e o responsavel por atender as solicitacoes dos titulares e pela comunicacao com a Autoridade Nacional de Protecao de Dados (ANPD).\n\nPara entrar em contato com o encarregado de dados, utilize o canal de suporte da plataforma."
+          "content": "O encarregado de dados (Data Protection Officer) e o responsavel por atender as solicitacoes dos titulares e pela comunicacao com a Autoridade Nacional de Proteção de Dados (ANPD).\n\nPara entrar em contato com o encarregado de dados, utilize o canal de suporte da plataforma."
         },
         "5": {
           "title": "Incidentes de Seguranca",
-          "content": "Em caso de incidente de seguranca que possa acarretar risco ou dano relevante aos titulares, comunicaremos a ocorrencia a Autoridade Nacional de Protecao de Dados e aos titulares afetados, conforme previsto na LGPD.\n\nAdotamos medidas tecnicas e administrativas para prevenir e mitigar incidentes de seguranca."
+          "content": "Em caso de incidente de seguranca que possa acarretar risco ou dano relevante aos titulares, comunicaremos a ocorrencia a Autoridade Nacional de Proteção de Dados e aos titulares afetados, conforme previsto na LGPD.\n\nAdotamos medidas tecnicas e administrativas para prevenir e mitigar incidentes de seguranca."
         }
       }
     }
@@ -755,46 +755,46 @@
     "title": "Meu Perfil",
     "personalData": "Dados pessoais",
     "personalDataDesc": "Nome, telefone e CPF",
-    "addressMenu": "Endereco",
-    "addressMenuDesc": "Endereco de residencia",
-    "preferencesMenu": "Preferencias",
-    "preferencesMenuDesc": "Idioma, tema e notificacoes",
+    "addressMenu": "Endereço",
+    "addressMenuDesc": "Endereço de residência",
+    "preferencesMenu": "Preferências",
+    "preferencesMenuDesc": "Idioma, tema e notificações",
     "support": "Ajuda e Suporte",
     "supportDesc": "FAQ e chamados",
     "logout": "Sair da conta",
-    "logoutDesc": "Encerrar sessao",
+    "logoutDesc": "Encerrar sessão",
     "editAvatar": "Alterar foto",
     "removeAvatar": "Remover foto",
     "avatarUpdated": "Foto atualizada com sucesso.",
     "avatarRemoved": "Foto removida.",
-    "avatarError": "Nao foi possivel atualizar a foto.",
-    "avatarTooLarge": "A imagem deve ter no maximo 5 MB.",
+    "avatarError": "Não foi possível atualizar a foto.",
+    "avatarTooLarge": "A imagem deve ter no máximo 5 MB.",
     "personal": {
       "title": "Dados pessoais",
       "name": "Nome completo",
       "phone": "Telefone",
       "cpf": "CPF",
       "saveSuccess": "Dados atualizados com sucesso.",
-      "saveError": "Nao foi possivel salvar os dados.",
+      "saveError": "Não foi possível salvar os dados.",
       "errors": {
         "nameRequired": "Informe seu nome.",
-        "phoneInvalid": "Telefone invalido.",
-        "cpfInvalid": "CPF invalido."
+        "phoneInvalid": "Telefone inválido.",
+        "cpfInvalid": "CPF inválido."
       }
     },
     "address": {
-      "title": "Endereco",
+      "title": "Endereço",
       "cep": "CEP",
       "street": "Rua",
-      "number": "Numero",
+      "number": "Número",
       "complement": "Complemento",
       "neighborhood": "Bairro",
       "city": "Cidade",
       "state": "Estado",
       "saveSuccess": "Endereco atualizado com sucesso.",
-      "saveError": "Nao foi possivel salvar o endereco.",
+      "saveError": "Não foi possível salvar o endereço.",
       "errors": {
-        "cepInvalid": "CEP invalido.",
+        "cepInvalid": "CEP inválido.",
         "streetRequired": "Informe a rua.",
         "numberRequired": "Informe o numero.",
         "neighborhoodRequired": "Informe o bairro.",
@@ -803,12 +803,12 @@
       }
     },
     "preferences": {
-      "title": "Preferencias",
+      "title": "Preferências",
       "language": "Idioma",
       "theme": "Tema",
       "themeLight": "Tema claro ativado",
       "themeDark": "Tema escuro ativado",
-      "pushNotifications": "Notificacoes push",
+      "pushNotifications": "Notificações push",
       "configurePush": "Configurar alertas no dispositivo",
       "security": "Seguranca",
       "twoFactor": "Autenticacao de dois fatores",
@@ -818,7 +818,7 @@
   "returnTransfer": {
     "title": "Solicitacoes de Retorno",
     "new": "Nova",
-    "loadError": "Nao foi possivel carregar as solicitacoes.",
+    "loadError": "Não foi possível carregar as solicitacoes.",
     "retry": "Tentar novamente",
     "empty": "Nenhuma solicitacao de retorno.",
     "createFirst": "Solicitar retirada",
@@ -829,8 +829,8 @@
     "noEligible": "Nenhuma apreensao elegivel para solicitar retorno. O veiculo precisa estar em custodia virtual.",
     "selectLocation": "Escolha o local para a retirada dos dispositivos:",
     "selectDate": "Escolha a data:",
-    "selectTime": "Horarios disponiveis:",
-    "noSlots": "Nenhum horario disponivel nesta data.",
+    "selectTime": "Horários disponíveis:",
+    "noSlots": "Nenhum horário disponível nesta data.",
     "continue": "Continuar",
     "reviewTitle": "Confirme os dados da solicitacao",
     "vehicle": "Veiculo",
@@ -843,7 +843,7 @@
     "confirmError": "Nao foi possivel criar a solicitacao. Tente novamente.",
     "detailTitle": "Detalhes da Solicitacao",
     "scheduledDate": "Data agendada",
-    "scheduledTime": "Horario agendado",
+    "scheduledTime": "Horário agendado",
     "notes": "Observacoes",
     "cancellationReason": "Motivo do cancelamento",
     "viewRoute": "Ver rota no Google Maps",

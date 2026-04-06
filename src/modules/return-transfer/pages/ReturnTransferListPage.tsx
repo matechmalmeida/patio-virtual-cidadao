@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useMyReturnRequests } from '../hooks/useReturnTransfer';
+import { useMyWithdrawalAppointments } from '../hooks/useReturnTransfer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -19,20 +19,30 @@ import {
 } from 'lucide-react';
 import { format } from 'date-fns';
 
+function fmtPlate(plate: string) {
+  const c = plate.replace(/[^A-Za-z0-9]/g, '').toUpperCase();
+  return c.length === 7 ? `${c.slice(0, 3)}-${c.slice(3)}` : plate;
+}
+
 const STATUS_COLORS: Record<string, string> = {
-  'pendente': 'bg-amber-100 text-amber-700',
-  'aprovada': 'bg-blue-100 text-blue-700',
-  'em-andamento': 'bg-indigo-100 text-indigo-700',
-  'concluida': 'bg-green-100 text-green-700',
-  'rejeitada': 'bg-red-100 text-red-700',
-  'cancelada': 'bg-gray-100 text-gray-500',
+  pendente: 'bg-amber-100 text-amber-700',
+  confirmado: 'bg-blue-100 text-blue-700',
+  rejeitado: 'bg-red-100 text-red-700',
+  concluido: 'bg-green-100 text-green-700',
+};
+
+const STATUS_LABELS: Record<string, string> = {
+  pendente: 'Pendente',
+  confirmado: 'Confirmado',
+  rejeitado: 'Rejeitado',
+  concluido: 'Concluído',
 };
 
 export default function ReturnTransferListPage() {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [page, setPage] = useState(1);
-  const { data, isLoading, isFetching, isError, refetch } = useMyReturnRequests(page);
+  const { data, isLoading, isFetching, isError, refetch } = useMyWithdrawalAppointments(page);
 
   return (
     <div className="px-4 py-5 space-y-4">
@@ -81,57 +91,56 @@ export default function ReturnTransferListPage() {
       {data && data.data.length > 0 && (
         <>
           <div className="space-y-3">
-            {data.data.map((request) => (
-              <Card
-                key={request.id}
-                className="cursor-pointer hover:bg-muted/50 active:bg-muted transition-colors"
-                onClick={() => navigate(`/app/translado-retorno/${request.id}`)}
-              >
-                <CardContent className="p-4 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <span className="font-mono font-bold">
-                      {request.parameters?.vehiclePlate ?? '---'}
-                    </span>
-                    <Badge className={`text-xs ${STATUS_COLORS[request.status.slug] ?? ''}`}>
-                      {request.status.name}
-                    </Badge>
-                  </div>
+            {data.data.map((appointment) => {
+              const vehicle = appointment.seizure.vehicle;
+              const vehicleDesc = [vehicle.brand, vehicle.model, vehicle.color ? `- ${vehicle.color}` : null]
+                .filter(Boolean)
+                .join(' ');
 
-                  {request.parameters?.vehicleDescription && (
-                    <p className="text-xs text-muted-foreground">
-                      {request.parameters.vehicleDescription}
-                    </p>
-                  )}
+              return (
+                <Card
+                  key={appointment.id}
+                  className="cursor-pointer hover:bg-muted/50 active:bg-muted transition-colors"
+                  onClick={() => navigate(`/app/translado-retorno/${appointment.id}`)}
+                >
+                  <CardContent className="p-4 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="font-mono font-bold">
+                        {fmtPlate(vehicle.plate)}
+                      </span>
+                      <Badge className={`text-xs ${STATUS_COLORS[appointment.status] ?? ''}`}>
+                        {STATUS_LABELS[appointment.status] ?? appointment.status}
+                      </Badge>
+                    </div>
 
-                  {request.parameters?.locationName && (
+                    {vehicleDesc && (
+                      <p className="text-xs text-muted-foreground">{vehicleDesc}</p>
+                    )}
+
                     <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                       <MapPin className="h-3 w-3 shrink-0" />
-                      <span>{request.parameters.locationName}</span>
+                      <span>{appointment.slot.location.name}</span>
                     </div>
-                  )}
 
-                  <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                    {request.parameters?.scheduledDate && (
+                    <div className="flex items-center gap-4 text-xs text-muted-foreground">
                       <div className="flex items-center gap-1">
                         <Calendar className="h-3 w-3" />
-                        <span>{request.parameters.scheduledDate}</span>
+                        <span>{format(new Date(appointment.slot.date + 'T12:00:00'), 'dd/MM/yyyy')}</span>
                       </div>
-                    )}
-                    {request.parameters?.scheduledTime && (
                       <div className="flex items-center gap-1">
                         <Clock className="h-3 w-3" />
-                        <span>{request.parameters.scheduledTime}</span>
+                        <span>{appointment.slot.time}</span>
                       </div>
-                    )}
-                  </div>
+                    </div>
 
-                  <div className="flex items-center justify-between text-xs text-muted-foreground pt-1">
-                    <span>{t('returnTransfer.createdAt')}</span>
-                    <span>{format(new Date(request.createdAt), 'dd/MM/yyyy HH:mm')}</span>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                    <div className="flex items-center justify-between text-xs text-muted-foreground pt-1">
+                      <span>{t('returnTransfer.createdAt')}</span>
+                      <span>{format(new Date(appointment.createdAt), 'dd/MM/yyyy HH:mm')}</span>
+                    </div>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
 
           {data.meta.totalPages > 1 && (

@@ -1,8 +1,14 @@
-import { executeMockRequest } from '@/services/http/mock-adapter';
-import { getMockGPSData, type GPSDeviceData } from '@/data/mockGPS';
+export interface GPSDeviceData {
+  deviceId: string;
+  plate: string;
+  latitude: number;
+  longitude: number;
+  speed: number;
+  ignition: string;
+  lastUpdate: string;
+  status: string;
+}
 
-export type { GPSDeviceData };
-
-export async function getGpsStatusByCase(caseId: string): Promise<GPSDeviceData> {
-  return executeMockRequest(() => getMockGPSData(caseId), { delayMs: 300 });
+export async function getGpsStatusByCase(_caseId: string): Promise<GPSDeviceData> {
+  throw new Error('GPS data not available');
 }

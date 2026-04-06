@@ -27,12 +27,6 @@ export default function Footer({ copyright }: FooterProps) {
           </div>
         </div>
         <div className="mt-6 pt-6 border-t flex flex-col items-center gap-4">
-          <div className="flex flex-col md:flex-row items-center gap-2 md:gap-4 text-xs text-muted-foreground/60">
-            <Link to="/legal/termos-de-uso" className="hover:text-foreground transition-colors">{t('legal.footerLinks.termsOfUse')}</Link>
-            <Link to="/legal/privacidade" className="hover:text-foreground transition-colors">{t('legal.footerLinks.privacy')}</Link>
-            <Link to="/legal/cookies" className="hover:text-foreground transition-colors">{t('legal.footerLinks.cookies')}</Link>
-            <Link to="/legal/lgpd" className="hover:text-foreground transition-colors">{t('legal.footerLinks.lgpd')}</Link>
-          </div>
           <p className="text-xs text-muted-foreground/60">{copyright}</p>
         </div>
       </div>

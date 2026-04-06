@@ -119,6 +119,7 @@ export interface SeizureDetailResponse {
   violations: SeizureDetailViolation[];
   geofence?: SeizureDetailGeofence;
   statusHistory?: string[];
+  hasPendingWithdrawal?: boolean;
   createdAt: string;
 }
 

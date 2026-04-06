@@ -24,6 +24,21 @@ export function useReturnRequestDetail(id: string) {
   });
 }
 
+export function useMyWithdrawalAppointments(page = 1) {
+  return useQuery({
+    queryKey: KEYS.list(page),
+    queryFn: () => service.listMyWithdrawalAppointments(page),
+  });
+}
+
+export function useWithdrawalAppointmentDetail(id: string) {
+  return useQuery({
+    queryKey: KEYS.detail(id),
+    queryFn: () => service.getWithdrawalAppointment(id),
+    enabled: !!id,
+  });
+}
+
 export function useCreateReturnRequest() {
   const queryClient = useQueryClient();
 
@@ -31,10 +46,10 @@ export function useCreateReturnRequest() {
     mutationFn: (data: CreateReturnTransferInput) => service.createReturnRequest(data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: KEYS.all });
-      toast.success('Solicitacao criada com sucesso');
+      toast.success('Solicitação criada com sucesso');
     },
     onError: () => {
-      toast.error('Erro ao criar solicitacao. Tente novamente.');
+      toast.error('Erro ao criar solicitação. Tente novamente.');
     },
   });
 }
@@ -48,10 +63,49 @@ export function useCancelReturnRequest() {
     onSuccess: (_, { id }) => {
       queryClient.invalidateQueries({ queryKey: KEYS.all });
       queryClient.invalidateQueries({ queryKey: KEYS.detail(id) });
-      toast.success('Solicitacao cancelada');
+      toast.success('Solicitação cancelada');
     },
     onError: () => {
-      toast.error('Erro ao cancelar solicitacao. Tente novamente.');
+      toast.error('Erro ao cancelar solicitação. Tente novamente.');
+    },
+  });
+}
+
+export function useRequestWithdrawal() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ seizureId, slotId, notes }: { seizureId: string; slotId: string; notes?: string }) =>
+      service.requestWithdrawal(seizureId, slotId, notes),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: KEYS.all });
+      queryClient.invalidateQueries({ queryKey: ['seizure'] });
+      toast.success('Solicitação de retirada enviada');
+    },
+    onError: () => {
+      toast.error('Erro ao solicitar retirada. Tente novamente.');
+    },
+  });
+}
+
+export function useRequestTransfer() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({
+      seizureId,
+      data,
+    }: {
+      seizureId: string;
+      data: { departureAt: string; destinationAddress: string; destinationLat: number; destinationLng: number; destinationRadiusMeters?: number; notes?: string };
+    }) => service.requestTransfer(seizureId, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: KEYS.all });
+      queryClient.invalidateQueries({ queryKey: ['seizure'] });
+      toast.success('Solicitação de translado enviada');
+    },
+    onError: () => {
+      toast.error('Erro ao solicitar translado. Tente novamente.');
     },
   });
 }

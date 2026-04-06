@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 import { useMySeizures } from '@/modules/seizure/hooks/useSeizure';
 import { getScheduleLocations, getScheduleSlots } from '@/modules/scheduling/services/schedule.service';
-import { useCreateReturnRequest } from '../hooks/useReturnTransfer';
+import { useRequestWithdrawal } from '../hooks/useReturnTransfer';
 import type { SeizureListItem } from '@/modules/seizure/types/seizure';
 import type { ScheduleLocation, ScheduleSlot } from '@/types/case';
 import { AlertBanner } from '@/components/AlertBanner';
@@ -27,6 +27,11 @@ import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { queryKeys } from '@/lib/query-keys';
 
+function fmtPlate(plate: string) {
+  const c = plate.replace(/[^A-Za-z0-9]/g, '').toUpperCase();
+  return c.length === 7 ? `${c.slice(0, 3)}-${c.slice(3)}` : plate;
+}
+
 type WizardStep = 'seizure' | 'location' | 'datetime' | 'review';
 
 export default function ReturnTransferWizardPage() {
@@ -44,7 +49,7 @@ export default function ReturnTransferWizardPage() {
   const [error, setError] = useState('');
 
   const { data: seizuresData, isLoading: seizuresLoading } = useMySeizures(1);
-  const createMutation = useCreateReturnRequest();
+  const withdrawalMutation = useRequestWithdrawal();
 
   const eligibleSeizures = useMemo(() => {
     if (!seizuresData?.data) return [];
@@ -108,28 +113,16 @@ export default function ReturnTransferWizardPage() {
   };
 
   const handleConfirm = async () => {
-    if (!selectedSeizure || !selectedLocation || !selectedSlotData) return;
+    if (!selectedSeizure || !selectedSlotData) return;
     setError('');
 
-    const vehicleDesc = [selectedSeizure.vehicle.brand, selectedSeizure.vehicle.model, selectedSeizure.vehicle.color]
-      .filter(Boolean)
-      .join(' ');
-
     try {
-      const result = await createMutation.mutateAsync({
+      await withdrawalMutation.mutateAsync({
+        seizureId: selectedSeizure.id,
+        slotId: selectedSlotData.id,
         notes: notes || undefined,
-        parameters: {
-          seizureId: selectedSeizure.id,
-          vehiclePlate: selectedSeizure.vehicle.plate,
-          vehicleDescription: vehicleDesc,
-          scheduleLocationId: selectedLocation.id,
-          locationName: selectedLocation.name,
-          locationAddress: selectedLocation.address ?? '',
-          scheduledDate: selectedSlotData.date,
-          scheduledTime: selectedSlotData.time,
-        },
       });
-      navigate(`/app/translado-retorno/${result.id}`, { replace: true });
+      navigate(`/app/apreensao/${selectedSeizure.id}/status`, { replace: true });
     } catch {
       setError(t('returnTransfer.confirmError'));
     }
@@ -170,7 +163,7 @@ export default function ReturnTransferWizardPage() {
                 <div className="flex items-start gap-3">
                   <Car className="h-5 w-5 text-primary mt-0.5 shrink-0" />
                   <div className="min-w-0">
-                    <p className="font-mono font-bold">{seizure.vehicle.plate}</p>
+                    <p className="font-mono font-bold">{fmtPlate(seizure.vehicle.plate)}</p>
                     {seizure.vehicle.brand && (
                       <p className="text-xs text-muted-foreground mt-0.5">
                         {seizure.vehicle.brand} {seizure.vehicle.model} - {seizure.vehicle.color}
@@ -190,7 +183,7 @@ export default function ReturnTransferWizardPage() {
           {selectedSeizure && (
             <div className="flex items-center gap-2 p-3 rounded-lg bg-muted/50 border">
               <Car className="h-4 w-4 text-primary shrink-0" />
-              <span className="text-sm font-medium font-mono">{selectedSeizure.vehicle.plate}</span>
+              <span className="text-sm font-medium font-mono">{fmtPlate(selectedSeizure.vehicle.plate)}</span>
             </div>
           )}
 
@@ -232,7 +225,7 @@ export default function ReturnTransferWizardPage() {
           {selectedSeizure && (
             <div className="flex items-center gap-2 p-3 rounded-lg bg-muted/50 border">
               <Car className="h-4 w-4 text-primary shrink-0" />
-              <span className="text-sm font-medium font-mono">{selectedSeizure.vehicle.plate}</span>
+              <span className="text-sm font-medium font-mono">{fmtPlate(selectedSeizure.vehicle.plate)}</span>
             </div>
           )}
 
@@ -294,6 +287,14 @@ export default function ReturnTransferWizardPage() {
                         <Clock className="h-3.5 w-3.5" />
                         {slot.time}
                       </div>
+                      {slot.availableSpots != null && (
+                        <p className={cn(
+                          'text-[10px] mt-0.5 text-center',
+                          selectedSlot === slot.id ? 'text-primary-foreground/70' : 'text-muted-foreground',
+                        )}>
+                          {slot.availableSpots} {slot.availableSpots === 1 ? 'vaga' : 'vagas'}
+                        </p>
+                      )}
                       {slot.recommended && slot.available && (
                         <span className="absolute -top-1.5 -right-1.5 flex items-center gap-0.5 bg-success text-success-foreground text-[9px] font-bold rounded-full px-1.5 py-0.5">
                           <Star className="h-2.5 w-2.5" />
@@ -324,7 +325,7 @@ export default function ReturnTransferWizardPage() {
                 <Car className="h-5 w-5 text-primary mt-0.5 shrink-0" />
                 <div>
                   <p className="text-xs text-muted-foreground">{t('returnTransfer.vehicle')}</p>
-                  <p className="text-sm font-semibold font-mono">{selectedSeizure?.vehicle.plate}</p>
+                  <p className="text-sm font-semibold font-mono">{selectedSeizure?.vehicle.plate ? fmtPlate(selectedSeizure.vehicle.plate) : ''}</p>
                   {selectedSeizure?.vehicle.brand && (
                     <p className="text-xs text-muted-foreground">
                       {selectedSeizure.vehicle.brand} {selectedSeizure.vehicle.model}
@@ -347,7 +348,7 @@ export default function ReturnTransferWizardPage() {
                 <div>
                   <p className="text-xs text-muted-foreground">{t('returnTransfer.dateTime')}</p>
                   <p className="text-sm font-semibold">
-                    {selectedSlotData?.date} - {selectedSlotData?.time}
+                    {selectedSlotData?.date ? format(new Date(selectedSlotData.date + 'T12:00:00'), "dd/MM/yyyy", { locale: ptBR }) : ''} - {selectedSlotData?.time}
                   </p>
                 </div>
               </div>
@@ -368,11 +369,11 @@ export default function ReturnTransferWizardPage() {
 
           <Button
             onClick={handleConfirm}
-            disabled={createMutation.isPending}
+            disabled={withdrawalMutation.isPending}
             className="w-full h-12 font-semibold"
           >
             <CheckCircle2 className="h-4 w-4" />
-            {createMutation.isPending ? t('returnTransfer.submitting') : t('returnTransfer.confirm')}
+            {withdrawalMutation.isPending ? t('returnTransfer.submitting') : t('returnTransfer.confirm')}
           </Button>
         </div>
       )}

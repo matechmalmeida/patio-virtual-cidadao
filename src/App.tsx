@@ -14,7 +14,6 @@ import { GlobalErrorFallback } from '@/components/error/GlobalErrorFallback';
 import { RouteErrorFallback } from '@/components/error/RouteErrorFallback';
 
 const SitePage = lazy(() => import('./modules/site/pages/SitePage'));
-const LegalPage = lazy(() => import('./modules/site/pages/LegalPage'));
 const LoginPage = lazy(() => import('./modules/auth/pages/LoginPage'));
 const ForgotPasswordPage = lazy(() => import('./modules/auth/pages/ForgotPasswordPage'));
 const ResetPasswordPage = lazy(() => import('./modules/auth/pages/ResetPasswordPage'));
@@ -52,6 +51,7 @@ const SeizureStatusPage = lazy(() => import('./modules/seizure/pages/SeizureStat
 const ReturnTransferListPage = lazy(() => import('./modules/return-transfer/pages/ReturnTransferListPage'));
 const ReturnTransferWizardPage = lazy(() => import('./modules/return-transfer/pages/ReturnTransferWizardPage'));
 const ReturnTransferDetailPage = lazy(() => import('./modules/return-transfer/pages/ReturnTransferDetailPage'));
+const TransferRequestPage = lazy(() => import('./modules/return-transfer/pages/TransferRequestPage'));
 const CitizenTermsPage = lazy(() => import('./modules/citizen-terms/pages/CitizenTermsPage'));
 const CitizenTermSigningPage = lazy(() => import('./modules/citizen-terms/pages/CitizenTermSigningPage'));
 const NotFound = lazy(() => import('./modules/app/pages/NotFound'));
@@ -112,7 +112,6 @@ const App = () => (
                 <Routes>
                   {/* Public routes */}
                   <Route path="/" element={routeElement(<SitePage />)} />
-                  <Route path="/legal/:slug" element={routeElement(<LegalPage />)} />
                   <Route path="/acesso" element={routeElement(<LoginPage />)} />
                   <Route path="/acesso/esqueci-senha" element={routeElement(<ForgotPasswordPage />)} />
                   <Route path="/acesso/nova-senha" element={routeElement(<ResetPasswordPage />)} />
@@ -183,6 +182,7 @@ const App = () => (
                       path="/app/translado-retorno/:requestId"
                       element={routeElement(<ReturnTransferDetailPage />)}
                     />
+                    <Route path="/app/translado/novo" element={routeElement(<TransferRequestPage />)} />
                     <Route path="/app/cidadao/termos" element={routeElement(<CitizenTermsPage />)} />
                     <Route
                       path="/app/cidadao/termos/:termId"

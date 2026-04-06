@@ -1,11 +1,14 @@
-import { httpGet } from '@/services/http/http-client';
-import { buildSiteContent } from '@/data/mockSite';
 import type { SiteContent } from '@/types/site';
 
-export async function getSiteContent(lang: string): Promise<SiteContent> {
-  try {
-    return await httpGet<SiteContent>(`/public/site-contents/${lang}`);
-  } catch {
-    return buildSiteContent(lang);
-  }
+export async function getSiteContent(_lang: string): Promise<SiteContent> {
+  return {
+    hero: { badge: '', title: 'Patio Virtual', highlight: '', subtitle: '' },
+    stats: [],
+    steps: [],
+    advantages: [],
+    comparison: { traditional: { title: '', items: [] }, virtual: { title: '', items: [] } },
+    faqs: [],
+    cta: { title: '', description: '' },
+    footerCopyright: '',
+  };
 }
